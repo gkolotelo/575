@@ -1,0 +1,145 @@
+m255
+K3
+13
+cModel Technology
+Z0 dF:\ES575A\Lab1\Lab1e\simulation\modelsim
+Edecoder_7segment
+Z1 w1457393276
+Z2 DPx3 std 6 textio 0 22 5>J:;AW>W0[[dW0I6EN1Q0
+Z3 DPx4 ieee 14 std_logic_1164 0 22 5=aWaoGZSMWIcH0i^f`XF1
+Z4 dF:\ES575A\Lab1\Lab1e\simulation\modelsim
+Z5 8F:/ES575A/Lab1/Lab1e/decoder_7segment.vhd
+Z6 FF:/ES575A/Lab1/Lab1e/decoder_7segment.vhd
+l0
+L4
+VJjm379UKfP[oPgOT@Y5on1
+Z7 OV;C;10.1d;51
+31
+Z8 !s108 1457397366.380000
+Z9 !s90 -reportprogress|300|-93|-work|work|F:/ES575A/Lab1/Lab1e/decoder_7segment.vhd|
+Z10 !s107 F:/ES575A/Lab1/Lab1e/decoder_7segment.vhd|
+Z11 o-93 -work work -O0
+Z12 tExplicit 1
+!s100 WQ^CBdgfF:IVDJQbY@]<e0
+!i10b 1
+Abehavior
+R2
+R3
+DEx4 work 16 decoder_7segment 0 22 Jjm379UKfP[oPgOT@Y5on1
+l12
+L11
+V^L9Tczb5TUEQUzfb41J>g3
+R7
+31
+R8
+R9
+R10
+R11
+R12
+!s100 lKl0f>ALEAJ;OMQfSR4Zz2
+!i10b 1
+Eexp1e
+Z13 w1457397026
+R2
+R3
+R4
+Z14 8F:/ES575A/Lab1/Lab1e/Exp1e.vhd
+Z15 FF:/ES575A/Lab1/Lab1e/Exp1e.vhd
+l0
+L4
+VBAQDdIaEl?eJzIMabOHW_0
+!s100 KbV01P?JOQL`zGZj9n2md2
+R7
+31
+!i10b 1
+Z16 !s108 1457397366.756000
+Z17 !s90 -reportprogress|300|-93|-work|work|F:/ES575A/Lab1/Lab1e/Exp1e.vhd|
+Z18 !s107 F:/ES575A/Lab1/Lab1e/Exp1e.vhd|
+R11
+R12
+Abehavior
+R2
+R3
+DEx4 work 5 exp1e 0 22 BAQDdIaEl?eJzIMabOHW_0
+l25
+L10
+VIYmJE^gf1`>AX`LMRNIX53
+!s100 CERjSIJKheDD_f7z6N;O02
+R7
+31
+!i10b 1
+R16
+R17
+R18
+R11
+R12
+Emux2to1
+Z19 w1457134188
+R2
+R3
+R4
+Z20 8F:/ES575A/Lab1/Lab1e/mux2to1.vhd
+Z21 FF:/ES575A/Lab1/Lab1e/mux2to1.vhd
+l0
+L4
+VM[FNhS4FgaLDfDJI2bhFg0
+R7
+31
+Z22 !s108 1457397366.036000
+Z23 !s90 -reportprogress|300|-93|-work|work|F:/ES575A/Lab1/Lab1e/mux2to1.vhd|
+Z24 !s107 F:/ES575A/Lab1/Lab1e/mux2to1.vhd|
+R11
+R12
+!s100 5cjN?]Jf]1UT7d13XW7iL1
+!i10b 1
+Abehavior
+R2
+R3
+DEx4 work 7 mux2to1 0 22 M[FNhS4FgaLDfDJI2bhFg0
+l10
+L9
+V_^K?k@dV?Vc<likXG>zWH2
+R7
+31
+R22
+R23
+R24
+R11
+R12
+!s100 =47LP`I7=[dmF^3`0Cn090
+!i10b 1
+Emux5to1_3bits
+Z25 w1457397028
+R2
+R3
+R4
+Z26 8F:/ES575A/Lab1/Lab1e/mux5to1_3bits.vhd
+Z27 FF:/ES575A/Lab1/Lab1e/mux5to1_3bits.vhd
+l0
+L4
+VI_Mg=I95NFHdL1=ZHoCY73
+R7
+31
+Z28 !s108 1457397364.598000
+Z29 !s90 -reportprogress|300|-93|-work|work|F:/ES575A/Lab1/Lab1e/mux5to1_3bits.vhd|
+Z30 !s107 F:/ES575A/Lab1/Lab1e/mux5to1_3bits.vhd|
+R11
+R12
+!s100 o9_YDdEA52`oGmH=BY]ej2
+!i10b 1
+Abehavior
+R2
+R3
+DEx4 work 13 mux5to1_3bits 0 22 I_Mg=I95NFHdL1=ZHoCY73
+l21
+L11
+V4?kHU=>KfnLkT=QPjzRYX0
+R7
+31
+R28
+R29
+R30
+R11
+R12
+!s100 :inXjNIhdAn3MfebOHL^83
+!i10b 1

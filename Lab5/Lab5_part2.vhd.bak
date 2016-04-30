@@ -1,0 +1,93 @@
+--------------------------------------------------
+-- Laboratorio de Circuitos Logicos - Turma A   --
+--------------------------------------------------
+-- 135964 Guilherme Kairalla Kolotelo           --
+-- 137943 Alexandre Seidy Ioshisaqui            --
+--------------------------------------------------
+-- Laboratorio 5: Timers e Relogios de          --
+--                  Tempo Real                  --
+--------------------------------------------------
+
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity Lab5_part2 is
+    port(
+        KEY:                                    in std_logic_vector(1 downto 0);
+        SW:                                     in std_logic_vector(15 downto 0);
+        CLOCK_50:                               in std_logic;
+        HEX7, HEX6, HEX5, HEX4, HEX3, HEX2 :    out std_logic_vector(6 downto 0) --6?
+    );
+end Lab5_part2;
+
+architecture behavior of Lab5_part2 is
+    component counter_k_init
+        generic (
+            -- Change 'n' for larger (or shorter) maximum values for 'k'
+            n : natural := 8;
+            init: natural := 0;
+        );
+        port (
+            -- Standard maximum value = (256)decimal = (11111111)binary
+            k       : in natural;
+            clock   : in STD_LOGIC;
+            reset_n : in STD_LOGIC;
+            Q       : out STD_LOGIC_VECTOR(n-1 downto 0)
+        );
+    end component counter_k_init;
+    component decoder_7segment_hex
+        PORT (
+            dec_in: IN std_logic_vector(3 downto 0);
+            dec_out: OUT std_logic_vector(6 downto 0)
+        );
+    END component decoder_7segment_hex;
+
+    signal clock_base, reset_n: std_logic;
+    signal s_hours, s_minutes, s_seconds: std_logic_vector(7 downto 0); -- 2 digits (XY)decimal, (xxxx yyyy)binary
+begin
+    process
+
+    begin
+        clock <= CLOCK_50
+        reset_n <= KEY(0);
+
+        base_counter: counter_k_init
+            generic map(
+                    n => 32;
+                    init => 0;
+                )
+            port map(50000000, clock, reset_n, clock_base);
+        seconds: counter_k_init
+            generic map(
+                    n => 6;
+                    init => to_integer(unsigned(SW(5 downto 0)))
+                )
+            port map(60, clock_base'completed, reset_n, s_seconds);
+        minutes: counter_k_init
+            generic map(
+                    n => 6;
+                    init => to_integer(unsigned(SW(11 downto 6)))
+                )
+            port map(60, s_seconds'completed, reset_n, s_minutes);
+        hours: counter_k_init
+            generic map(
+                    n => 6;
+                    init => to_integer(unsigned(SW(17 downto 12)))
+                )
+            port map(24, s_minutes'completed, reset_n, s_hours);
+
+        -- Converting counter binary output to 2-digit output
+
+
+        -- Time: (HH:MM:SS) = (AB:CD:EF)
+        sec_F: decoder_7segment_hex port map (s_seconds(3 downto 0), HEX0);
+        sec_E: decoder_7segment_hex port map (s_seconds(7 downto 4), HEX1);
+
+        min_D: decoder_7segment_hex port map (s_minutes(3 downto 0), HEX2);
+        min_C: decoder_7segment_hex port map (s_minutes(7 downto 4), HEX3);
+
+        hour_B: decoder_7segment_hex port map (s_hour(3 downto 0), HEX4);
+        hour_A: decoder_7segment_hex port map (s_hour(7 downto 4), HEX5);
+
+    end process
+end behavior;

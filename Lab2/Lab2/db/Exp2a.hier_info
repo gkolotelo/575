@@ -1,0 +1,537 @@
+|Exp2e
+SW[0] => BCD_1digit_adder:BCD_adder0.digit1_in[0]
+SW[1] => BCD_1digit_adder:BCD_adder0.digit1_in[1]
+SW[2] => BCD_1digit_adder:BCD_adder0.digit1_in[2]
+SW[3] => BCD_1digit_adder:BCD_adder0.digit1_in[3]
+SW[4] => BCD_1digit_adder:BCD_adder1.digit1_in[0]
+SW[5] => BCD_1digit_adder:BCD_adder1.digit1_in[1]
+SW[6] => BCD_1digit_adder:BCD_adder1.digit1_in[2]
+SW[7] => BCD_1digit_adder:BCD_adder1.digit1_in[3]
+SW[8] => BCD_1digit_adder:BCD_adder0.digit0_in[0]
+SW[9] => BCD_1digit_adder:BCD_adder0.digit0_in[1]
+SW[10] => BCD_1digit_adder:BCD_adder0.digit0_in[2]
+SW[11] => BCD_1digit_adder:BCD_adder0.digit0_in[3]
+SW[12] => BCD_1digit_adder:BCD_adder1.digit0_in[0]
+SW[13] => BCD_1digit_adder:BCD_adder1.digit0_in[1]
+SW[14] => BCD_1digit_adder:BCD_adder1.digit0_in[2]
+SW[15] => BCD_1digit_adder:BCD_adder1.digit0_in[3]
+HEX0[0] <= decoder_7segment:d0.dec_out[0]
+HEX0[1] <= decoder_7segment:d0.dec_out[1]
+HEX0[2] <= decoder_7segment:d0.dec_out[2]
+HEX0[3] <= decoder_7segment:d0.dec_out[3]
+HEX0[4] <= decoder_7segment:d0.dec_out[4]
+HEX0[5] <= decoder_7segment:d0.dec_out[5]
+HEX0[6] <= decoder_7segment:d0.dec_out[6]
+HEX1[0] <= decoder_7segment:d1.dec_out[0]
+HEX1[1] <= decoder_7segment:d1.dec_out[1]
+HEX1[2] <= decoder_7segment:d1.dec_out[2]
+HEX1[3] <= decoder_7segment:d1.dec_out[3]
+HEX1[4] <= decoder_7segment:d1.dec_out[4]
+HEX1[5] <= decoder_7segment:d1.dec_out[5]
+HEX1[6] <= decoder_7segment:d1.dec_out[6]
+HEX2[0] <= circuitB:d2.B_out[0]
+HEX2[1] <= circuitB:d2.B_out[1]
+HEX2[2] <= circuitB:d2.B_out[2]
+HEX2[3] <= circuitB:d2.B_out[3]
+HEX2[4] <= circuitB:d2.B_out[4]
+HEX2[5] <= circuitB:d2.B_out[5]
+HEX2[6] <= circuitB:d2.B_out[6]
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0
+digit0_in[0] => FA_4bit:FA0.a[0]
+digit0_in[1] => FA_4bit:FA0.a[1]
+digit0_in[2] => FA_4bit:FA0.a[2]
+digit0_in[3] => FA_4bit:FA0.a[3]
+digit1_in[0] => FA_4bit:FA0.b[0]
+digit1_in[1] => FA_4bit:FA0.b[1]
+digit1_in[2] => FA_4bit:FA0.b[2]
+digit1_in[3] => FA_4bit:FA0.b[3]
+C_in => FA_4bit:FA0.Cin
+BCD_out[0] <= mux2to1_4bit:mux0.m[0]
+BCD_out[1] <= mux2to1_4bit:mux0.m[1]
+BCD_out[2] <= mux2to1_4bit:mux0.m[2]
+BCD_out[3] <= mux2to1_4bit:mux0.m[3]
+C_out <= mux01_s.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|FA_4bit:FA0
+a[0] => FA_1bit:FA1.a
+a[1] => FA_1bit:FA2.a
+a[2] => FA_1bit:FA3.a
+a[3] => FA_1bit:FA4.a
+b[0] => FA_1bit:FA1.b
+b[1] => FA_1bit:FA2.b
+b[2] => FA_1bit:FA3.b
+b[3] => FA_1bit:FA4.b
+Cin => FA_1bit:FA1.Cin
+Sum[0] <= FA_1bit:FA1.sum
+Sum[1] <= FA_1bit:FA2.sum
+Sum[2] <= FA_1bit:FA3.sum
+Sum[3] <= FA_1bit:FA4.sum
+Cout <= FA_1bit:FA4.Cout
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|FA_4bit:FA0|FA_1bit:FA1
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|FA_4bit:FA0|FA_1bit:FA2
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|FA_4bit:FA0|FA_1bit:FA3
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|FA_4bit:FA0|FA_1bit:FA4
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|comparator:cmp0
+C_in[0] => ~NO_FANOUT~
+C_in[1] => C_out.IN0
+C_in[2] => C_out.IN1
+C_in[3] => C_out.IN1
+C_out <= C_out.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|FA_4bit:FA1
+a[0] => FA_1bit:FA1.a
+a[1] => FA_1bit:FA2.a
+a[2] => FA_1bit:FA3.a
+a[3] => FA_1bit:FA4.a
+b[0] => FA_1bit:FA1.b
+b[1] => FA_1bit:FA2.b
+b[2] => FA_1bit:FA3.b
+b[3] => FA_1bit:FA4.b
+Cin => FA_1bit:FA1.Cin
+Sum[0] <= FA_1bit:FA1.sum
+Sum[1] <= FA_1bit:FA2.sum
+Sum[2] <= FA_1bit:FA3.sum
+Sum[3] <= FA_1bit:FA4.sum
+Cout <= FA_1bit:FA4.Cout
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|FA_4bit:FA1|FA_1bit:FA1
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|FA_4bit:FA1|FA_1bit:FA2
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|FA_4bit:FA1|FA_1bit:FA3
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|FA_4bit:FA1|FA_1bit:FA4
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|mux2to1_4bit:mux0
+a[0] => mux2to1:m0.a
+a[1] => mux2to1:m1.a
+a[2] => mux2to1:m2.a
+a[3] => mux2to1:m3.a
+b[0] => mux2to1:m0.b
+b[1] => mux2to1:m1.b
+b[2] => mux2to1:m2.b
+b[3] => mux2to1:m3.b
+s => mux2to1:m0.s
+s => mux2to1:m1.s
+s => mux2to1:m2.s
+s => mux2to1:m3.s
+m[0] <= mux2to1:m0.m
+m[1] <= mux2to1:m1.m
+m[2] <= mux2to1:m2.m
+m[3] <= mux2to1:m3.m
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|mux2to1_4bit:mux0|mux2to1:m0
+a => m.IN0
+b => m.IN0
+s => m.IN1
+s => m.IN1
+m <= m.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|mux2to1_4bit:mux0|mux2to1:m1
+a => m.IN0
+b => m.IN0
+s => m.IN1
+s => m.IN1
+m <= m.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|mux2to1_4bit:mux0|mux2to1:m2
+a => m.IN0
+b => m.IN0
+s => m.IN1
+s => m.IN1
+m <= m.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder0|mux2to1_4bit:mux0|mux2to1:m3
+a => m.IN0
+b => m.IN0
+s => m.IN1
+s => m.IN1
+m <= m.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1
+digit0_in[0] => FA_4bit:FA0.a[0]
+digit0_in[1] => FA_4bit:FA0.a[1]
+digit0_in[2] => FA_4bit:FA0.a[2]
+digit0_in[3] => FA_4bit:FA0.a[3]
+digit1_in[0] => FA_4bit:FA0.b[0]
+digit1_in[1] => FA_4bit:FA0.b[1]
+digit1_in[2] => FA_4bit:FA0.b[2]
+digit1_in[3] => FA_4bit:FA0.b[3]
+C_in => FA_4bit:FA0.Cin
+BCD_out[0] <= mux2to1_4bit:mux0.m[0]
+BCD_out[1] <= mux2to1_4bit:mux0.m[1]
+BCD_out[2] <= mux2to1_4bit:mux0.m[2]
+BCD_out[3] <= mux2to1_4bit:mux0.m[3]
+C_out <= mux01_s.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|FA_4bit:FA0
+a[0] => FA_1bit:FA1.a
+a[1] => FA_1bit:FA2.a
+a[2] => FA_1bit:FA3.a
+a[3] => FA_1bit:FA4.a
+b[0] => FA_1bit:FA1.b
+b[1] => FA_1bit:FA2.b
+b[2] => FA_1bit:FA3.b
+b[3] => FA_1bit:FA4.b
+Cin => FA_1bit:FA1.Cin
+Sum[0] <= FA_1bit:FA1.sum
+Sum[1] <= FA_1bit:FA2.sum
+Sum[2] <= FA_1bit:FA3.sum
+Sum[3] <= FA_1bit:FA4.sum
+Cout <= FA_1bit:FA4.Cout
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|FA_4bit:FA0|FA_1bit:FA1
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|FA_4bit:FA0|FA_1bit:FA2
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|FA_4bit:FA0|FA_1bit:FA3
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|FA_4bit:FA0|FA_1bit:FA4
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|comparator:cmp0
+C_in[0] => ~NO_FANOUT~
+C_in[1] => C_out.IN0
+C_in[2] => C_out.IN1
+C_in[3] => C_out.IN1
+C_out <= C_out.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|FA_4bit:FA1
+a[0] => FA_1bit:FA1.a
+a[1] => FA_1bit:FA2.a
+a[2] => FA_1bit:FA3.a
+a[3] => FA_1bit:FA4.a
+b[0] => FA_1bit:FA1.b
+b[1] => FA_1bit:FA2.b
+b[2] => FA_1bit:FA3.b
+b[3] => FA_1bit:FA4.b
+Cin => FA_1bit:FA1.Cin
+Sum[0] <= FA_1bit:FA1.sum
+Sum[1] <= FA_1bit:FA2.sum
+Sum[2] <= FA_1bit:FA3.sum
+Sum[3] <= FA_1bit:FA4.sum
+Cout <= FA_1bit:FA4.Cout
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|FA_4bit:FA1|FA_1bit:FA1
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|FA_4bit:FA1|FA_1bit:FA2
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|FA_4bit:FA1|FA_1bit:FA3
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|FA_4bit:FA1|FA_1bit:FA4
+a => sum.IN0
+a => Cout.IN0
+b => sum.IN1
+b => Cout.IN1
+Cin => sum.IN1
+Cin => Cout.IN1
+sum <= sum.DB_MAX_OUTPUT_PORT_TYPE
+Cout <= Cout.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|mux2to1_4bit:mux0
+a[0] => mux2to1:m0.a
+a[1] => mux2to1:m1.a
+a[2] => mux2to1:m2.a
+a[3] => mux2to1:m3.a
+b[0] => mux2to1:m0.b
+b[1] => mux2to1:m1.b
+b[2] => mux2to1:m2.b
+b[3] => mux2to1:m3.b
+s => mux2to1:m0.s
+s => mux2to1:m1.s
+s => mux2to1:m2.s
+s => mux2to1:m3.s
+m[0] <= mux2to1:m0.m
+m[1] <= mux2to1:m1.m
+m[2] <= mux2to1:m2.m
+m[3] <= mux2to1:m3.m
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|mux2to1_4bit:mux0|mux2to1:m0
+a => m.IN0
+b => m.IN0
+s => m.IN1
+s => m.IN1
+m <= m.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|mux2to1_4bit:mux0|mux2to1:m1
+a => m.IN0
+b => m.IN0
+s => m.IN1
+s => m.IN1
+m <= m.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|mux2to1_4bit:mux0|mux2to1:m2
+a => m.IN0
+b => m.IN0
+s => m.IN1
+s => m.IN1
+m <= m.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|BCD_1digit_adder:BCD_adder1|mux2to1_4bit:mux0|mux2to1:m3
+a => m.IN0
+b => m.IN0
+s => m.IN1
+s => m.IN1
+m <= m.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|decoder_7segment:d0
+dec_in[0] => s1.IN1
+dec_in[0] => s3.IN1
+dec_in[0] => s5.IN1
+dec_in[0] => s7.IN1
+dec_in[0] => s9.IN1
+dec_in[0] => s0.IN1
+dec_in[0] => s2.IN1
+dec_in[0] => s4.IN1
+dec_in[0] => s6.IN1
+dec_in[1] => s2.IN1
+dec_in[1] => s7.IN1
+dec_in[1] => s0.IN1
+dec_in[1] => s4.IN1
+dec_in[1] => s9.IN1
+dec_in[2] => s7.IN0
+dec_in[2] => s0.IN0
+dec_in[2] => s9.IN0
+dec_in[3] => s9.IN1
+dec_in[3] => s0.IN1
+dec_in[3] => s7.IN1
+dec_out[0] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[1] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[2] <= s2.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[3] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[4] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[5] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[6] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|decoder_7segment:d1
+dec_in[0] => s1.IN1
+dec_in[0] => s3.IN1
+dec_in[0] => s5.IN1
+dec_in[0] => s7.IN1
+dec_in[0] => s9.IN1
+dec_in[0] => s0.IN1
+dec_in[0] => s2.IN1
+dec_in[0] => s4.IN1
+dec_in[0] => s6.IN1
+dec_in[1] => s2.IN1
+dec_in[1] => s7.IN1
+dec_in[1] => s0.IN1
+dec_in[1] => s4.IN1
+dec_in[1] => s9.IN1
+dec_in[2] => s7.IN0
+dec_in[2] => s0.IN0
+dec_in[2] => s9.IN0
+dec_in[3] => s9.IN1
+dec_in[3] => s0.IN1
+dec_in[3] => s7.IN1
+dec_out[0] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[1] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[2] <= s2.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[3] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[4] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[5] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[6] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp2e|circuitB:d2
+B_in => decoder_7segment:d0.dec_in[0]
+B_out[0] <= decoder_7segment:d0.dec_out[0]
+B_out[1] <= decoder_7segment:d0.dec_out[1]
+B_out[2] <= decoder_7segment:d0.dec_out[2]
+B_out[3] <= decoder_7segment:d0.dec_out[3]
+B_out[4] <= decoder_7segment:d0.dec_out[4]
+B_out[5] <= decoder_7segment:d0.dec_out[5]
+B_out[6] <= decoder_7segment:d0.dec_out[6]
+
+
+|Exp2e|circuitB:d2|decoder_7segment:d0
+dec_in[0] => s1.IN1
+dec_in[0] => s3.IN1
+dec_in[0] => s5.IN1
+dec_in[0] => s7.IN1
+dec_in[0] => s9.IN1
+dec_in[0] => s0.IN1
+dec_in[0] => s2.IN1
+dec_in[0] => s4.IN1
+dec_in[0] => s6.IN1
+dec_in[1] => s2.IN1
+dec_in[1] => s7.IN1
+dec_in[1] => s0.IN1
+dec_in[1] => s4.IN1
+dec_in[1] => s9.IN1
+dec_in[2] => s7.IN0
+dec_in[2] => s0.IN0
+dec_in[2] => s9.IN0
+dec_in[3] => s9.IN1
+dec_in[3] => s0.IN1
+dec_in[3] => s7.IN1
+dec_out[0] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[1] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[2] <= s2.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[3] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[4] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[5] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[6] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+
+

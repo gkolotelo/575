@@ -1,0 +1,74 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity BCD_1digit_adder is
+	PORT
+	(
+		digit0_in, digit1_in : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+		out0, out1: OUT STD_LOGIC_VECTOR(6 downto 0)
+	);
+
+
+end BCD_1digit_adder;
+
+architecture behavior of BCD_1digit_adder is
+	component decoder_7segment
+		port (
+			dec_in: in std_logic_vector(3 downto 0);
+			dec_out: out std_logic_vector(6 downto 0)
+		);
+	end component decoder_7segment;
+
+	component comparator
+		port (
+			C_in: in std_logic_vector(3 downto 0);
+			C_out: out std_logic
+		);
+	end component comparator;
+
+	component mux2to1
+		port (a, b, s: in std_logic;
+			m: out std_logic);
+	end component mux2to1;
+	
+	component FA_4bit
+		port (a, b: in std_logic_vector(3 downto 0);
+	      Cin: in std_logic;
+	      Sum: out std_logic_vector(3 downto 0);
+	      Cout: out std_logic);
+	end component FA_4bit;
+	
+	component mux2to1_4bit
+		port (a, b, s: in std_logic_vector(3 downto 0);
+			m: out std_logic_vector(3 downto 0)
+		);
+	end component mux2to1_4bit;
+	
+	component circuitB
+		port (
+			B_in: in std_logic;
+			B_out: out std_logic_vector(6 downto 0)
+		);
+	end component circuitB;
+	
+	signal gt_nine, FA0_c_out, mux01_s, FA1_c_out, mux1_out: std_logic;
+	signal mux0_out, FA0_out, FA1_out: std_logic_vector(3 downto 0);
+
+begin
+
+	FA0: FA_4bit port map (sw(7 downto 4), sw(3 downto 0), sw(8), FA0_out, FA0_c_out);
+	
+	cmp0: comparator port map (FA0_out, gt_nine);
+
+	mux01_s <= gt_nine or FA0_c_out;
+	
+	FA1: FA_4bit port map (FA0_out, '0110', '0', FA1_out, FA1_c_out);
+
+	mux0: mux2to1_4bit port map (FA0_out, FA1_out, mux01_s, mux0_out);
+	mux1: mux2to1 port map ('0', FA1_c_out, mux01_s, mux1_out);
+
+	d0: decoder_7segment port map (mux0_out, hex0);
+	d1: circuitB port map (mux1_out, hex1);
+
+
+end behavior;

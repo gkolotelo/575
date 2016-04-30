@@ -1,0 +1,135 @@
+|Exp7_Part1
+SW[0] => comb.IN1
+SW[0] => comb.IN1
+SW[0] => comb.IN1
+SW[0] => comb.IN1
+SW[0] => comb.IN1
+SW[0] => comb.IN1
+SW[0] => comb.IN1
+SW[0] => comb.IN1
+SW[1] => ~NO_FANOUT~
+SW[2] => ~NO_FANOUT~
+SW[3] => ~NO_FANOUT~
+SW[4] => ~NO_FANOUT~
+SW[5] => ~NO_FANOUT~
+SW[6] => ~NO_FANOUT~
+SW[7] => ~NO_FANOUT~
+SW[8] => ~NO_FANOUT~
+SW[9] => ~NO_FANOUT~
+SW[10] => ~NO_FANOUT~
+SW[11] => ~NO_FANOUT~
+SW[12] => ~NO_FANOUT~
+SW[13] => ~NO_FANOUT~
+SW[14] => ~NO_FANOUT~
+SW[15] => ~NO_FANOUT~
+SW[16] => ~NO_FANOUT~
+SW[17] => ~NO_FANOUT~
+LEDR[0] <= flipflop_d:A.Q
+LEDR[1] <= flipflop_d:B.Q
+LEDR[2] <= flipflop_d:C.Q
+LEDR[3] <= flipflop_d:D.Q
+LEDR[4] <= flipflop_d:E.Q
+LEDR[5] <= flipflop_d:F.Q
+LEDR[6] <= flipflop_d:G.Q
+LEDR[7] <= flipflop_d:H.Q
+LEDR[8] <= flipflop_d:I.Q
+LEDG[0] <= Z.DB_MAX_OUTPUT_PORT_TYPE
+LEDG[1] <= Z.DB_MAX_OUTPUT_PORT_TYPE
+LEDG[2] <= Z.DB_MAX_OUTPUT_PORT_TYPE
+LEDG[3] <= Z.DB_MAX_OUTPUT_PORT_TYPE
+LEDG[4] <= Z.DB_MAX_OUTPUT_PORT_TYPE
+LEDG[5] <= Z.DB_MAX_OUTPUT_PORT_TYPE
+LEDG[6] <= Z.DB_MAX_OUTPUT_PORT_TYPE
+LEDG[7] <= Z.DB_MAX_OUTPUT_PORT_TYPE
+KEY[0] => flipflop_d:A.Rst
+KEY[0] => flipflop_d:B.Rst
+KEY[0] => flipflop_d:C.Rst
+KEY[0] => flipflop_d:D.Rst
+KEY[0] => flipflop_d:E.Rst
+KEY[0] => flipflop_d:F.Rst
+KEY[0] => flipflop_d:G.Rst
+KEY[0] => flipflop_d:H.Rst
+KEY[0] => flipflop_d:I.Rst
+KEY[1] => flipflop_d:A.Clk
+KEY[1] => flipflop_d:B.Clk
+KEY[1] => flipflop_d:C.Clk
+KEY[1] => flipflop_d:D.Clk
+KEY[1] => flipflop_d:E.Clk
+KEY[1] => flipflop_d:F.Clk
+KEY[1] => flipflop_d:G.Clk
+KEY[1] => flipflop_d:H.Clk
+KEY[1] => flipflop_d:I.Clk
+
+
+|Exp7_Part1|flipflop_d:A
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp7_Part1|flipflop_d:B
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp7_Part1|flipflop_d:C
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp7_Part1|flipflop_d:D
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp7_Part1|flipflop_d:E
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp7_Part1|flipflop_d:F
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp7_Part1|flipflop_d:G
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp7_Part1|flipflop_d:H
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp7_Part1|flipflop_d:I
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+

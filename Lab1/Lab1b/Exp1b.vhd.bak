@@ -1,0 +1,17 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+
+ENTITY Exp1b IS
+	PORT ( SW : IN STD_LOGIC_VECTOR(15 DOWNTO 0); 
+			LEDR : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)); -- red LEDs 
+END Exp1a;
+
+
+
+
+
+architecture mux_8bit OF Exp1b IS
+	signal x, y: std_LOGIC_VECTOR(7 downto 0)
+	m <= (NOT (s) AND x) OR (s AND y);
+	
+end mux_8bit;

@@ -1,0 +1,142 @@
+--------------------------------------------------
+-- Laboratorio de Circuitos Logicos - Turma A   --
+--------------------------------------------------
+-- 135964 Guilherme Kairalla Kolotelo           --
+-- 137943 Alexandre Seidy Ioshisaqui            --
+--------------------------------------------------
+-- Laboratorio 6: Somadores, Subtratores        --
+--             e Multiplicadores                --
+--------------------------------------------------
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_signed.all;
+
+entity Exp6_Part3 is
+	port (SW: in std_logic_vector(17 downto 0);
+		  LEDR: out std_logic_vector(8 downto 0);
+		  KEY: in std_logic_vector(1 downto 0);
+		  HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0 :    out std_logic_vector(6 downto 0)
+		);
+end Exp6_Part3;
+
+architecture Behavior OF Exp6_Part3 is	
+	component FA_nbits
+		generic (
+    	    n : natural := 8
+    	);
+		port (a, b: in std_logic_vector(n-1 downto 0);
+		      Cin: in std_logic;
+		      Sum: out std_logic_vector(n-1 downto 0);
+		      Cout: out std_logic);
+	end component;
+
+	component flipflop_d_nbits
+    	generic (
+    	    n : natural := 8
+    	);
+    	port (
+    	    D: in std_logic_vector(n-1 downto 0);
+    	    Clk, Rst : in std_logic;
+    	    Q, Qn: out std_logic_vector(n-1 downto 0)
+    	);
+	end component ;
+
+	component decoder_7segment_hex
+        PORT (
+            dec_in: IN std_logic_vector(3 downto 0);
+            dec_out: OUT std_logic_vector(6 downto 0)
+        );
+    END component decoder_7segment_hex;
+	
+	signal clock, reset: std_logic;
+	signal A, B: std_logic_vector(7 downto 0);
+	signal P, Pout: std_logic_vector(15 downto 0);
+
+	-- Intermediate adder signals
+	signal FA_1a, FA_1b, FA_1s: std_logic_vector(7 downto 0);
+	signal FA_2a, FA_2b, FA_2s: std_logic_vector(7 downto 0);
+	signal FA_3a, FA_3b, FA_3s: std_logic_vector(7 downto 0);
+	signal FA_4a, FA_4b, FA_4s: std_logic_vector(7 downto 0);
+	signal FA_5a, FA_5b, FA_5s: std_logic_vector(7 downto 0);
+	signal FA_6a, FA_6b, FA_6s: std_logic_vector(7 downto 0);
+	signal FA_7a, FA_7b, FA_7s: std_logic_vector(7 downto 0);
+	signal FA_1cout, FA_2cout, FA_3cout, FA_4cout, FA_5cout, FA_6cout, FA_7cout: std_logic;
+
+begin
+
+	clock <= not(KEY(1));
+	reset <= not(KEY(0));
+
+	DinA: flipflop_d_nbits port map (D => SW(15 downto 8),
+									Clk => clock,
+									Rst => reset,
+									Q => A);
+	DinB: flipflop_d_nbits port map (D => SW(7 downto 0),
+									Clk => clock,
+									Rst => reset,
+									Q => B);
+
+	--A <= SW(15 downto 8);
+	--B <= SW(7 downto 0);
+
+	FA_1a <= '0' & (A(7 downto 1) and (6 downto 0 => B(0)));
+	FA_1b <= A and (7 downto 0 => B(1));
+	FA_1: FA_nbits port map(FA_1a, FA_1b, '0', FA_1s, FA_1cout);
+	
+	FA_2a <= FA_1cout & FA_1s(7 downto 1);
+	FA_2b <= A and (7 downto 0 => B(2));
+	FA_2: FA_nbits port map(FA_2a, FA_2b, '0', FA_2s, FA_2cout);
+
+	FA_3a <= FA_2cout & FA_2s(7 downto 1);
+	FA_3b <= A and (7 downto 0 => B(3));
+	FA_3: FA_nbits port map(FA_3a, FA_3b, '0', FA_3s, FA_3cout);
+
+	FA_4a <= FA_3cout & FA_3s(7 downto 1);
+	FA_4b <= A and (7 downto 0 => B(4));
+	FA_4: FA_nbits port map(FA_4a, FA_4b, '0', FA_4s, FA_4cout);
+
+	FA_5a <= FA_4cout & FA_4s(7 downto 1);
+	FA_5b <= A and (7 downto 0 => B(5));
+	FA_5: FA_nbits port map(FA_5a, FA_5b, '0', FA_5s, FA_5cout);
+
+	FA_6a <= FA_5cout & FA_5s(7 downto 1);
+	FA_6b <= A and (7 downto 0 => B(6));
+	FA_6: FA_nbits port map(FA_6a, FA_6b, '0', FA_6s, FA_6cout);
+
+	FA_7a <= FA_6cout & FA_6s(7 downto 1);
+	FA_7b <= A and (7 downto 0 => B(7));
+	FA_7: FA_nbits port map(FA_7a, FA_7b, '0', FA_7s, FA_7cout);
+
+	P <= 	FA_7cout & 
+			FA_7s & 
+			FA_6s(0 downto 0) &
+		 	FA_5s(0 downto 0) &
+		 	FA_4s(0 downto 0) &
+		 	FA_3s(0 downto 0) &
+		 	FA_2s(0 downto 0) &
+		 	FA_1s(0 downto 0) &
+		 	(A(0 downto 0) and B(0 downto 0));
+	
+	Dout: flipflop_d_nbits 
+		generic map (n => 16)
+		port map (	D => P,
+					Clk => clock,
+					Rst => reset,
+					Q => Pout);
+-- Display A
+    A3_0: decoder_7segment_hex port map (A(3 downto 0), HEX6);
+    A7_4: decoder_7segment_hex port map (A(7 downto 4), HEX7);
+
+-- Display B
+    B3_0: decoder_7segment_hex port map (B(3 downto 0), HEX4);
+    B7_4: decoder_7segment_hex port map (B(7 downto 4), HEX5);
+
+-- Display Pout
+    P3_0: decoder_7segment_hex port map (Pout(3 downto 0), HEX0);
+    P7_4: decoder_7segment_hex port map (Pout(7 downto 4), HEX1);	
+    P11_8: decoder_7segment_hex port map (Pout(11 downto 8), HEX2);
+    P15_12: decoder_7segment_hex port map (Pout(15 downto 12), HEX3);	
+
+end Behavior;

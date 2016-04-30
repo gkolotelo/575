@@ -1,0 +1,80 @@
+|Exp1c
+SW[0] => mux2to1:mux1.a
+SW[0] => LEDR[0].DATAIN
+SW[1] => mux2to1:mux1.b
+SW[1] => LEDR[1].DATAIN
+SW[2] => mux2to1:mux2.a
+SW[2] => LEDR[2].DATAIN
+SW[3] => mux2to1:mux2.b
+SW[3] => LEDR[3].DATAIN
+SW[4] => mux2to1:mux4.b
+SW[4] => LEDR[4].DATAIN
+SW[5] => ~NO_FANOUT~
+SW[6] => ~NO_FANOUT~
+SW[7] => ~NO_FANOUT~
+SW[8] => ~NO_FANOUT~
+SW[9] => ~NO_FANOUT~
+SW[10] => ~NO_FANOUT~
+SW[11] => ~NO_FANOUT~
+SW[12] => ~NO_FANOUT~
+SW[13] => ~NO_FANOUT~
+SW[14] => ~NO_FANOUT~
+SW[15] => mux2to1:mux4.s
+SW[15] => LEDR[15].DATAIN
+SW[16] => mux2to1:mux3.s
+SW[16] => LEDR[16].DATAIN
+SW[17] => mux2to1:mux1.s
+SW[17] => mux2to1:mux2.s
+SW[17] => LEDR[17].DATAIN
+LEDR[0] <= SW[0].DB_MAX_OUTPUT_PORT_TYPE
+LEDR[1] <= SW[1].DB_MAX_OUTPUT_PORT_TYPE
+LEDR[2] <= SW[2].DB_MAX_OUTPUT_PORT_TYPE
+LEDR[3] <= SW[3].DB_MAX_OUTPUT_PORT_TYPE
+LEDR[4] <= SW[4].DB_MAX_OUTPUT_PORT_TYPE
+LEDR[5] <= <GND>
+LEDR[6] <= <GND>
+LEDR[7] <= <GND>
+LEDR[8] <= <GND>
+LEDR[9] <= mux2to1:mux4.m
+LEDR[10] <= <GND>
+LEDR[11] <= <GND>
+LEDR[12] <= <GND>
+LEDR[13] <= <GND>
+LEDR[14] <= <GND>
+LEDR[15] <= SW[15].DB_MAX_OUTPUT_PORT_TYPE
+LEDR[16] <= SW[16].DB_MAX_OUTPUT_PORT_TYPE
+LEDR[17] <= SW[17].DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp1c|mux2to1:mux1
+a => m.IN0
+b => m.IN0
+s => m.IN1
+s => m.IN1
+m <= m.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp1c|mux2to1:mux2
+a => m.IN0
+b => m.IN0
+s => m.IN1
+s => m.IN1
+m <= m.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp1c|mux2to1:mux3
+a => m.IN0
+b => m.IN0
+s => m.IN1
+s => m.IN1
+m <= m.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp1c|mux2to1:mux4
+a => m.IN0
+b => m.IN0
+s => m.IN1
+s => m.IN1
+m <= m.DB_MAX_OUTPUT_PORT_TYPE
+
+

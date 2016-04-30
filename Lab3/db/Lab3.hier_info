@@ -1,0 +1,581 @@
+|Exp3e
+SW[0] => flipflop_d:GEN_ffd:0:ffd.D
+SW[0] => decoder_7segment_hex:dec_B_0.dec_in[0]
+SW[1] => flipflop_d:GEN_ffd:1:ffd.D
+SW[1] => decoder_7segment_hex:dec_B_0.dec_in[1]
+SW[2] => flipflop_d:GEN_ffd:2:ffd.D
+SW[2] => decoder_7segment_hex:dec_B_0.dec_in[2]
+SW[3] => flipflop_d:GEN_ffd:3:ffd.D
+SW[3] => decoder_7segment_hex:dec_B_0.dec_in[3]
+SW[4] => flipflop_d:GEN_ffd:4:ffd.D
+SW[4] => decoder_7segment_hex:dec_B_1.dec_in[0]
+SW[5] => flipflop_d:GEN_ffd:5:ffd.D
+SW[5] => decoder_7segment_hex:dec_B_1.dec_in[1]
+SW[6] => flipflop_d:GEN_ffd:6:ffd.D
+SW[6] => decoder_7segment_hex:dec_B_1.dec_in[2]
+SW[7] => flipflop_d:GEN_ffd:7:ffd.D
+SW[7] => decoder_7segment_hex:dec_B_1.dec_in[3]
+SW[8] => flipflop_d:GEN_ffd:8:ffd.D
+SW[8] => decoder_7segment_hex:dec_B_2.dec_in[0]
+SW[9] => flipflop_d:GEN_ffd:9:ffd.D
+SW[9] => decoder_7segment_hex:dec_B_2.dec_in[1]
+SW[10] => flipflop_d:GEN_ffd:10:ffd.D
+SW[10] => decoder_7segment_hex:dec_B_2.dec_in[2]
+SW[11] => flipflop_d:GEN_ffd:11:ffd.D
+SW[11] => decoder_7segment_hex:dec_B_2.dec_in[3]
+SW[12] => flipflop_d:GEN_ffd:12:ffd.D
+SW[12] => decoder_7segment_hex:dec_B_3.dec_in[0]
+SW[13] => flipflop_d:GEN_ffd:13:ffd.D
+SW[13] => decoder_7segment_hex:dec_B_3.dec_in[1]
+SW[14] => flipflop_d:GEN_ffd:14:ffd.D
+SW[14] => decoder_7segment_hex:dec_B_3.dec_in[2]
+SW[15] => flipflop_d:GEN_ffd:15:ffd.D
+SW[15] => decoder_7segment_hex:dec_B_3.dec_in[3]
+KEY[0] => flipflop_d:GEN_ffd:15:ffd.Clk
+KEY[0] => flipflop_d:GEN_ffd:14:ffd.Clk
+KEY[0] => flipflop_d:GEN_ffd:13:ffd.Clk
+KEY[0] => flipflop_d:GEN_ffd:12:ffd.Clk
+KEY[0] => flipflop_d:GEN_ffd:11:ffd.Clk
+KEY[0] => flipflop_d:GEN_ffd:10:ffd.Clk
+KEY[0] => flipflop_d:GEN_ffd:9:ffd.Clk
+KEY[0] => flipflop_d:GEN_ffd:8:ffd.Clk
+KEY[0] => flipflop_d:GEN_ffd:7:ffd.Clk
+KEY[0] => flipflop_d:GEN_ffd:6:ffd.Clk
+KEY[0] => flipflop_d:GEN_ffd:5:ffd.Clk
+KEY[0] => flipflop_d:GEN_ffd:4:ffd.Clk
+KEY[0] => flipflop_d:GEN_ffd:3:ffd.Clk
+KEY[0] => flipflop_d:GEN_ffd:2:ffd.Clk
+KEY[0] => flipflop_d:GEN_ffd:1:ffd.Clk
+KEY[0] => flipflop_d:GEN_ffd:0:ffd.Clk
+KEY[1] => ~NO_FANOUT~
+KEY[2] => ~NO_FANOUT~
+KEY[3] => flipflop_d:GEN_ffd:15:ffd.Rst
+KEY[3] => flipflop_d:GEN_ffd:14:ffd.Rst
+KEY[3] => flipflop_d:GEN_ffd:13:ffd.Rst
+KEY[3] => flipflop_d:GEN_ffd:12:ffd.Rst
+KEY[3] => flipflop_d:GEN_ffd:11:ffd.Rst
+KEY[3] => flipflop_d:GEN_ffd:10:ffd.Rst
+KEY[3] => flipflop_d:GEN_ffd:9:ffd.Rst
+KEY[3] => flipflop_d:GEN_ffd:8:ffd.Rst
+KEY[3] => flipflop_d:GEN_ffd:7:ffd.Rst
+KEY[3] => flipflop_d:GEN_ffd:6:ffd.Rst
+KEY[3] => flipflop_d:GEN_ffd:5:ffd.Rst
+KEY[3] => flipflop_d:GEN_ffd:4:ffd.Rst
+KEY[3] => flipflop_d:GEN_ffd:3:ffd.Rst
+KEY[3] => flipflop_d:GEN_ffd:2:ffd.Rst
+KEY[3] => flipflop_d:GEN_ffd:1:ffd.Rst
+KEY[3] => flipflop_d:GEN_ffd:0:ffd.Rst
+HEX0[0] <= decoder_7segment_hex:dec_B_0.dec_out[0]
+HEX0[1] <= decoder_7segment_hex:dec_B_0.dec_out[1]
+HEX0[2] <= decoder_7segment_hex:dec_B_0.dec_out[2]
+HEX0[3] <= decoder_7segment_hex:dec_B_0.dec_out[3]
+HEX0[4] <= decoder_7segment_hex:dec_B_0.dec_out[4]
+HEX0[5] <= decoder_7segment_hex:dec_B_0.dec_out[5]
+HEX0[6] <= decoder_7segment_hex:dec_B_0.dec_out[6]
+HEX1[0] <= decoder_7segment_hex:dec_B_1.dec_out[0]
+HEX1[1] <= decoder_7segment_hex:dec_B_1.dec_out[1]
+HEX1[2] <= decoder_7segment_hex:dec_B_1.dec_out[2]
+HEX1[3] <= decoder_7segment_hex:dec_B_1.dec_out[3]
+HEX1[4] <= decoder_7segment_hex:dec_B_1.dec_out[4]
+HEX1[5] <= decoder_7segment_hex:dec_B_1.dec_out[5]
+HEX1[6] <= decoder_7segment_hex:dec_B_1.dec_out[6]
+HEX2[0] <= decoder_7segment_hex:dec_B_2.dec_out[0]
+HEX2[1] <= decoder_7segment_hex:dec_B_2.dec_out[1]
+HEX2[2] <= decoder_7segment_hex:dec_B_2.dec_out[2]
+HEX2[3] <= decoder_7segment_hex:dec_B_2.dec_out[3]
+HEX2[4] <= decoder_7segment_hex:dec_B_2.dec_out[4]
+HEX2[5] <= decoder_7segment_hex:dec_B_2.dec_out[5]
+HEX2[6] <= decoder_7segment_hex:dec_B_2.dec_out[6]
+HEX3[0] <= decoder_7segment_hex:dec_B_3.dec_out[0]
+HEX3[1] <= decoder_7segment_hex:dec_B_3.dec_out[1]
+HEX3[2] <= decoder_7segment_hex:dec_B_3.dec_out[2]
+HEX3[3] <= decoder_7segment_hex:dec_B_3.dec_out[3]
+HEX3[4] <= decoder_7segment_hex:dec_B_3.dec_out[4]
+HEX3[5] <= decoder_7segment_hex:dec_B_3.dec_out[5]
+HEX3[6] <= decoder_7segment_hex:dec_B_3.dec_out[6]
+HEX4[0] <= decoder_7segment_hex:dec_A_0.dec_out[0]
+HEX4[1] <= decoder_7segment_hex:dec_A_0.dec_out[1]
+HEX4[2] <= decoder_7segment_hex:dec_A_0.dec_out[2]
+HEX4[3] <= decoder_7segment_hex:dec_A_0.dec_out[3]
+HEX4[4] <= decoder_7segment_hex:dec_A_0.dec_out[4]
+HEX4[5] <= decoder_7segment_hex:dec_A_0.dec_out[5]
+HEX4[6] <= decoder_7segment_hex:dec_A_0.dec_out[6]
+HEX5[0] <= decoder_7segment_hex:dec_A_1.dec_out[0]
+HEX5[1] <= decoder_7segment_hex:dec_A_1.dec_out[1]
+HEX5[2] <= decoder_7segment_hex:dec_A_1.dec_out[2]
+HEX5[3] <= decoder_7segment_hex:dec_A_1.dec_out[3]
+HEX5[4] <= decoder_7segment_hex:dec_A_1.dec_out[4]
+HEX5[5] <= decoder_7segment_hex:dec_A_1.dec_out[5]
+HEX5[6] <= decoder_7segment_hex:dec_A_1.dec_out[6]
+HEX6[0] <= decoder_7segment_hex:dec_A_2.dec_out[0]
+HEX6[1] <= decoder_7segment_hex:dec_A_2.dec_out[1]
+HEX6[2] <= decoder_7segment_hex:dec_A_2.dec_out[2]
+HEX6[3] <= decoder_7segment_hex:dec_A_2.dec_out[3]
+HEX6[4] <= decoder_7segment_hex:dec_A_2.dec_out[4]
+HEX6[5] <= decoder_7segment_hex:dec_A_2.dec_out[5]
+HEX6[6] <= decoder_7segment_hex:dec_A_2.dec_out[6]
+HEX7[0] <= decoder_7segment_hex:dec_A_3.dec_out[0]
+HEX7[1] <= decoder_7segment_hex:dec_A_3.dec_out[1]
+HEX7[2] <= decoder_7segment_hex:dec_A_3.dec_out[2]
+HEX7[3] <= decoder_7segment_hex:dec_A_3.dec_out[3]
+HEX7[4] <= decoder_7segment_hex:dec_A_3.dec_out[4]
+HEX7[5] <= decoder_7segment_hex:dec_A_3.dec_out[5]
+HEX7[6] <= decoder_7segment_hex:dec_A_3.dec_out[6]
+
+
+|Exp3e|flipflop_d:\GEN_ffd:15:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|flipflop_d:\GEN_ffd:14:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|flipflop_d:\GEN_ffd:13:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|flipflop_d:\GEN_ffd:12:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|flipflop_d:\GEN_ffd:11:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|flipflop_d:\GEN_ffd:10:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|flipflop_d:\GEN_ffd:9:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|flipflop_d:\GEN_ffd:8:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|flipflop_d:\GEN_ffd:7:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|flipflop_d:\GEN_ffd:6:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|flipflop_d:\GEN_ffd:5:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|flipflop_d:\GEN_ffd:4:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|flipflop_d:\GEN_ffd:3:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|flipflop_d:\GEN_ffd:2:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|flipflop_d:\GEN_ffd:1:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|flipflop_d:\GEN_ffd:0:ffd
+D => Qm.DATAIN
+Clk => Qm.CLK
+Rst => Qm.ACLR
+Q <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+Qn <= Qm.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|decoder_7segment_hex:dec_A_3
+dec_in[0] => s1.IN1
+dec_in[0] => s3.IN1
+dec_in[0] => s5.IN1
+dec_in[0] => s7.IN1
+dec_in[0] => s9.IN1
+dec_in[0] => sB.IN1
+dec_in[0] => sD.IN1
+dec_in[0] => sF.IN1
+dec_in[0] => s0.IN1
+dec_in[0] => sC.IN1
+dec_in[0] => s2.IN1
+dec_in[0] => s4.IN1
+dec_in[0] => sA.IN1
+dec_in[0] => sE.IN1
+dec_in[0] => s6.IN1
+dec_in[1] => s2.IN1
+dec_in[1] => s7.IN1
+dec_in[1] => sA.IN1
+dec_in[1] => sF.IN1
+dec_in[1] => s0.IN1
+dec_in[1] => sC.IN1
+dec_in[1] => s4.IN1
+dec_in[1] => s9.IN1
+dec_in[2] => s7.IN0
+dec_in[2] => sC.IN0
+dec_in[2] => s0.IN0
+dec_in[2] => s9.IN0
+dec_in[3] => s9.IN1
+dec_in[3] => sC.IN1
+dec_in[3] => s0.IN1
+dec_in[3] => s7.IN1
+dec_out[0] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[1] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[2] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[3] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[4] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[5] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[6] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|decoder_7segment_hex:dec_A_2
+dec_in[0] => s1.IN1
+dec_in[0] => s3.IN1
+dec_in[0] => s5.IN1
+dec_in[0] => s7.IN1
+dec_in[0] => s9.IN1
+dec_in[0] => sB.IN1
+dec_in[0] => sD.IN1
+dec_in[0] => sF.IN1
+dec_in[0] => s0.IN1
+dec_in[0] => sC.IN1
+dec_in[0] => s2.IN1
+dec_in[0] => s4.IN1
+dec_in[0] => sA.IN1
+dec_in[0] => sE.IN1
+dec_in[0] => s6.IN1
+dec_in[1] => s2.IN1
+dec_in[1] => s7.IN1
+dec_in[1] => sA.IN1
+dec_in[1] => sF.IN1
+dec_in[1] => s0.IN1
+dec_in[1] => sC.IN1
+dec_in[1] => s4.IN1
+dec_in[1] => s9.IN1
+dec_in[2] => s7.IN0
+dec_in[2] => sC.IN0
+dec_in[2] => s0.IN0
+dec_in[2] => s9.IN0
+dec_in[3] => s9.IN1
+dec_in[3] => sC.IN1
+dec_in[3] => s0.IN1
+dec_in[3] => s7.IN1
+dec_out[0] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[1] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[2] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[3] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[4] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[5] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[6] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|decoder_7segment_hex:dec_A_1
+dec_in[0] => s1.IN1
+dec_in[0] => s3.IN1
+dec_in[0] => s5.IN1
+dec_in[0] => s7.IN1
+dec_in[0] => s9.IN1
+dec_in[0] => sB.IN1
+dec_in[0] => sD.IN1
+dec_in[0] => sF.IN1
+dec_in[0] => s0.IN1
+dec_in[0] => sC.IN1
+dec_in[0] => s2.IN1
+dec_in[0] => s4.IN1
+dec_in[0] => sA.IN1
+dec_in[0] => sE.IN1
+dec_in[0] => s6.IN1
+dec_in[1] => s2.IN1
+dec_in[1] => s7.IN1
+dec_in[1] => sA.IN1
+dec_in[1] => sF.IN1
+dec_in[1] => s0.IN1
+dec_in[1] => sC.IN1
+dec_in[1] => s4.IN1
+dec_in[1] => s9.IN1
+dec_in[2] => s7.IN0
+dec_in[2] => sC.IN0
+dec_in[2] => s0.IN0
+dec_in[2] => s9.IN0
+dec_in[3] => s9.IN1
+dec_in[3] => sC.IN1
+dec_in[3] => s0.IN1
+dec_in[3] => s7.IN1
+dec_out[0] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[1] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[2] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[3] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[4] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[5] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[6] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|decoder_7segment_hex:dec_A_0
+dec_in[0] => s1.IN1
+dec_in[0] => s3.IN1
+dec_in[0] => s5.IN1
+dec_in[0] => s7.IN1
+dec_in[0] => s9.IN1
+dec_in[0] => sB.IN1
+dec_in[0] => sD.IN1
+dec_in[0] => sF.IN1
+dec_in[0] => s0.IN1
+dec_in[0] => sC.IN1
+dec_in[0] => s2.IN1
+dec_in[0] => s4.IN1
+dec_in[0] => sA.IN1
+dec_in[0] => sE.IN1
+dec_in[0] => s6.IN1
+dec_in[1] => s2.IN1
+dec_in[1] => s7.IN1
+dec_in[1] => sA.IN1
+dec_in[1] => sF.IN1
+dec_in[1] => s0.IN1
+dec_in[1] => sC.IN1
+dec_in[1] => s4.IN1
+dec_in[1] => s9.IN1
+dec_in[2] => s7.IN0
+dec_in[2] => sC.IN0
+dec_in[2] => s0.IN0
+dec_in[2] => s9.IN0
+dec_in[3] => s9.IN1
+dec_in[3] => sC.IN1
+dec_in[3] => s0.IN1
+dec_in[3] => s7.IN1
+dec_out[0] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[1] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[2] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[3] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[4] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[5] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[6] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|decoder_7segment_hex:dec_B_3
+dec_in[0] => s1.IN1
+dec_in[0] => s3.IN1
+dec_in[0] => s5.IN1
+dec_in[0] => s7.IN1
+dec_in[0] => s9.IN1
+dec_in[0] => sB.IN1
+dec_in[0] => sD.IN1
+dec_in[0] => sF.IN1
+dec_in[0] => s0.IN1
+dec_in[0] => sC.IN1
+dec_in[0] => s2.IN1
+dec_in[0] => s4.IN1
+dec_in[0] => sA.IN1
+dec_in[0] => sE.IN1
+dec_in[0] => s6.IN1
+dec_in[1] => s2.IN1
+dec_in[1] => s7.IN1
+dec_in[1] => sA.IN1
+dec_in[1] => sF.IN1
+dec_in[1] => s0.IN1
+dec_in[1] => sC.IN1
+dec_in[1] => s4.IN1
+dec_in[1] => s9.IN1
+dec_in[2] => s7.IN0
+dec_in[2] => sC.IN0
+dec_in[2] => s0.IN0
+dec_in[2] => s9.IN0
+dec_in[3] => s9.IN1
+dec_in[3] => sC.IN1
+dec_in[3] => s0.IN1
+dec_in[3] => s7.IN1
+dec_out[0] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[1] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[2] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[3] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[4] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[5] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[6] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|decoder_7segment_hex:dec_B_2
+dec_in[0] => s1.IN1
+dec_in[0] => s3.IN1
+dec_in[0] => s5.IN1
+dec_in[0] => s7.IN1
+dec_in[0] => s9.IN1
+dec_in[0] => sB.IN1
+dec_in[0] => sD.IN1
+dec_in[0] => sF.IN1
+dec_in[0] => s0.IN1
+dec_in[0] => sC.IN1
+dec_in[0] => s2.IN1
+dec_in[0] => s4.IN1
+dec_in[0] => sA.IN1
+dec_in[0] => sE.IN1
+dec_in[0] => s6.IN1
+dec_in[1] => s2.IN1
+dec_in[1] => s7.IN1
+dec_in[1] => sA.IN1
+dec_in[1] => sF.IN1
+dec_in[1] => s0.IN1
+dec_in[1] => sC.IN1
+dec_in[1] => s4.IN1
+dec_in[1] => s9.IN1
+dec_in[2] => s7.IN0
+dec_in[2] => sC.IN0
+dec_in[2] => s0.IN0
+dec_in[2] => s9.IN0
+dec_in[3] => s9.IN1
+dec_in[3] => sC.IN1
+dec_in[3] => s0.IN1
+dec_in[3] => s7.IN1
+dec_out[0] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[1] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[2] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[3] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[4] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[5] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[6] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|decoder_7segment_hex:dec_B_1
+dec_in[0] => s1.IN1
+dec_in[0] => s3.IN1
+dec_in[0] => s5.IN1
+dec_in[0] => s7.IN1
+dec_in[0] => s9.IN1
+dec_in[0] => sB.IN1
+dec_in[0] => sD.IN1
+dec_in[0] => sF.IN1
+dec_in[0] => s0.IN1
+dec_in[0] => sC.IN1
+dec_in[0] => s2.IN1
+dec_in[0] => s4.IN1
+dec_in[0] => sA.IN1
+dec_in[0] => sE.IN1
+dec_in[0] => s6.IN1
+dec_in[1] => s2.IN1
+dec_in[1] => s7.IN1
+dec_in[1] => sA.IN1
+dec_in[1] => sF.IN1
+dec_in[1] => s0.IN1
+dec_in[1] => sC.IN1
+dec_in[1] => s4.IN1
+dec_in[1] => s9.IN1
+dec_in[2] => s7.IN0
+dec_in[2] => sC.IN0
+dec_in[2] => s0.IN0
+dec_in[2] => s9.IN0
+dec_in[3] => s9.IN1
+dec_in[3] => sC.IN1
+dec_in[3] => s0.IN1
+dec_in[3] => s7.IN1
+dec_out[0] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[1] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[2] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[3] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[4] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[5] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[6] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Exp3e|decoder_7segment_hex:dec_B_0
+dec_in[0] => s1.IN1
+dec_in[0] => s3.IN1
+dec_in[0] => s5.IN1
+dec_in[0] => s7.IN1
+dec_in[0] => s9.IN1
+dec_in[0] => sB.IN1
+dec_in[0] => sD.IN1
+dec_in[0] => sF.IN1
+dec_in[0] => s0.IN1
+dec_in[0] => sC.IN1
+dec_in[0] => s2.IN1
+dec_in[0] => s4.IN1
+dec_in[0] => sA.IN1
+dec_in[0] => sE.IN1
+dec_in[0] => s6.IN1
+dec_in[1] => s2.IN1
+dec_in[1] => s7.IN1
+dec_in[1] => sA.IN1
+dec_in[1] => sF.IN1
+dec_in[1] => s0.IN1
+dec_in[1] => sC.IN1
+dec_in[1] => s4.IN1
+dec_in[1] => s9.IN1
+dec_in[2] => s7.IN0
+dec_in[2] => sC.IN0
+dec_in[2] => s0.IN0
+dec_in[2] => s9.IN0
+dec_in[3] => s9.IN1
+dec_in[3] => sC.IN1
+dec_in[3] => s0.IN1
+dec_in[3] => s7.IN1
+dec_out[0] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[1] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[2] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[3] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[4] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[5] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[6] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+
+

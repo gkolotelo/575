@@ -1,0 +1,47 @@
+|Exp1d
+hex0[0] << decoder_7segment:dec.dec_out[0]
+hex0[1] << decoder_7segment:dec.dec_out[1]
+hex0[2] << decoder_7segment:dec.dec_out[2]
+hex0[3] << decoder_7segment:dec.dec_out[3]
+hex0[4] << decoder_7segment:dec.dec_out[4]
+hex0[5] << decoder_7segment:dec.dec_out[5]
+hex0[6] << decoder_7segment:dec.dec_out[6]
+sw[0] => decoder_7segment:dec.dec_in[0]
+sw[1] => decoder_7segment:dec.dec_in[1]
+sw[2] => decoder_7segment:dec.dec_in[2]
+sw[3] => ~NO_FANOUT~
+sw[4] => ~NO_FANOUT~
+sw[5] => ~NO_FANOUT~
+sw[6] => ~NO_FANOUT~
+sw[7] => ~NO_FANOUT~
+sw[8] => ~NO_FANOUT~
+sw[9] => ~NO_FANOUT~
+sw[10] => ~NO_FANOUT~
+sw[11] => ~NO_FANOUT~
+sw[12] => ~NO_FANOUT~
+sw[13] => ~NO_FANOUT~
+sw[14] => ~NO_FANOUT~
+sw[15] => ~NO_FANOUT~
+sw[16] => ~NO_FANOUT~
+sw[17] => ~NO_FANOUT~
+
+
+|Exp1d|decoder_7segment:dec
+dec_in[0] => dec_out.IN1
+dec_in[0] => dec_out.IN1
+dec_in[0] => dec_out.IN1
+dec_in[0] => dec_out.IN0
+dec_in[1] => dec_out.IN0
+dec_in[1] => dec_out.IN0
+dec_in[2] => dec_out.IN1
+dec_in[2] => dec_out.IN1
+dec_in[2] => dec_out.IN1
+dec_out[0] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[1] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[2] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[3] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+dec_out[4] <= <GND>
+dec_out[5] <= <GND>
+dec_out[6] <= dec_out.DB_MAX_OUTPUT_PORT_TYPE
+
+
