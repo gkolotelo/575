@@ -23,8 +23,26 @@ architecture Behavior OF Exp7_Part2 is
 	
 	signal W, Z: std_logic;
 	signal clock, reset: std_logic;
+	type state_type is (A, B, C, D, E, F, G, H, I);
+	signal y_Q, y_D: state_type; -- y Q is present state, y D is next state
 
 begin
+
+	process (W, y_Q)
+	begin
+		case y_Q is
+			when A if (W = ’0’) then y_D <= B;
+		else y_D <= F;
+		end if;
+		--. . . outro estados
+		end case;
+	end process; -- tabela de estados
+
+	process (clock)
+	begin
+	--. . .
+	end process;
+
 
 	clock <= not(KEY(1));
 	reset <= not(KEY(0));
