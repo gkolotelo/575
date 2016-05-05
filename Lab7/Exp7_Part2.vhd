@@ -19,39 +19,96 @@ entity Exp7_Part2 is
 		  );
 end Exp7_Part2;
 
-architecture Behavior OF Exp7_Part2 is	
+architecture behavior OF Exp7_Part2 is	
 	
 	signal W, Z: std_logic;
 	signal clock, reset: std_logic;
 	type state_type is (A, B, C, D, E, F, G, H, I);
-	signal y_Q, y_D: state_type; -- y Q is present state, y D is next state
+	signal y_Q, y_D: state_type; -- y_Q is present state, y_D is next state
 
 begin
+
+	clock <= not(KEY(1));
+	reset <= not(KEY(0));
+	W <= SW(0);
+
+	if (reset = '1') then y_Q <= A;
+	end if;
 
 	process (W, y_Q)
 	begin
 		case y_Q is
-			when A if (W = ’0’) then y_D <= B;
-		else y_D <= F;
-		end if;
-		--. . . outro estados
+			when A
+				if (W = ’0’) then y_D <= B;
+				else y_D <= F;
+				end if;
+			when B
+				if (W = ’0’) then y_D <= C;
+				else y_D <= F;
+				end if;
+			when C
+				if (W = ’0’) then y_D <= D;
+				else y_D <= F;
+				end if;
+			when D
+				if (W = ’0’) then y_D <= E;
+				else y_D <= F;
+				end if;
+			when E
+				if (W = ’0’) then y_D <= E;
+				else y_D <= F;
+				end if;
+			when F
+				if (W = ’0’) then y_D <= B;
+				else y_D <= G;
+				end if;
+			when G
+				if (W = ’0’) then y_D <= B;
+				else y_D <= H;
+				end if;
+			when H
+				if (W = ’0’) then y_D <= B;
+				else y_D <= I;
+				end if;
+			when I
+				if (W = ’0’) then y_D <= B;
+				else y_D <= I;
+				end if;
 		end case;
 	end process; -- tabela de estados
 
 	process (clock)
 	begin
-	--. . .
+		if (clock = '1' and clock'event) then
+			y_Q <= y_D;
+			if ((y_Q = E) OR (y_Q = I)) then
+				Z <= '1';
+			end if;
+			LEDG(7 downto 0) <= (7 downto 0 => Z);
+			case y_Q is
+				when A
+					LEDR(others => '0');
+				when B
+					LEDR(1 => '1', 0 => '1', others => '0');
+				when C
+					LEDR(2 => '1', 0 => '1', others => '0');
+				when D
+					LEDR(3 => '1', 0 => '1', others => '0');
+				when E
+					LEDR(4 => '1', 0 => '1', others => '0');
+				when F
+					LEDR(5 => '1', 0 => '1', others => '0');
+				when G
+					LEDR(6 => '1', 0 => '1', others => '0');
+				when H
+					LEDR(7 => '1', 0 => '1', others => '0');
+				when I
+					LEDR(8 => '1', 0 => '1', others => '0');
+			end case;
+		end if;
 	end process;
 
 
-	clock <= not(KEY(1));
-	reset <= not(KEY(0));
-	W <= SW(0);
 	
 	
-	
-	Z <= Qe OR Qi;
-	--LEDR(8 downto 0) <= Qi & Qh & Qg & Qf & Qe & Qd & Qc & Qb & Qa;
-	LEDG(7 downto 0) <= (7 downto 0 => Z);
-	
-end Behavior;
+end behavior;
