@@ -56,7 +56,6 @@ architecture behavior OF Exp8_Part1 is
 
     signal clk_sec: std_logic;
     signal car_waiting: std_logic;
-    signal car_waiting: std_logic;
     signal reset, reset_n: std_logic;
     type traffic_status is (R, G, Y);
     signal TL1, TL2: traffic_status;
@@ -74,16 +73,22 @@ begin
         generic map(duration => 1)
         port map(clk_sec, reset_yellow, completed_yellow);
 
-    process(TL1)
+    process(TL1, TL2)
     begin
-        case(TL1) is
-            when R
+    	if (reset = '1') then
+    		TL1 <= G;
+    		TL2 <= R;
+    	end if;
+    	if (clock = '1' and clock'event) then
+	    	case(TL1) is
+	            when R
 
-            when G
+	            when G
 
-            when Y
-                
-        end case;
+	            when Y
+	                
+	        end case;
+    	end if;
 
     end process;
 
