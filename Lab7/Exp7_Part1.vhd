@@ -42,6 +42,7 @@ begin
 	C: flipflop_d port map (D=> (Qb AND NOT(W)), Clk=>clock, Rst=>reset, Q=>Qc);
 	D: flipflop_d port map (D=> (Qc AND NOT(W)), Clk=>clock, Rst=>reset, Q=>Qd);
 	E: flipflop_d port map (D=> ((Qd OR Qe) AND NOT(W)), Clk=>clock, Rst=>reset, Q=>Qe);
+	-- try: E: flipflop_d port map (D=> (Qd AND NOT(W)), Clk=>clock, Rst=>reset, Q=>Qe);
 	F: flipflop_d port map (D=> ((NOT(Qa) OR Qb OR Qc OR Qd OR Qe) AND W), Clk=>clock, Rst=>reset, Q=>Qf);
 	G: flipflop_d port map (D=> (Qf AND W), Clk=>clock, Rst=>reset, Q=>Qg);
 	H: flipflop_d port map (D=> (Qg AND W), Clk=>clock, Rst=>reset, Q=>Qh);
