@@ -1,5 +1,5 @@
 Flow report for Lab7
-Fri Apr 29 20:55:39 2016
+Fri May 06 15:21:10 2016
 Quartus II 64-Bit Version 13.1.4 Build 182 03/12/2014 SJ Web Edition
 
 
@@ -40,17 +40,17 @@ applicable agreement for further details.
 +---------------------------------------------------------------------------------+
 ; Flow Summary                                                                    ;
 +------------------------------------+--------------------------------------------+
-; Flow Status                        ; Successful - Fri Apr 29 20:55:39 2016      ;
+; Flow Status                        ; Successful - Fri May 06 15:21:10 2016      ;
 ; Quartus II 64-Bit Version          ; 13.1.4 Build 182 03/12/2014 SJ Web Edition ;
 ; Revision Name                      ; Lab7                                       ;
-; Top-level Entity Name              ; Exp7_Part1                                 ;
+; Top-level Entity Name              ; Exp7_Part2                                 ;
 ; Family                             ; Cyclone IV GX                              ;
 ; Device                             ; EP4CGX150DF31C7                            ;
 ; Timing Models                      ; Final                                      ;
-; Total logic elements               ; 12 / 149,760 ( < 1 % )                     ;
-;     Total combinational functions  ; 12 / 149,760 ( < 1 % )                     ;
-;     Dedicated logic registers      ; 9 / 149,760 ( < 1 % )                      ;
-; Total registers                    ; 9                                          ;
+; Total logic elements               ; 30 / 149,760 ( < 1 % )                     ;
+;     Total combinational functions  ; 11 / 149,760 ( < 1 % )                     ;
+;     Dedicated logic registers      ; 25 / 149,760 ( < 1 % )                     ;
+; Total registers                    ; 25                                         ;
 ; Total pins                         ; 37 / 508 ( 7 % )                           ;
 ; Total virtual pins                 ; 0                                          ;
 ; Total memory bits                  ; 0 / 6,635,520 ( 0 % )                      ;
@@ -68,7 +68,7 @@ applicable agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 04/29/2016 20:54:39 ;
+; Start date & time ; 05/06/2016 15:20:10 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; Lab7                ;
 +-------------------+---------------------+
@@ -79,7 +79,7 @@ applicable agreement for further details.
 +-------------------------------------+---------------------------------+---------------+-------------+----------------+
 ; Assignment Name                     ; Value                           ; Default Value ; Entity Name ; Section Id     ;
 +-------------------------------------+---------------------------------+---------------+-------------+----------------+
-; COMPILER_SIGNATURE_ID               ; 273440552298678.146197407904528 ; --            ; --          ; --             ;
+; COMPILER_SIGNATURE_ID               ; 273440552298615.146255881001824 ; --            ; --          ; --             ;
 ; EDA_OUTPUT_DATA_FORMAT              ; Vhdl                            ; --            ; --          ; eda_simulation ;
 ; EDA_SIMULATION_TOOL                 ; ModelSim-Altera (VHDL)          ; <None>        ; --          ; --             ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                              ; --            ; --          ; --             ;
@@ -88,11 +88,11 @@ applicable agreement for further details.
 ; OUTPUT_IO_TIMING_FAR_END_VMEAS      ; Half Signal Swing               ; --            ; --          ; --             ;
 ; OUTPUT_IO_TIMING_NEAR_END_VMEAS     ; Half Vccio                      ; --            ; --          ; --             ;
 ; OUTPUT_IO_TIMING_NEAR_END_VMEAS     ; Half Vccio                      ; --            ; --          ; --             ;
-; PARTITION_COLOR                     ; 16764057                        ; --            ; Exp7_Part1  ; Top            ;
-; PARTITION_FITTER_PRESERVATION_LEVEL ; PLACEMENT_AND_ROUTING           ; --            ; Exp7_Part1  ; Top            ;
-; PARTITION_NETLIST_TYPE              ; SOURCE                          ; --            ; Exp7_Part1  ; Top            ;
+; PARTITION_COLOR                     ; 16764057                        ; --            ; Exp7_Part2  ; Top            ;
+; PARTITION_FITTER_PRESERVATION_LEVEL ; PLACEMENT_AND_ROUTING           ; --            ; Exp7_Part2  ; Top            ;
+; PARTITION_NETLIST_TYPE              ; SOURCE                          ; --            ; Exp7_Part2  ; Top            ;
 ; PROJECT_OUTPUT_DIRECTORY            ; output_files                    ; --            ; --          ; --             ;
-; TOP_LEVEL_ENTITY                    ; Exp7_Part1                      ; Lab7          ; --          ; --             ;
+; TOP_LEVEL_ENTITY                    ; Exp7_Part2                      ; Lab7          ; --          ; --             ;
 +-------------------------------------+---------------------------------+---------------+-------------+----------------+
 
 
@@ -101,12 +101,12 @@ applicable agreement for further details.
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name               ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis      ; 00:00:02     ; 1.0                     ; 566 MB              ; 00:00:01                           ;
-; Fitter                    ; 00:00:21     ; 1.0                     ; 1032 MB             ; 00:00:18                           ;
-; Assembler                 ; 00:00:12     ; 1.0                     ; 526 MB              ; 00:00:06                           ;
-; TimeQuest Timing Analyzer ; 00:00:08     ; 1.0                     ; 566 MB              ; 00:00:03                           ;
-; EDA Netlist Writer        ; 00:00:02     ; 1.0                     ; 469 MB              ; 00:00:01                           ;
-; Total                     ; 00:00:45     ; --                      ; --                  ; 00:00:29                           ;
+; Analysis & Synthesis      ; 00:00:03     ; 1.0                     ; 566 MB              ; 00:00:01                           ;
+; Fitter                    ; 00:00:23     ; 1.0                     ; 1037 MB             ; 00:00:19                           ;
+; Assembler                 ; 00:00:13     ; 1.0                     ; 526 MB              ; 00:00:06                           ;
+; TimeQuest Timing Analyzer ; 00:00:07     ; 1.0                     ; 574 MB              ; 00:00:03                           ;
+; EDA Netlist Writer        ; 00:00:03     ; 1.0                     ; 469 MB              ; 00:00:01                           ;
+; Total                     ; 00:00:49     ; --                      ; --                  ; 00:00:30                           ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
@@ -115,11 +115,11 @@ applicable agreement for further details.
 +---------------------------+------------------+-----------+------------+----------------+
 ; Module Name               ; Machine Hostname ; OS Name   ; OS Version ; Processor type ;
 +---------------------------+------------------+-----------+------------+----------------+
-; Analysis & Synthesis      ; LS04-N206-Bnc08  ; Windows 7 ; 6.2        ; x86_64         ;
-; Fitter                    ; LS04-N206-Bnc08  ; Windows 7 ; 6.2        ; x86_64         ;
-; Assembler                 ; LS04-N206-Bnc08  ; Windows 7 ; 6.2        ; x86_64         ;
-; TimeQuest Timing Analyzer ; LS04-N206-Bnc08  ; Windows 7 ; 6.2        ; x86_64         ;
-; EDA Netlist Writer        ; LS04-N206-Bnc08  ; Windows 7 ; 6.2        ; x86_64         ;
+; Analysis & Synthesis      ; LS04-N206-Bnc02  ; Windows 7 ; 6.2        ; x86_64         ;
+; Fitter                    ; LS04-N206-Bnc02  ; Windows 7 ; 6.2        ; x86_64         ;
+; Assembler                 ; LS04-N206-Bnc02  ; Windows 7 ; 6.2        ; x86_64         ;
+; TimeQuest Timing Analyzer ; LS04-N206-Bnc02  ; Windows 7 ; 6.2        ; x86_64         ;
+; EDA Netlist Writer        ; LS04-N206-Bnc02  ; Windows 7 ; 6.2        ; x86_64         ;
 +---------------------------+------------------+-----------+------------+----------------+
 
 

@@ -1,5 +1,5 @@
 Analysis & Synthesis report for Lab7
-Fri Apr 29 20:54:42 2016
+Fri May 06 15:20:13 2016
 Quartus II 64-Bit Version 13.1.4 Build 182 03/12/2014 SJ Web Edition
 
 
@@ -13,18 +13,11 @@ Quartus II 64-Bit Version 13.1.4 Build 182 03/12/2014 SJ Web Edition
   5. Analysis & Synthesis Source Files Read
   6. Analysis & Synthesis Resource Usage Summary
   7. Analysis & Synthesis Resource Utilization by Entity
-  8. General Register Statistics
-  9. Port Connectivity Checks: "flipflop_d:I"
- 10. Port Connectivity Checks: "flipflop_d:H"
- 11. Port Connectivity Checks: "flipflop_d:G"
- 12. Port Connectivity Checks: "flipflop_d:F"
- 13. Port Connectivity Checks: "flipflop_d:E"
- 14. Port Connectivity Checks: "flipflop_d:D"
- 15. Port Connectivity Checks: "flipflop_d:C"
- 16. Port Connectivity Checks: "flipflop_d:B"
- 17. Port Connectivity Checks: "flipflop_d:A"
- 18. Elapsed Time Per Partition
- 19. Analysis & Synthesis Messages
+  8. State Machine - |Exp7_Part2|y_Q
+  9. Registers Removed During Synthesis
+ 10. General Register Statistics
+ 11. Elapsed Time Per Partition
+ 12. Analysis & Synthesis Messages
 
 
 
@@ -50,15 +43,15 @@ applicable agreement for further details.
 +---------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                    ;
 +------------------------------------+--------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Fri Apr 29 20:54:42 2016      ;
+; Analysis & Synthesis Status        ; Successful - Fri May 06 15:20:13 2016      ;
 ; Quartus II 64-Bit Version          ; 13.1.4 Build 182 03/12/2014 SJ Web Edition ;
 ; Revision Name                      ; Lab7                                       ;
-; Top-level Entity Name              ; Exp7_Part1                                 ;
+; Top-level Entity Name              ; Exp7_Part2                                 ;
 ; Family                             ; Cyclone IV GX                              ;
-; Total logic elements               ; 12                                         ;
+; Total logic elements               ; 27                                         ;
 ;     Total combinational functions  ; 11                                         ;
-;     Dedicated logic registers      ; 9                                          ;
-; Total registers                    ; 9                                          ;
+;     Dedicated logic registers      ; 25                                         ;
+; Total registers                    ; 25                                         ;
 ; Total pins                         ; 37                                         ;
 ; Total virtual pins                 ; 0                                          ;
 ; Total memory bits                  ; 0                                          ;
@@ -77,7 +70,7 @@ applicable agreement for further details.
 ; Option                                                                     ; Setting            ; Default Value      ;
 +----------------------------------------------------------------------------+--------------------+--------------------+
 ; Device                                                                     ; EP4CGX150DF31C7    ;                    ;
-; Top-level entity name                                                      ; Exp7_Part1         ; Lab7               ;
+; Top-level entity name                                                      ; Exp7_Part2         ; Lab7               ;
 ; Family name                                                                ; Cyclone IV GX      ; Cyclone IV GX      ;
 ; Use smart compilation                                                      ; Off                ; Off                ;
 ; Enable parallel Assembler and TimeQuest Timing Analyzer during compilation ; On                 ; On                 ;
@@ -174,8 +167,7 @@ Parallel compilation was disabled, but you have multiple processors available. E
 +----------------------------------+-----------------+-----------------+-------------------------------+---------+
 ; File Name with User-Entered Path ; Used in Netlist ; File Type       ; File Name with Absolute Path  ; Library ;
 +----------------------------------+-----------------+-----------------+-------------------------------+---------+
-; flipflop_d.vhd                   ; yes             ; User VHDL File  ; G:/ES575A/Lab7/flipflop_d.vhd ;         ;
-; Exp7_Part1.vhd                   ; yes             ; User VHDL File  ; G:/ES575A/Lab7/Exp7_Part1.vhd ;         ;
+; Exp7_Part2.vhd                   ; yes             ; User VHDL File  ; F:/ES575A/Lab7/Exp7_Part2.vhd ;         ;
 +----------------------------------+-----------------+-----------------+-------------------------------+---------+
 
 
@@ -187,29 +179,49 @@ Parallel compilation was disabled, but you have multiple processors available. E
 ; I/O pins                 ; 37               ;
 ; DSP block 9-bit elements ; 0                ;
 ; Maximum fan-out node     ; KEY[1]~input     ;
-; Maximum fan-out          ; 9                ;
-; Total fan-out            ; 110              ;
-; Average fan-out          ; 1.17             ;
+; Maximum fan-out          ; 25               ;
+; Total fan-out            ; 158              ;
+; Average fan-out          ; 1.44             ;
 +--------------------------+------------------+
 
 
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                          ;
-+----------------------------+-------------------+--------------+-------------+--------------+---------+-----------+-----------+------+--------------+--------------------------+--------------+
-; Compilation Hierarchy Node ; LC Combinationals ; LC Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; DSP 36x36 ; Pins ; Virtual Pins ; Full Hierarchy Name      ; Library Name ;
-+----------------------------+-------------------+--------------+-------------+--------------+---------+-----------+-----------+------+--------------+--------------------------+--------------+
-; |Exp7_Part1                ; 11 (11)           ; 9 (0)        ; 0           ; 0            ; 0       ; 0         ; 0         ; 37   ; 0            ; |Exp7_Part1              ; work         ;
-;    |flipflop_d:A|          ; 0 (0)             ; 1 (1)        ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp7_Part1|flipflop_d:A ; work         ;
-;    |flipflop_d:B|          ; 0 (0)             ; 1 (1)        ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp7_Part1|flipflop_d:B ; work         ;
-;    |flipflop_d:C|          ; 0 (0)             ; 1 (1)        ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp7_Part1|flipflop_d:C ; work         ;
-;    |flipflop_d:D|          ; 0 (0)             ; 1 (1)        ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp7_Part1|flipflop_d:D ; work         ;
-;    |flipflop_d:E|          ; 0 (0)             ; 1 (1)        ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp7_Part1|flipflop_d:E ; work         ;
-;    |flipflop_d:F|          ; 0 (0)             ; 1 (1)        ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp7_Part1|flipflop_d:F ; work         ;
-;    |flipflop_d:G|          ; 0 (0)             ; 1 (1)        ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp7_Part1|flipflop_d:G ; work         ;
-;    |flipflop_d:H|          ; 0 (0)             ; 1 (1)        ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp7_Part1|flipflop_d:H ; work         ;
-;    |flipflop_d:I|          ; 0 (0)             ; 1 (1)        ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp7_Part1|flipflop_d:I ; work         ;
-+----------------------------+-------------------+--------------+-------------+--------------+---------+-----------+-----------+------+--------------+--------------------------+--------------+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                     ;
++----------------------------+-------------------+--------------+-------------+--------------+---------+-----------+-----------+------+--------------+---------------------+--------------+
+; Compilation Hierarchy Node ; LC Combinationals ; LC Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; DSP 36x36 ; Pins ; Virtual Pins ; Full Hierarchy Name ; Library Name ;
++----------------------------+-------------------+--------------+-------------+--------------+---------+-----------+-----------+------+--------------+---------------------+--------------+
+; |Exp7_Part2                ; 11 (11)           ; 25 (25)      ; 0           ; 0            ; 0       ; 0         ; 0         ; 37   ; 0            ; |Exp7_Part2         ; work         ;
++----------------------------+-------------------+--------------+-------------+--------------+---------+-----------+-----------+------+--------------+---------------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
+Encoding Type:  One-Hot
++-------------------------------------------------------------------------------+
+; State Machine - |Exp7_Part2|y_Q                                               ;
++-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+; Name  ; y_Q.I ; y_Q.H ; y_Q.G ; y_Q.F ; y_Q.E ; y_Q.D ; y_Q.C ; y_Q.B ; y_Q.A ;
++-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+; y_Q.A ; 0     ; 0     ; 0     ; 0     ; 0     ; 0     ; 0     ; 0     ; 0     ;
+; y_Q.B ; 0     ; 0     ; 0     ; 0     ; 0     ; 0     ; 0     ; 1     ; 1     ;
+; y_Q.C ; 0     ; 0     ; 0     ; 0     ; 0     ; 0     ; 1     ; 0     ; 1     ;
+; y_Q.D ; 0     ; 0     ; 0     ; 0     ; 0     ; 1     ; 0     ; 0     ; 1     ;
+; y_Q.E ; 0     ; 0     ; 0     ; 0     ; 1     ; 0     ; 0     ; 0     ; 1     ;
+; y_Q.F ; 0     ; 0     ; 0     ; 1     ; 0     ; 0     ; 0     ; 0     ; 1     ;
+; y_Q.G ; 0     ; 0     ; 1     ; 0     ; 0     ; 0     ; 0     ; 0     ; 1     ;
+; y_Q.H ; 0     ; 1     ; 0     ; 0     ; 0     ; 0     ; 0     ; 0     ; 1     ;
+; y_Q.I ; 1     ; 0     ; 0     ; 0     ; 0     ; 0     ; 0     ; 0     ; 1     ;
++-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+
+
++--------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                             ;
++---------------------------------------+----------------------------------------+
+; Register name                         ; Reason for Removal                     ;
++---------------------------------------+----------------------------------------+
+; LEDR[0]~reg0                          ; Stuck at VCC due to stuck port data_in ;
+; y_Q.A                                 ; Lost fanout                            ;
+; Total Number of Removed Registers = 2 ;                                        ;
++---------------------------------------+----------------------------------------+
 
 
 +------------------------------------------------------+
@@ -217,96 +229,14 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 9     ;
+; Total registers                              ; 25    ;
 ; Number of registers using Synchronous Clear  ; 0     ;
 ; Number of registers using Synchronous Load   ; 0     ;
-; Number of registers using Asynchronous Clear ; 9     ;
+; Number of registers using Asynchronous Clear ; 8     ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 0     ;
+; Number of registers using Clock Enable       ; 17    ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
-
-
-+----------------------------------------------------------------------------------------------------------------+
-; Port Connectivity Checks: "flipflop_d:I"                                                                       ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; Port ; Type   ; Severity ; Details                                                                             ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; qn   ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-
-
-+----------------------------------------------------------------------------------------------------------------+
-; Port Connectivity Checks: "flipflop_d:H"                                                                       ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; Port ; Type   ; Severity ; Details                                                                             ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; qn   ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-
-
-+----------------------------------------------------------------------------------------------------------------+
-; Port Connectivity Checks: "flipflop_d:G"                                                                       ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; Port ; Type   ; Severity ; Details                                                                             ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; qn   ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-
-
-+----------------------------------------------------------------------------------------------------------------+
-; Port Connectivity Checks: "flipflop_d:F"                                                                       ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; Port ; Type   ; Severity ; Details                                                                             ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; qn   ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-
-
-+----------------------------------------------------------------------------------------------------------------+
-; Port Connectivity Checks: "flipflop_d:E"                                                                       ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; Port ; Type   ; Severity ; Details                                                                             ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; qn   ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-
-
-+----------------------------------------------------------------------------------------------------------------+
-; Port Connectivity Checks: "flipflop_d:D"                                                                       ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; Port ; Type   ; Severity ; Details                                                                             ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; qn   ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-
-
-+----------------------------------------------------------------------------------------------------------------+
-; Port Connectivity Checks: "flipflop_d:C"                                                                       ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; Port ; Type   ; Severity ; Details                                                                             ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; qn   ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-
-
-+----------------------------------------------------------------------------------------------------------------+
-; Port Connectivity Checks: "flipflop_d:B"                                                                       ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; Port ; Type   ; Severity ; Details                                                                             ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; qn   ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-
-
-+----------------------------------------------------------------------------------------------------------------+
-; Port Connectivity Checks: "flipflop_d:A"                                                                       ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; Port ; Type   ; Severity ; Details                                                                             ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
-; d    ; Input  ; Info     ; Stuck at VCC                                                                        ;
-; qn   ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
-+------+--------+----------+-------------------------------------------------------------------------------------+
 
 
 +-------------------------------+
@@ -324,18 +254,23 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 Info: *******************************************************************
 Info: Running Quartus II 64-Bit Analysis & Synthesis
     Info: Version 13.1.4 Build 182 03/12/2014 SJ Web Edition
-    Info: Processing started: Fri Apr 29 20:54:39 2016
+    Info: Processing started: Fri May 06 15:20:09 2016
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off Lab7 -c Lab7
 Warning (20028): Parallel compilation is not licensed and has been disabled
+Info (12021): Found 2 design units, including 1 entities, in source file exp7_part2.vhd
+    Info (12022): Found design unit 1: Exp7_Part2-behavior
+    Info (12023): Found entity 1: Exp7_Part2
 Info (12021): Found 2 design units, including 1 entities, in source file flipflop_d.vhd
     Info (12022): Found design unit 1: flipflop_d-Behavior
     Info (12023): Found entity 1: flipflop_d
 Info (12021): Found 2 design units, including 1 entities, in source file exp7_part1.vhd
     Info (12022): Found design unit 1: Exp7_Part1-Behavior
     Info (12023): Found entity 1: Exp7_Part1
-Info (12127): Elaborating entity "Exp7_Part1" for the top level hierarchy
-Info (12128): Elaborating entity "flipflop_d" for hierarchy "flipflop_d:A"
+Info (12127): Elaborating entity "Exp7_Part2" for the top level hierarchy
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "LEDR[0]" is stuck at VCC
 Info (286030): Timing-Driven Synthesis is running
+Info (17049): 1 registers lost all their fanouts during netlist optimizations.
 Warning (20013): Ignored assignments for entity "de2i150" -- entity does not exist in design
     Warning (20014): Assignment for entity set_instance_assignment -name VIRTUAL_PIN ON -to FS_ADDR[0] -entity de2i150 was ignored
     Warning (20014): Assignment for entity set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to CLOCK2_50 -entity de2i150 was ignored
@@ -704,14 +639,14 @@ Warning (21074): Design contains 17 input pin(s) that do not drive logic
     Warning (15610): No output dependent on input pin "SW[15]"
     Warning (15610): No output dependent on input pin "SW[16]"
     Warning (15610): No output dependent on input pin "SW[17]"
-Info (21057): Implemented 49 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 72 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 20 input pins
     Info (21059): Implemented 17 output pins
-    Info (21061): Implemented 12 logic cells
-Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 367 warnings
+    Info (21061): Implemented 35 logic cells
+Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 369 warnings
     Info: Peak virtual memory: 566 megabytes
-    Info: Processing ended: Fri Apr 29 20:54:42 2016
-    Info: Elapsed time: 00:00:03
+    Info: Processing ended: Fri May 06 15:20:14 2016
+    Info: Elapsed time: 00:00:05
     Info: Total CPU time (on all processors): 00:00:02
 
 
