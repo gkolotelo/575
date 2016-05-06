@@ -89,13 +89,17 @@ begin
     	case(t_status) is
     		when E0
     			-- Main: G; Collector: R
+    			LEDR(5 downto 0) <= (0&0&1 & 1&1&1);
     		when E1
     			-- Main: Y; Collector: R
+    			LEDR(5 downto 0) <= (0&1&1 & 1&1&1);
     		when E2
     			-- Main: R; Collector: G
+    			LEDR(5 downto 0) <= (1&1&1 & 0&0&1);
     		when E3
     			-- Main: R; Collector: Y
-    	end case ;
+    			LEDR(5 downto 0) <= (1&1&1 & 0&1&1);
+    	end case;
     end process;
 
 end behavior;
