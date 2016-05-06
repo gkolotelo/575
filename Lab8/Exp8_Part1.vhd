@@ -57,8 +57,8 @@ architecture behavior OF Exp8_Part1 is
     signal clk_sec: std_logic;
     signal car_waiting: std_logic;
     signal reset, reset_n: std_logic;
-    type traffic_status is (R, G, Y);
-    signal TL1, TL2: traffic_status;
+    type traffic_state is (E0, E1, E2, E3);
+    signal t_status: traffic_state;
     signal reset_yellow, completed_yellow: std_logic;
 
 begin
