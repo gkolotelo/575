@@ -73,13 +73,43 @@ begin
         generic map(duration => 1)
         port map(clk_sec, reset_yellow, completed_yellow);
 
+    timer_open: timer
+        generic map(duration => 1)
+        port map(clk_sec, reset_open, completed_open);
+
+
     process(t_status)
     begin
     	if (reset = '1') then
     		t_status <= E0;
     	end if;
     	if (clock = '1' and clock'event) then
-	    	
+	    	case(t_status) is
+                when E0
+                    reset_open <= '0';
+                    if(car_waiting = '1' and completed_open = '1') then
+                        t_status <= E1;
+                        reset_open <= '1';
+                    end if;
+                when E1
+                    reset_yellow <= '0';
+                    if(completed_yellow) then 
+                        t_status <= E2;
+                        reset_yellow <= '1';
+                    end if;
+                when E2
+                    reset_open <= '0';
+                    if(car_waiting = '0' or completed_open = '1') then
+                        t_status <= E3;
+                        reset_open <= '1';
+                    end if;
+                when E3
+                    reset_yellow <= '0';
+                    if(completed_yellow) then 
+                        t_status <= E0;
+                        reset_yellow <= '1';
+                    end if;
+            end case;
     	end if;
 
     end process;
