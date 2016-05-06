@@ -65,6 +65,8 @@ begin
 
     reset <= not(KEY(0));
     reset_n <= KEY(0);
+    car_waiting <= SW(8);
+
     seconds_counter: counter_k_init
         generic map(n => 32)
         port map(k => 50000000, clock => CLOCK_50, reset_n => reset_n, Q => s_base, init => 0, complete => clk_sec);
