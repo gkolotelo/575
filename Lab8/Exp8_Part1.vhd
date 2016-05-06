@@ -76,13 +76,26 @@ begin
     process(t_status)
     begin
     	if (reset = '1') then
-    		TL1 <= G;
-    		TL2 <= R;
+    		t_status <= E0;
     	end if;
     	if (clock = '1' and clock'event) then
 	    	
     	end if;
 
+    end process;
+
+    process(t_status)
+    begin
+    	case(t_status) is
+    		when E0
+    			-- Main: G; Collector: R
+    		when E1
+    			-- Main: Y; Collector: R
+    		when E2
+    			-- Main: R; Collector: G
+    		when E3
+    			-- Main: R; Collector: Y
+    	end case ;
     end process;
 
 end behavior;
