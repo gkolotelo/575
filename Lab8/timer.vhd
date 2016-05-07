@@ -29,12 +29,12 @@ begin
 	begin
 		if(reset = '1') then
 			completed <= '0';
-			count := 0;
+			count := 1;
 
 		elsif(rising_edge(clock)) then
 			if(count = duration) then
 				completed <= '1';
-			elsif
+			else
 				count := count + 1;
 			end if;
 			

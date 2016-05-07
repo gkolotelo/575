@@ -1,0 +1,7 @@
+
+State Machine - |Exp8_Part1|t_status
+Name t_status.E3 t_status.E2 t_status.E1 t_status.E0 
+t_status.E0 0 0 0 0 
+t_status.E1 0 0 1 1 
+t_status.E2 0 1 0 1 
+t_status.E3 1 0 0 1 

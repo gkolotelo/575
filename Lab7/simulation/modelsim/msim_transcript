@@ -1,0 +1,92 @@
+# Reading C:/altera/13.1/modelsim_ase/tcl/vsim/pref.tcl 
+# do Lab7_run_msim_rtl_vhdl.do 
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Copying C:\altera\13.1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# ** Warning: Copied C:\altera\13.1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini.
+#          Updated modelsim.ini.
+# 
+# vcom -93 -work work {F:/ES575A/Lab7/Exp7_Part2.vhd}
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity Exp7_Part2
+# -- Compiling architecture behavior of Exp7_Part2
+# 
+vsim work.exp7_part2
+# vsim work.exp7_part2 
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.exp7_part2(behavior)
+force -freeze sim:/exp7_part2/SW(0) 0 0
+noforce sim:/exp7_part2/SW(0)
+force -freeze sim:/exp7_part2/SW(0) 1 0, 0 {800 ps} -r 1000
+force -freeze sim:/exp7_part2/clock 1 0, 0 {50 ps} -r 100
+vsim work.exp7_part2
+# vsim work.exp7_part2 
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.exp7_part2(behavior)
+add wave -position end  sim:/exp7_part2/clock
+add wave -position end  sim:/exp7_part2/y_Q
+add wave -position end  sim:/exp7_part2/y_D
+add wave -position end  sim:/exp7_part2/KEY(1)
+add wave -position end  sim:/exp7_part2/KEY(0)
+restart -f
+vsim work.exp7_part2
+# vsim work.exp7_part2 
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.exp7_part2(behavior)
+add wave -position end  sim:/exp7_part2/reset
+force -freeze sim:/exp7_part2/reset 1 0 -cancel 10
+run
+run
+restart -f
+force -freeze sim:/exp7_part2/reset 1 0 -cancel 10
+add wave -position end  sim:/exp7_part2/KEY(1)
+add wave -position end  sim:/exp7_part2/clock
+force -freeze sim:/exp7_part2/clock 1 0, 0 {50 ps} -r 100
+add wave -position end  sim:/exp7_part2/SW(0)
+force -freeze sim:/exp7_part2/SW(0) 1 0, 0 {800 ps} -r 1000
+run -all
+# Break key hit 
+# Simulation stop requested.
+add wave -position end  sim:/exp7_part2/y_Q
+add wave -position end  sim:/exp7_part2/y_D
+restart -f
+run
+restart -f
+force -freeze sim:/exp7_part2/reset 1 0 -cancel 10
+force -freeze sim:/exp7_part2/clock 1 0, 0 {50 ps} -r 100
+force -freeze sim:/exp7_part2/SW(0) 1 0, 0 {800 ps} -r 1000
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run

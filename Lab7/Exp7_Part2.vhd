@@ -31,8 +31,14 @@ begin
 	clock <= not(KEY(1));
 	reset <= not(KEY(0));
 	W <= SW(0);
-	
-	
+	process (clock, reset)
+	begin
+		if (reset = '1') then
+			y_Q <= A;
+		elsif (clock = '1' and clock'event) then
+			y_Q <= y_D;
+		end if;
+	end process;
 
 	process (W, y_Q)
 	begin
@@ -58,56 +64,52 @@ begin
 				else y_D <= F;
 				end if;
 			when F =>
-				if (W = '0') then y_D <= B;
-				else y_D <= G;
+				if (W = '1') then y_D <= G;
+				else y_D <= B;
 				end if;
 			when G =>
-				if (W = '0') then y_D <= B;
-				else y_D <= H;
+				if (W = '1') then y_D <= H;
+				else y_D <= B;
 				end if;
 			when H =>
-				if (W = '0') then y_D <= B;
-				else y_D <= I;
+				if (W = '1') then y_D <= I;
+				else y_D <= B;
 				end if;
 			when I =>
-				if (W = '0') then y_D <= B;
-				else y_D <= I;
+				if (W = '1') then y_D <= I;
+				else y_D <= B;
 				end if;
 		end case;
 	end process; -- tabela de estados
 	
-	process (clock, reset, y_D)
-	begin
-		if (reset = '1') then y_Q <= A;
-		elsif (clock = '1' and clock'event) then
-			y_Q <= y_D;
-			if ((y_D = E) OR (y_D = I)) then
-				Z <= '1';
-			else
-				Z <= '0';
-			end if;
-			LEDG(7 downto 0) <= (7 downto 0 => Z);
-			case y_D is
-				when A =>
-					LEDR(8 downto 0) <= (others => '0');
-				when B =>
-					LEDR(8 downto 0) <= (1 => '1', 0 => '1', others => '0');
-				when C =>
-					LEDR(8 downto 0) <= (2 => '1', 0 => '1', others => '0');
-				when D =>
-					LEDR(8 downto 0) <= (3 => '1', 0 => '1', others => '0');
-				when E =>
-					LEDR(8 downto 0) <= (4 => '1', 0 => '1', others => '0');
-				when F =>
-					LEDR(8 downto 0) <= (5 => '1', 0 => '1', others => '0');
-				when G =>
-					LEDR(8 downto 0) <= (6 => '1', 0 => '1', others => '0');
-				when H =>
-					LEDR(8 downto 0) <= (7 => '1', 0 => '1', others => '0');
-				when I =>
-					LEDR(8 downto 0) <= (8 => '1', 0 => '1', others => '0');
-			end case;
+	process (y_Q)
+	begin		
+		if ((y_Q = E) OR (y_Q = I)) then
+			Z <= '1';
+		else
+			Z <= '0';
 		end if;
+		LEDG(7 downto 0) <= (7 downto 0 => Z);
+		case y_Q is
+			when A =>
+				LEDR(8 downto 0) <= (others => '0');
+			when B =>
+				LEDR(8 downto 0) <= (1 => '1', 0 => '1', others => '0');
+			when C =>
+				LEDR(8 downto 0) <= (2 => '1', 0 => '1', others => '0');
+			when D =>
+				LEDR(8 downto 0) <= (3 => '1', 0 => '1', others => '0');
+			when E =>
+				LEDR(8 downto 0) <= (4 => '1', 0 => '1', others => '0');
+			when F =>
+				LEDR(8 downto 0) <= (5 => '1', 0 => '1', others => '0');
+			when G =>
+				LEDR(8 downto 0) <= (6 => '1', 0 => '1', others => '0');
+			when H =>
+				LEDR(8 downto 0) <= (7 => '1', 0 => '1', others => '0');
+			when I =>
+				LEDR(8 downto 0) <= (8 => '1', 0 => '1', others => '0');
+		end case;
 	end process;
 
 

@@ -1,5 +1,5 @@
 EDA Netlist Writer report for Lab7
-Fri May 06 15:21:10 2016
+Fri May 06 20:23:39 2016
 Quartus II 64-Bit Version 13.1.4 Build 182 03/12/2014 SJ Web Edition
 
 
@@ -36,7 +36,7 @@ applicable agreement for further details.
 +-------------------------------------------------------------------+
 ; EDA Netlist Writer Summary                                        ;
 +---------------------------+---------------------------------------+
-; EDA Netlist Writer Status ; Successful - Fri May 06 15:21:10 2016 ;
+; EDA Netlist Writer Status ; Successful - Fri May 06 20:23:39 2016 ;
 ; Revision Name             ; Lab7                                  ;
 ; Top-level Entity Name     ; Exp7_Part2                            ;
 ; Family                    ; Cyclone IV GX                         ;
@@ -88,7 +88,7 @@ applicable agreement for further details.
 Info: *******************************************************************
 Info: Running Quartus II 64-Bit EDA Netlist Writer
     Info: Version 13.1.4 Build 182 03/12/2014 SJ Web Edition
-    Info: Processing started: Fri May 06 15:21:07 2016
+    Info: Processing started: Fri May 06 20:23:37 2016
 Info: Command: quartus_eda --read_settings_files=off --write_settings_files=off Lab7 -c Lab7
 Info (204019): Generated file Lab7_7_1200mv_85c_slow.vho in folder "F:/ES575A/Lab7/simulation/modelsim/" for EDA simulation tool
 Info (204019): Generated file Lab7_7_1200mv_0c_slow.vho in folder "F:/ES575A/Lab7/simulation/modelsim/" for EDA simulation tool
@@ -99,9 +99,9 @@ Info (204019): Generated file Lab7_7_1200mv_0c_vhd_slow.sdo in folder "F:/ES575A
 Info (204019): Generated file Lab7_min_1200mv_0c_vhd_fast.sdo in folder "F:/ES575A/Lab7/simulation/modelsim/" for EDA simulation tool
 Info (204019): Generated file Lab7_vhd.sdo in folder "F:/ES575A/Lab7/simulation/modelsim/" for EDA simulation tool
 Info: Quartus II 64-Bit EDA Netlist Writer was successful. 0 errors, 0 warnings
-    Info: Peak virtual memory: 477 megabytes
-    Info: Processing ended: Fri May 06 15:21:10 2016
-    Info: Elapsed time: 00:00:03
+    Info: Peak virtual memory: 474 megabytes
+    Info: Processing ended: Fri May 06 20:23:39 2016
+    Info: Elapsed time: 00:00:02
     Info: Total CPU time (on all processors): 00:00:01
 
 

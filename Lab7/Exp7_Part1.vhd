@@ -15,7 +15,7 @@ entity Exp7_Part1 is
 			SW: in std_logic_vector(17 downto 0);
 			LEDR: out std_logic_vector(8 downto 0);
 			LEDG: out std_logic_vector(7 downto 0);
-			KEY: in std_logic_vector(1 downto 0)
+			KEY: in std_logic_vector(2 downto 0)
 		  );
 end Exp7_Part1;
 
@@ -33,7 +33,7 @@ architecture Behavior OF Exp7_Part1 is
 
 begin
 
-	clock <= not(KEY(1));
+	clock <= not(KEY(2));
 	reset <= not(KEY(0));
 	W <= SW(0);
 	
