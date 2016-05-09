@@ -56,13 +56,24 @@ architecture behavior OF Exp8_Part2 is
 
 
     signal clk_sec: std_logic;
-    signal car_waiting: std_logic;
     signal reset, reset_n: std_logic;
-    type traffic_state is (E0, E1, E2, E3);
-    signal t_status: traffic_state;
-    signal reset_yellow, completed_yellow: std_logic;
-    signal lights_1, lights_2: std_logic_vector(1 downto 0);
-	signal reset_open, completed_open: std_logic;
+
+    type S_state is (I, W, O, B);
+    signal S1, S2: S_state;
+    signal V1, V2: std_logic;
+    signal lights_1, lights_2, lights_3, lights_4: std_logic_vector(1 downto 0);
+
+    signal Tmin_1, Tmin_2, Tmax_1, Tmax_2: natural := 5;
+    signal Ty: natural := 1;
+
+    signal Y1_reset, Y1_completed: std_logic;
+    signal Y2_reset, Y2_completed: std_logic;
+
+    signal S1_reset, S1_completed: std_logic;
+    signal S2_reset, S2_completed: std_logic;
+
+	signal P1_reset, P1_completed: std_logic;
+    signal P2_reset, P2_completed: std_logic;
 
 begin
 
@@ -74,53 +85,57 @@ begin
         generic map(n => 32)
         port map(k => 50000000, clock => CLOCK_50, reset_n => reset_n, init => 0, completed => clk_sec);
 
-    timer_yellow_light: timer
+    TY1: timer
         generic map(duration => 1)
-        port map(clk_sec, reset_yellow, completed_yellow);
+        port map(clk_sec, Y1_reset, Y1_completed);
 
-    timer_open: timer
+    TY2: timer
+        generic map(duration => 1)
+        port map(clk_sec, Y2_reset, Y2_completed);
+
+    TS1: timer
         generic map(duration => 5)
-        port map(clk_sec, reset_open, completed_open);
+        port map(clk_sec, S1_reset, S1_completed);
+
+    TS2: timer
+        generic map(duration => 5)
+        port map(clk_sec, S2_reset, S2_completed);
+
+    TP1: timer
+        generic map(duration => 5)
+        port map(clk_sec, P1_reset, P1_completed);
+
+    TP2: timer
+        generic map(duration => 5)
+        port map(clk_sec, P2_reset, P2_completed);
 
 
-    process(t_status, reset, clk_sec)
+
+    process(S1, reset, clk_sec)
     begin
     	if (reset = '1') then
-    		t_status <= E0;
+    		S1 <= E0;
     	elsif (CLOCK_50 = '1' and CLOCK_50'event) then
-	    	case(t_status) is
-                when E0 =>
-                    reset_open <= '0';
-                    if(car_waiting = '1' and completed_open = '1') then
-                        t_status <= E1;
-                        reset_open <= '1';
-                    end if;
-                when E1 =>
-                    reset_yellow <= '0';
-                    if(completed_yellow = '1') then 
-                        t_status <= E2;
-                        reset_yellow <= '1';
-                    end if;
-                when E2 =>
-                    reset_open <= '0';
-                    if(car_waiting = '0' or completed_open = '1') then
-                        t_status <= E3;
-                        reset_open <= '1';
-                    end if;
-                when E3 =>
-                    reset_yellow <= '0';
-                    if(completed_yellow = '1') then 
-                        t_status <= E0;
-                        reset_yellow <= '1';
-                    end if;
+	    	case(S1) is
+                --fill in for S1
             end case;
     	end if;
-
     end process;
 
-    process(t_status)
+    process(S2, reset, clk_sec)
     begin
-    	case(t_status) is
+        if (reset = '1') then
+            S2 <= E0;
+        elsif (CLOCK_50 = '1' and CLOCK_50'event) then
+            case(S2) is
+                --fill in for S2
+            end case;
+        end if;
+    end process;
+
+    process(S1, S2)
+    begin
+    	case(S1, S2) is
     		when E0 =>
     			-- Main: G; Collector: R
     			--LEDR(5 downto 0) <= ('0'&'0'&'1' & '1'&'1'&'1');
@@ -146,15 +161,17 @@ begin
 
     T1: decoder_traffic_sign port map(lights_1, HEX7);
     T2: decoder_traffic_sign port map(lights_2, HEX5);
-    T8: decoder_traffic_sign port map(('1'&'1'), HEX0);
-    T3: decoder_traffic_sign port map(('1'&'1'), HEX1);
-    T4: decoder_traffic_sign port map(('1'&'1'), HEX2);
-    T5: decoder_traffic_sign port map(('1'&'1'), HEX3);
-    T6: decoder_traffic_sign port map(('1'&'1'), HEX4);
-    T7: decoder_traffic_sign port map(('1'&'1'), HEX6);
+    T3: decoder_traffic_sign port map(lights_3, HEX3);
+    T4: decoder_traffic_sign port map(lights_4, HEX1);
+    -- blank display
+    T5: decoder_traffic_sign port map(('1'&'1'), HEX0);
+    T6: decoder_traffic_sign port map(('1'&'1'), HEX2);
+    T7: decoder_traffic_sign port map(('1'&'1'), HEX4);
+    T8: decoder_traffic_sign port map(('1'&'1'), HEX6);
     LEDR(0) <= completed_open;
     LEDR(1) <= reset_open;
     LEDR(3) <= completed_yellow;
     LEDR(4) <= reset_yellow;
+
 
 end behavior;
