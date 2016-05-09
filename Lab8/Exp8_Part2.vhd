@@ -10,7 +10,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity Exp8_Part1 is
+entity Exp8_Part2 is
     port (
             SW: in std_logic_vector(17 downto 0);
             LEDR: out std_logic_vector(8 downto 0);
@@ -19,9 +19,9 @@ entity Exp8_Part1 is
             CLOCK_50: in std_logic;
             HEX0, HEX1, HEX2, HEX3, HEX4, HEX5, HEX6, HEX7:     out std_logic_vector(6 downto 0)
           );
-end Exp8_Part1;
+end Exp8_Part2;
 
-architecture behavior OF Exp8_Part1 is
+architecture behavior OF Exp8_Part2 is
     component counter_k_init
         generic (
             -- Change 'n' for larger (or shorter) maximum values for 'k'
@@ -82,7 +82,7 @@ begin
         generic map(duration => 5)
         port map(clk_sec, reset_open, completed_open);
 
-    -- Traffic Light State Machine
+
     process(t_status, reset, clk_sec)
     begin
     	if (reset = '1') then
@@ -115,9 +115,9 @@ begin
                     end if;
             end case;
     	end if;
+
     end process;
 
-    -- Display update
     process(t_status)
     begin
     	case(t_status) is
