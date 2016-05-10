@@ -58,11 +58,13 @@ architecture behavior OF Exp8_Part2 is
     signal clk_sec: std_logic;
     signal reset, reset_n: std_logic;
 
-    type S_state is (I, W, O, B);
-    signal S1, S2: S_state;
-    signal V1, V2: std_logic;
-    signal lights_1, lights_2, lights_3, lights_4: std_logic_vector(1 downto 0);
+    type S_state is (I, W, O, B);   -- I:Idle; W:Waiting; O:Open; B:Back to Idle
+    signal S1, S2: S_state;         -- Secondary road traffic light state
 
+    signal V1, V2: std_logic;       -- Vehicle presence at secondary roads
+    signal lights_P1, lights_P2, lights_S1, lights_S2: std_logic_vector(1 downto 0);
+
+    -- Timing signals
     signal Tmin_1, Tmin_2, Tmax_1, Tmax_2: natural := 5;
     signal Ty: natural := 1;
 
@@ -86,92 +88,194 @@ begin
         port map(k => 50000000, clock => CLOCK_50, reset_n => reset_n, init => 0, completed => clk_sec);
 
     TY1: timer
-        generic map(duration => 1)
+        generic map(duration => 1) -- Ty
         port map(clk_sec, Y1_reset, Y1_completed);
 
     TY2: timer
-        generic map(duration => 1)
+        generic map(duration => 1) -- Ty
         port map(clk_sec, Y2_reset, Y2_completed);
 
     TS1: timer
-        generic map(duration => 5)
+        generic map(duration => 5) -- Tmax1
         port map(clk_sec, S1_reset, S1_completed);
 
     TS2: timer
-        generic map(duration => 5)
+        generic map(duration => 5) -- Tmax2
         port map(clk_sec, S2_reset, S2_completed);
 
     TP1: timer
-        generic map(duration => 5)
+        generic map(duration => 5) -- Tmin1
         port map(clk_sec, P1_reset, P1_completed);
 
     TP2: timer
-        generic map(duration => 5)
+        generic map(duration => 5) -- Tmin2
         port map(clk_sec, P2_reset, P2_completed);
 
 
+    -- =============================
+    --  < < <      \       P1 < < < 
+    -- -------------\---------------
+    --  > > > P2     )/       > > > 
+    -- =========     (     =========
+    --          | S1 | S2 |  tryhard
+    --          | ^^ | ^^ |    ascii
+    --          | ^^ | ^^ |      art
+    
+    -- Upper primary road: P1
+    -- Lower primary road: P2
+    -- Secondary road (Left): S1
+    -- Secondary road (Right): S2
 
-    process(S1, reset, clk_sec)
+    -- State Machine for S1
+    process(S1, reset)
     begin
+        -- Initial state: Both primary roads open; both secondary roads closed.
     	if (reset = '1') then
-    		S1 <= E0;
+    		S1 <= I;
+
     	elsif (CLOCK_50 = '1' and CLOCK_50'event) then
-	    	case(S1) is
-                --fill in for S1
+-- [verify]: P2_reset is being set by both SM Processes
+-- [possible solution]: merge both processes to one with 2 switch-cases
+            case(S1) is
+                when I =>
+                    P1_reset <= '0';
+                    P2_reset <= '0'; -- se compilar assim, vai dar erro aqui
+                    if (V1 = '1' and P1_completed = '1' and P2_completed = '1') then
+                        S1 <= W;
+                        P1_reset <= '1';
+                        P2_reset <= '1'; -- se compilar assim, vai dar erro aqui
+                    end if;
+
+                when W =>
+                    Y1_reset <= '0';
+                    if (Y1_completed = '1') then
+                        S1 <= O;
+                        Y1_reset <= '1';
+                    end if;
+
+                when O =>
+                    S1_reset <= '0';
+                    if (V1 = '0' or S1_completed = '1') then
+                        S1 <= B;
+                        S1_reset <= '1';
+                    end if;
+
+                when B =>
+                    Y1_reset <= '0';
+                    if (Y1_completed = '1') then
+                        S1 <= I;
+                        Y1_reset <= '1';
+                    end if;
             end case;
+            -----------------------------------
+            -- [insert switch-case(S2) here] --
+            -----------------------------------
     	end if;
     end process;
 
-    process(S2, reset, clk_sec)
+    process(S2, reset)
     begin
         if (reset = '1') then
-            S2 <= E0;
+            S2 <= I;
         elsif (CLOCK_50 = '1' and CLOCK_50'event) then
+-- [verify]: probably moving this switch-case to the previous process will fix the multiple driver issue
             case(S2) is
-                --fill in for S2
+                when I =>
+                    P2_reset <= '0'; -- se compilar assim, vai dar erro aqui
+                    if (V2 = '1' and P1_completed = '1' and P2_completed = '1') then
+                        S2 <= W;
+                        P2_reset <= '1'; -- se compilar assim, vai dar erro aqui
+                    end if;
+
+                when W =>
+                    Y2_reset <= '0';
+                    if (Y2_completed = '1') then
+                        S2 <= O;
+                        Y2_reset <= '1';
+                    end if;
+
+                when O =>
+                    S2_reset <= '0';
+                    if (V2 = '0' or S2_completed = '1') then
+                        S2 <= B;
+                        S2_reset <= '1';
+                    end if;
+
+                when B =>
+                    Y2_reset <= '0';
+                    if (Y2_completed = '1') then
+                        S2 <= I;
+                        Y2_reset <= '1';
+                    end if;
             end case;
         end if;
     end process;
 
+    -- Display (traffic lights) update
     process(S1, S2)
     begin
-    	case(S1, S2) is
-    		when E0 =>
-    			-- Main: G; Collector: R
-    			--LEDR(5 downto 0) <= ('0'&'0'&'1' & '1'&'1'&'1');
-                lights_1 <= ('0'&'0');
-                lights_2 <= ('1'&'0');
-    		when E1 =>
-    			-- Main: Y; Collector: R
-    			--LEDR(5 downto 0) <= ('0'&'1'&'1' & '1'&'1'&'1');
-                lights_1 <= ('0'&'1');
-                lights_2 <= ('1'&'0');
-    		when E2 =>
-    			-- Main: R; Collector: G
-    			--LEDR(5 downto 0) <= ('1'&'1'&'1' & '0'&'0'&'1');
-                lights_1 <= ('1'&'0');
-                lights_2 <= ('0'&'0');
-    		when E3 =>
-    			-- Main: R; Collector: Y
-    			--LEDR(5 downto 0) <= ('1'&'1'&'1' & '0'&'1'&'1');
-                lights_1 <= ('1'&'0');
-                lights_2 <= ('0'&'1');
+        -- Green = 00; Yellow = 01; Red = 11
+    	case(S1) is
+    		when I => -- S1 = Red; P1 & P2 = Green
+                lights_S1 <= ('1'&'1');
+                lights_P1 <= ('0'&'0');
+                lights_P2 <= ('0'&'0');
+            when W => -- S1 = Red; P1 & P2 = Yellow
+                lights_S1 <= ('1'&'1');
+                lights_P1 <= ('0'&'1');
+                lights_P2 <= ('0'&'1');
+            when O => -- S1 = Green; P1 & P2 = Red
+                lights_S1 <= ('0'&'0');
+                lights_P1 <= ('1'&'1');
+                lights_P2 <= ('1'&'1');
+            when B => -- S1 = Yellow; P1 & P2 = Red
+                lights_S1 <= ('0'&'1');
+                lights_P1 <= ('1'&'1');
+                lights_P2 <= ('1'&'1');
     	end case;
+
+-- [verify]: lights_P2 is accessed by both switch-cases
+        case(S2) is
+            when I => -- S2 = Red; P2 = Green
+                lights_S2 <= ('1'&'1');
+                lights_P2 <= ('0'&'0');
+            when W => -- S2 = Red; P2 = Yellow
+                lights_S2 <= ('1'&'1');
+                lights_P2 <= ('0'&'1');
+            when O => -- S2 = Green; P2 = Red
+                lights_S2 <= ('0'&'0');
+                lights_P2 <= ('1'&'1');
+            when B => -- S2 = Yellow; P2 = Red
+                lights_S2 <= ('0'&'1');
+                lights_P2 <= ('1'&'1');
+        end case;
     end process;
 
-    T1: decoder_traffic_sign port map(lights_1, HEX7);
-    T2: decoder_traffic_sign port map(lights_2, HEX5);
-    T3: decoder_traffic_sign port map(lights_3, HEX3);
-    T4: decoder_traffic_sign port map(lights_4, HEX1);
+    T1: decoder_traffic_sign port map(lights_P1, HEX7);
+    T2: decoder_traffic_sign port map(lights_P2, HEX5);
+    T3: decoder_traffic_sign port map(lights_S1, HEX3);
+    T4: decoder_traffic_sign port map(lights_S2, HEX1);
+    
     -- blank display
     T5: decoder_traffic_sign port map(('1'&'1'), HEX0);
     T6: decoder_traffic_sign port map(('1'&'1'), HEX2);
     T7: decoder_traffic_sign port map(('1'&'1'), HEX4);
     T8: decoder_traffic_sign port map(('1'&'1'), HEX6);
-    LEDR(0) <= completed_open;
-    LEDR(1) <= reset_open;
-    LEDR(3) <= completed_yellow;
-    LEDR(4) <= reset_yellow;
+    
+    LEDR(17) <= P1_completed;
+    LEDR(16) <= P1_reset;
+    LEDR(15) <= P2_completed;
+    LEDR(14) <= P2_reset;
+    
+    LEDR(13) <= Y1_completed;
+    LEDR(12) <= Y1_reset;
+    LEDR(11) <= Y2_completed;
+    LEDR(10) <= Y2_reset;
 
+    LEDR(9) <= S1_completed;
+    LEDR(8) <= S1_reset;
+    LEDR(7) <= S2_completed;
+    LEDR(6) <= S2_reset;
 
 end behavior;
+
