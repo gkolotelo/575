@@ -13,7 +13,7 @@ use ieee.std_logic_1164.all;
 entity Exp8_Part2 is
     port (
             SW: in std_logic_vector(17 downto 0);
-            LEDR: out std_logic_vector(8 downto 0);
+            LEDR: out std_logic_vector(17 downto 0);
             LEDG: out std_logic_vector(7 downto 0);
             KEY: in std_logic_vector(1 downto 0);
             CLOCK_50: in std_logic;
@@ -81,7 +81,8 @@ begin
 
     reset <= not(KEY(0));
     reset_n <= KEY(0);
-    car_waiting <= SW(8);
+    V1 <= SW(1);
+    V2 <= SW(0);
 
     seconds_counter: counter_k_init
         generic map(n => 32)
@@ -127,23 +128,27 @@ begin
     -- Secondary road (Right): S2
 
     -- State Machine for S1
-    process(S1, reset)
+    process(S1, S2, reset)
     begin
         -- Initial state: Both primary roads open; both secondary roads closed.
     	if (reset = '1') then
     		S1 <= I;
+            S2 <= I;
+            Y1_reset <= '1';
+            Y2_reset <= '1';
+            P1_reset <= '1';
+            P2_reset <= '1';
+            S1_reset <= '1';
+            S2_reset <= '1';
 
     	elsif (CLOCK_50 = '1' and CLOCK_50'event) then
--- [verify]: P2_reset is being set by both SM Processes
--- [possible solution]: merge both processes to one with 2 switch-cases
             case(S1) is
                 when I =>
                     P1_reset <= '0';
-                    P2_reset <= '0'; -- se compilar assim, vai dar erro aqui
                     if (V1 = '1' and P1_completed = '1' and P2_completed = '1') then
                         S1 <= W;
                         P1_reset <= '1';
-                        P2_reset <= '1'; -- se compilar assim, vai dar erro aqui
+                        P2_reset <= '1';
                     end if;
 
                 when W =>
@@ -155,6 +160,7 @@ begin
 
                 when O =>
                     S1_reset <= '0';
+                    S2_reset <= '0';
                     if (V1 = '0' or S1_completed = '1') then
                         S1 <= B;
                         S1_reset <= '1';
@@ -165,26 +171,16 @@ begin
                     if (Y1_completed = '1') then
                         S1 <= I;
                         Y1_reset <= '1';
+                        P2_reset <= '0';
                     end if;
             end case;
-            -----------------------------------
-            -- [insert switch-case(S2) here] --
-            -----------------------------------
-    	end if;
-    end process;
 
-    process(S2, reset)
-    begin
-        if (reset = '1') then
-            S2 <= I;
-        elsif (CLOCK_50 = '1' and CLOCK_50'event) then
--- [verify]: probably moving this switch-case to the previous process will fix the multiple driver issue
             case(S2) is
                 when I =>
-                    P2_reset <= '0'; -- se compilar assim, vai dar erro aqui
-                    if (V2 = '1' and P1_completed = '1' and P2_completed = '1') then
+                    P2_reset <= '0';
+                    if (V2 = '1' and P2_completed = '1') then
                         S2 <= W;
-                        P2_reset <= '1'; -- se compilar assim, vai dar erro aqui
+                        P2_reset <= '1';
                     end if;
 
                 when W =>
@@ -196,6 +192,7 @@ begin
 
                 when O =>
                     S2_reset <= '0';
+                    P2_reset <= '1';
                     if (V2 = '0' or S2_completed = '1') then
                         S2 <= B;
                         S2_reset <= '1';
@@ -206,48 +203,87 @@ begin
                     if (Y2_completed = '1') then
                         S2 <= I;
                         Y2_reset <= '1';
+                        P2_reset <= '0';
                     end if;
             end case;
-        end if;
+    	end if;
     end process;
 
     -- Display (traffic lights) update
     process(S1, S2)
     begin
-        -- Green = 00; Yellow = 01; Red = 11
+        -- Green = 00; Yellow = 01; Red = 10
+        if(S1 = I and S2= I) then
+            lights_P1 <= ('0'&'0'); --GREEN
+            lights_P2 <= ('0'&'0'); --GREEN
+            lights_S1 <= ('1'&'0'); --RED
+            lights_S2 <= ('1'&'0'); --RED
+        elsif(S1 = I and S2 = W) then
+            lights_P1 <= ('0'&'0'); --GREEN
+            lights_P2 <= ('0'&'1'); --YELLOW
+            lights_S1 <= ('1'&'0'); --RED
+            lights_S2 <= ('1'&'0'); --RED
+        elsif(S1 = I and S2 = O) then
+            lights_P1 <= ('0'&'0'); --GREEN
+            lights_P2 <= ('1'&'0'); --RED
+            lights_S1 <= ('1'&'0'); --RED
+            lights_S2 <= ('0'&'0'); --GREEN
+        elsif(S1 = I and S2 = B) then
+            lights_P1 <= ('0'&'0'); --GREEN
+            lights_P2 <= ('1'&'0'); --RED
+            lights_S1 <= ('1'&'0'); --RED
+            lights_S2 <= ('0'&'1'); --YELLOW
+        elsif(S1 = W) then
+            lights_P1 <= ('0'&'1'); --YELLOW
+            lights_P2 <= ('0'&'1'); --YELLOW
+            lights_S1 <= ('1'&'0'); --RED
+            lights_S2 <= ('1'&'0'); --RED
+        elsif(S1 = O) then
+            lights_P1 <= ('1'&'0'); --RED
+            lights_P2 <= ('1'&'0'); --RED
+            lights_S1 <= ('0'&'0'); --GREEN
+            lights_S2 <= ('0'&'0'); --GREEN
+        elsif(S1 = B and not(S2 = O)) then
+            lights_P1 <= ('1'&'0'); --RED
+            lights_P2 <= ('1'&'0'); --RED
+            lights_S1 <= ('0'&'1'); --YELLOW
+            lights_S2 <= ('0'&'1'); --YELLOW
+        elsif(S1 = B and S2 = O) then
+            lights_P1 <= ('1'&'0'); --RED
+            lights_P2 <= ('1'&'0'); --RED
+            lights_S1 <= ('0'&'1'); --YELLOW
+            lights_S2 <= ('0'&'0'); --GREEN
+        else -- default
+            lights_P1 <= ('1'&'1');
+            lights_P2 <= ('1'&'1');
+            lights_S1 <= ('1'&'1');
+            lights_S2 <= ('1'&'1');
+        end if;
+            
+            
+
+
+        -- R = 00; YRow = 01; Red = 10
     	case(S1) is
     		when I => -- S1 = Red; P1 & P2 = Green
-                lights_S1 <= ('1'&'1');
-                lights_P1 <= ('0'&'0');
-                lights_P2 <= ('0'&'0');
+                LEDG(7 downto 4) <= '1'&'0'&'0'&'0';
             when W => -- S1 = Red; P1 & P2 = Yellow
-                lights_S1 <= ('1'&'1');
-                lights_P1 <= ('0'&'1');
-                lights_P2 <= ('0'&'1');
+                LEDG(7 downto 4) <= '0'&'1'&'0'&'0';
             when O => -- S1 = Green; P1 & P2 = Red
-                lights_S1 <= ('0'&'0');
-                lights_P1 <= ('1'&'1');
-                lights_P2 <= ('1'&'1');
+                LEDG(7 downto 4) <= '0'&'0'&'1'&'0';
             when B => -- S1 = Yellow; P1 & P2 = Red
-                lights_S1 <= ('0'&'1');
-                lights_P1 <= ('1'&'1');
-                lights_P2 <= ('1'&'1');
+                LEDG(7 downto 4) <= '0'&'0'&'0'&'1';
     	end case;
 
--- [verify]: lights_P2 is accessed by both switch-cases
         case(S2) is
             when I => -- S2 = Red; P2 = Green
-                lights_S2 <= ('1'&'1');
-                lights_P2 <= ('0'&'0');
+                LEDG(3 downto 0) <= '1'&'0'&'0'&'0';
             when W => -- S2 = Red; P2 = Yellow
-                lights_S2 <= ('1'&'1');
-                lights_P2 <= ('0'&'1');
+                LEDG(3 downto 0) <= '0'&'1'&'0'&'0';
             when O => -- S2 = Green; P2 = Red
-                lights_S2 <= ('0'&'0');
-                lights_P2 <= ('1'&'1');
+                LEDG(3 downto 0) <= '0'&'0'&'1'&'0';
             when B => -- S2 = Yellow; P2 = Red
-                lights_S2 <= ('0'&'1');
-                lights_P2 <= ('1'&'1');
+                LEDG(3 downto 0) <= '0'&'0'&'0'&'1';
         end case;
     end process;
 
