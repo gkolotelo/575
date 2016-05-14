@@ -1,0 +1,559 @@
+Analysis & Synthesis report for Lab8
+Fri May 13 19:26:16 2016
+Quartus II 64-Bit Version 13.1.4 Build 182 03/12/2014 SJ Web Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. State Machine - |Exp8_Part2|S2
+  9. State Machine - |Exp8_Part2|S1
+ 10. Registers Removed During Synthesis
+ 11. General Register Statistics
+ 12. Inverted Register Statistics
+ 13. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 14. Parameter Settings for User Entity Instance: counter_k_init:seconds_counter
+ 15. Parameter Settings for User Entity Instance: timer:TY1
+ 16. Parameter Settings for User Entity Instance: timer:TY2
+ 17. Parameter Settings for User Entity Instance: timer:TS1
+ 18. Parameter Settings for User Entity Instance: timer:TS2
+ 19. Parameter Settings for User Entity Instance: timer:TP1
+ 20. Parameter Settings for User Entity Instance: timer:TP2
+ 21. Port Connectivity Checks: "decoder_traffic_sign:T8"
+ 22. Port Connectivity Checks: "decoder_traffic_sign:T7"
+ 23. Port Connectivity Checks: "decoder_traffic_sign:T6"
+ 24. Port Connectivity Checks: "decoder_traffic_sign:T5"
+ 25. Port Connectivity Checks: "counter_k_init:seconds_counter"
+ 26. Elapsed Time Per Partition
+ 27. Analysis & Synthesis Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 1991-2014 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+
+
+
++---------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                    ;
++------------------------------------+--------------------------------------------+
+; Analysis & Synthesis Status        ; Successful - Fri May 13 19:26:15 2016      ;
+; Quartus II 64-Bit Version          ; 13.1.4 Build 182 03/12/2014 SJ Web Edition ;
+; Revision Name                      ; Lab8                                       ;
+; Top-level Entity Name              ; Exp8_Part2                                 ;
+; Family                             ; Cyclone IV GX                              ;
+; Total logic elements               ; 395                                        ;
+;     Total combinational functions  ; 395                                        ;
+;     Dedicated logic registers      ; 238                                        ;
+; Total registers                    ; 238                                        ;
+; Total pins                         ; 103                                        ;
+; Total virtual pins                 ; 0                                          ;
+; Total memory bits                  ; 0                                          ;
+; Embedded Multiplier 9-bit elements ; 0                                          ;
+; Total GXB Receiver Channel PCS     ; 0                                          ;
+; Total GXB Receiver Channel PMA     ; 0                                          ;
+; Total GXB Transmitter Channel PCS  ; 0                                          ;
+; Total GXB Transmitter Channel PMA  ; 0                                          ;
+; Total PLLs                         ; 0                                          ;
++------------------------------------+--------------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                                        ;
++----------------------------------------------------------------------------+--------------------+--------------------+
+; Option                                                                     ; Setting            ; Default Value      ;
++----------------------------------------------------------------------------+--------------------+--------------------+
+; Device                                                                     ; EP4CGX150DF31C7    ;                    ;
+; Top-level entity name                                                      ; Exp8_Part2         ; Lab8               ;
+; Family name                                                                ; Cyclone IV GX      ; Cyclone IV GX      ;
+; Use smart compilation                                                      ; Off                ; Off                ;
+; Enable parallel Assembler and TimeQuest Timing Analyzer during compilation ; On                 ; On                 ;
+; Enable compact report table                                                ; Off                ; Off                ;
+; Restructure Multiplexers                                                   ; Auto               ; Auto               ;
+; Create Debugging Nodes for IP Cores                                        ; Off                ; Off                ;
+; Preserve fewer node names                                                  ; On                 ; On                 ;
+; Disable OpenCore Plus hardware evaluation                                  ; Off                ; Off                ;
+; Verilog Version                                                            ; Verilog_2001       ; Verilog_2001       ;
+; VHDL Version                                                               ; VHDL_1993          ; VHDL_1993          ;
+; State Machine Processing                                                   ; Auto               ; Auto               ;
+; Safe State Machine                                                         ; Off                ; Off                ;
+; Extract Verilog State Machines                                             ; On                 ; On                 ;
+; Extract VHDL State Machines                                                ; On                 ; On                 ;
+; Ignore Verilog initial constructs                                          ; Off                ; Off                ;
+; Iteration limit for constant Verilog loops                                 ; 5000               ; 5000               ;
+; Iteration limit for non-constant Verilog loops                             ; 250                ; 250                ;
+; Add Pass-Through Logic to Inferred RAMs                                    ; On                 ; On                 ;
+; Infer RAMs from Raw Logic                                                  ; On                 ; On                 ;
+; Parallel Synthesis                                                         ; On                 ; On                 ;
+; DSP Block Balancing                                                        ; Auto               ; Auto               ;
+; NOT Gate Push-Back                                                         ; On                 ; On                 ;
+; Power-Up Don't Care                                                        ; On                 ; On                 ;
+; Remove Redundant Logic Cells                                               ; Off                ; Off                ;
+; Remove Duplicate Registers                                                 ; On                 ; On                 ;
+; Ignore CARRY Buffers                                                       ; Off                ; Off                ;
+; Ignore CASCADE Buffers                                                     ; Off                ; Off                ;
+; Ignore GLOBAL Buffers                                                      ; Off                ; Off                ;
+; Ignore ROW GLOBAL Buffers                                                  ; Off                ; Off                ;
+; Ignore LCELL Buffers                                                       ; Off                ; Off                ;
+; Ignore SOFT Buffers                                                        ; On                 ; On                 ;
+; Limit AHDL Integers to 32 Bits                                             ; Off                ; Off                ;
+; Optimization Technique                                                     ; Balanced           ; Balanced           ;
+; Carry Chain Length                                                         ; 70                 ; 70                 ;
+; Auto Carry Chains                                                          ; On                 ; On                 ;
+; Auto Open-Drain Pins                                                       ; On                 ; On                 ;
+; Perform WYSIWYG Primitive Resynthesis                                      ; Off                ; Off                ;
+; Auto ROM Replacement                                                       ; On                 ; On                 ;
+; Auto RAM Replacement                                                       ; On                 ; On                 ;
+; Auto DSP Block Replacement                                                 ; On                 ; On                 ;
+; Auto Shift Register Replacement                                            ; Auto               ; Auto               ;
+; Allow Shift Register Merging across Hierarchies                            ; Auto               ; Auto               ;
+; Auto Clock Enable Replacement                                              ; On                 ; On                 ;
+; Strict RAM Replacement                                                     ; Off                ; Off                ;
+; Allow Synchronous Control Signals                                          ; On                 ; On                 ;
+; Force Use of Synchronous Clear Signals                                     ; Off                ; Off                ;
+; Auto RAM Block Balancing                                                   ; On                 ; On                 ;
+; Auto RAM to Logic Cell Conversion                                          ; Off                ; Off                ;
+; Auto Resource Sharing                                                      ; Off                ; Off                ;
+; Allow Any RAM Size For Recognition                                         ; Off                ; Off                ;
+; Allow Any ROM Size For Recognition                                         ; Off                ; Off                ;
+; Allow Any Shift Register Size For Recognition                              ; Off                ; Off                ;
+; Use LogicLock Constraints during Resource Balancing                        ; On                 ; On                 ;
+; Ignore translate_off and synthesis_off directives                          ; Off                ; Off                ;
+; Timing-Driven Synthesis                                                    ; On                 ; On                 ;
+; Report Parameter Settings                                                  ; On                 ; On                 ;
+; Report Source Assignments                                                  ; On                 ; On                 ;
+; Report Connectivity Checks                                                 ; On                 ; On                 ;
+; Ignore Maximum Fan-Out Assignments                                         ; Off                ; Off                ;
+; Synchronization Register Chain Length                                      ; 2                  ; 2                  ;
+; PowerPlay Power Optimization                                               ; Normal compilation ; Normal compilation ;
+; HDL message level                                                          ; Level2             ; Level2             ;
+; Suppress Register Optimization Related Messages                            ; Off                ; Off                ;
+; Number of Removed Registers Reported in Synthesis Report                   ; 5000               ; 5000               ;
+; Number of Swept Nodes Reported in Synthesis Report                         ; 5000               ; 5000               ;
+; Number of Inverted Registers Reported in Synthesis Report                  ; 100                ; 100                ;
+; Clock MUX Protection                                                       ; On                 ; On                 ;
+; Auto Gated Clock Conversion                                                ; Off                ; Off                ;
+; Block Design Naming                                                        ; Auto               ; Auto               ;
+; SDC constraint protection                                                  ; Off                ; Off                ;
+; Synthesis Effort                                                           ; Auto               ; Auto               ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal               ; On                 ; On                 ;
+; Pre-Mapping Resynthesis Optimization                                       ; Off                ; Off                ;
+; Analysis & Synthesis Message Level                                         ; Medium             ; Medium             ;
+; Disable Register Merging Across Hierarchies                                ; Auto               ; Auto               ;
+; Resource Aware Inference For Block RAM                                     ; On                 ; On                 ;
+; Synthesis Seed                                                             ; 1                  ; 1                  ;
++----------------------------------------------------------------------------+--------------------+--------------------+
+
+
+Parallel compilation was disabled, but you have multiple processors available. Enable parallel compilation to reduce compilation time.
++-------------------------------------+
+; Parallel Compilation                ;
++----------------------------+--------+
+; Processors                 ; Number ;
++----------------------------+--------+
+; Number detected on machine ; 4      ;
+; Maximum allowed            ; 1      ;
++----------------------------+--------+
+
+
++--------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                   ;
++----------------------------------+-----------------+-----------------+-----------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type       ; File Name with Absolute Path            ; Library ;
++----------------------------------+-----------------+-----------------+-----------------------------------------+---------+
+; Exp8_Part2.vhd                   ; yes             ; User VHDL File  ; F:/ES575A/Lab8/Exp8_Part2.vhd           ;         ;
+; decoder_traffic_sign.vhd         ; yes             ; User VHDL File  ; F:/ES575A/Lab8/decoder_traffic_sign.vhd ;         ;
+; timer.vhd                        ; yes             ; User VHDL File  ; F:/ES575A/Lab8/timer.vhd                ;         ;
+; counter_k_init.vhd               ; yes             ; User VHDL File  ; F:/ES575A/Lab8/counter_k_init.vhd       ;         ;
++----------------------------------+-----------------+-----------------+-----------------------------------------+---------+
+
+
++---------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary                               ;
++--------------------------+------------------------------------------------+
+; Resource                 ; Usage                                          ;
++--------------------------+------------------------------------------------+
+; I/O pins                 ; 103                                            ;
+; DSP block 9-bit elements ; 0                                              ;
+; Maximum fan-out node     ; counter_k_init:seconds_counter|completed_value ;
+; Maximum fan-out          ; 192                                            ;
+; Total fan-out            ; 2031                                           ;
+; Average fan-out          ; 2.42                                           ;
++--------------------------+------------------------------------------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                     ;
++-------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+-----------+------+--------------+--------------------------------------------+--------------+
+; Compilation Hierarchy Node          ; LC Combinationals ; LC Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; DSP 36x36 ; Pins ; Virtual Pins ; Full Hierarchy Name                        ; Library Name ;
++-------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+-----------+------+--------------+--------------------------------------------+--------------+
+; |Exp8_Part2                         ; 395 (30)          ; 238 (14)     ; 0           ; 0            ; 0       ; 0         ; 0         ; 103  ; 0            ; |Exp8_Part2                                ; work         ;
+;    |counter_k_init:seconds_counter| ; 102 (102)         ; 32 (32)      ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp8_Part2|counter_k_init:seconds_counter ; work         ;
+;    |decoder_traffic_sign:T1|        ; 3 (3)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp8_Part2|decoder_traffic_sign:T1        ; work         ;
+;    |decoder_traffic_sign:T2|        ; 3 (3)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp8_Part2|decoder_traffic_sign:T2        ; work         ;
+;    |decoder_traffic_sign:T3|        ; 2 (2)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp8_Part2|decoder_traffic_sign:T3        ; work         ;
+;    |decoder_traffic_sign:T4|        ; 3 (3)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp8_Part2|decoder_traffic_sign:T4        ; work         ;
+;    |timer:TP1|                      ; 42 (42)           ; 32 (32)      ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp8_Part2|timer:TP1                      ; work         ;
+;    |timer:TP2|                      ; 42 (42)           ; 32 (32)      ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp8_Part2|timer:TP2                      ; work         ;
+;    |timer:TS1|                      ; 42 (42)           ; 32 (32)      ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp8_Part2|timer:TS1                      ; work         ;
+;    |timer:TS2|                      ; 42 (42)           ; 32 (32)      ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp8_Part2|timer:TS2                      ; work         ;
+;    |timer:TY1|                      ; 42 (42)           ; 32 (32)      ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp8_Part2|timer:TY1                      ; work         ;
+;    |timer:TY2|                      ; 42 (42)           ; 32 (32)      ; 0           ; 0            ; 0       ; 0         ; 0         ; 0    ; 0            ; |Exp8_Part2|timer:TY2                      ; work         ;
++-------------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+-----------+------+--------------+--------------------------------------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
+Encoding Type:  One-Hot
++----------------------------------+
+; State Machine - |Exp8_Part2|S2   ;
++------+------+------+------+------+
+; Name ; S2.B ; S2.O ; S2.W ; S2.I ;
++------+------+------+------+------+
+; S2.I ; 0    ; 0    ; 0    ; 0    ;
+; S2.W ; 0    ; 0    ; 1    ; 1    ;
+; S2.O ; 0    ; 1    ; 0    ; 1    ;
+; S2.B ; 1    ; 0    ; 0    ; 1    ;
++------+------+------+------+------+
+
+
+Encoding Type:  One-Hot
++----------------------------------+
+; State Machine - |Exp8_Part2|S1   ;
++------+------+------+------+------+
+; Name ; S1.B ; S1.O ; S1.W ; S1.I ;
++------+------+------+------+------+
+; S1.I ; 0    ; 0    ; 0    ; 0    ;
+; S1.W ; 0    ; 0    ; 1    ; 1    ;
+; S1.O ; 0    ; 1    ; 0    ; 1    ;
+; S1.B ; 1    ; 0    ; 0    ; 1    ;
++------+------+------+------+------+
+
+
++---------------------------------------------------------------+
+; Registers Removed During Synthesis                            ;
++------------------------------------------+--------------------+
+; Register name                            ; Reason for Removal ;
++------------------------------------------+--------------------+
+; counter_k_init:seconds_counter|value[31] ; Lost fanout        ;
+; Total Number of Removed Registers = 1    ;                    ;
++------------------------------------------+--------------------+
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 238   ;
+; Number of registers using Synchronous Clear  ; 0     ;
+; Number of registers using Synchronous Load   ; 0     ;
+; Number of registers using Asynchronous Clear ; 237   ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 181   ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++---------------------------------------------------+
+; Inverted Register Statistics                      ;
++-----------------------------------------+---------+
+; Inverted Register                       ; Fan out ;
++-----------------------------------------+---------+
+; S2_reset                                ; 34      ;
+; S1_reset                                ; 34      ;
+; Y2_reset                                ; 34      ;
+; Y1_reset                                ; 34      ;
+; P2_reset                                ; 34      ;
+; P1_reset                                ; 34      ;
+; timer:TS2|count[0]                      ; 3       ;
+; timer:TS1|count[0]                      ; 3       ;
+; timer:TY2|count[0]                      ; 3       ;
+; timer:TY1|count[0]                      ; 3       ;
+; timer:TP2|count[0]                      ; 3       ;
+; timer:TP1|count[0]                      ; 3       ;
+; Total number of inverted registers = 12 ;         ;
++-----------------------------------------+---------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                           ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------+
+; 5:1                ; 3 bits    ; 9 LEs         ; 6 LEs                ; 3 LEs                  ; No         ; |Exp8_Part2|lights_S1[1]   ;
+; 6:1                ; 2 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; No         ; |Exp8_Part2|Selector7      ;
+; 6:1                ; 2 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; No         ; |Exp8_Part2|Selector1      ;
+; 8:1                ; 2 bits    ; 10 LEs        ; 4 LEs                ; 6 LEs                  ; No         ; |Exp8_Part2|Selector6      ;
+; 8:1                ; 2 bits    ; 10 LEs        ; 4 LEs                ; 6 LEs                  ; No         ; |Exp8_Part2|Selector0      ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------+
+
+
++-----------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: counter_k_init:seconds_counter ;
++----------------+-------+----------------------------------------------------+
+; Parameter Name ; Value ; Type                                               ;
++----------------+-------+----------------------------------------------------+
+; n              ; 32    ; Signed Integer                                     ;
++----------------+-------+----------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++--------------------------------------------------------+
+; Parameter Settings for User Entity Instance: timer:TY1 ;
++----------------+-------+-------------------------------+
+; Parameter Name ; Value ; Type                          ;
++----------------+-------+-------------------------------+
+; duration       ; 1     ; Signed Integer                ;
++----------------+-------+-------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++--------------------------------------------------------+
+; Parameter Settings for User Entity Instance: timer:TY2 ;
++----------------+-------+-------------------------------+
+; Parameter Name ; Value ; Type                          ;
++----------------+-------+-------------------------------+
+; duration       ; 1     ; Signed Integer                ;
++----------------+-------+-------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++--------------------------------------------------------+
+; Parameter Settings for User Entity Instance: timer:TS1 ;
++----------------+-------+-------------------------------+
+; Parameter Name ; Value ; Type                          ;
++----------------+-------+-------------------------------+
+; duration       ; 5     ; Signed Integer                ;
++----------------+-------+-------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++--------------------------------------------------------+
+; Parameter Settings for User Entity Instance: timer:TS2 ;
++----------------+-------+-------------------------------+
+; Parameter Name ; Value ; Type                          ;
++----------------+-------+-------------------------------+
+; duration       ; 5     ; Signed Integer                ;
++----------------+-------+-------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++--------------------------------------------------------+
+; Parameter Settings for User Entity Instance: timer:TP1 ;
++----------------+-------+-------------------------------+
+; Parameter Name ; Value ; Type                          ;
++----------------+-------+-------------------------------+
+; duration       ; 5     ; Signed Integer                ;
++----------------+-------+-------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++--------------------------------------------------------+
+; Parameter Settings for User Entity Instance: timer:TP2 ;
++----------------+-------+-------------------------------+
+; Parameter Name ; Value ; Type                          ;
++----------------+-------+-------------------------------+
+; duration       ; 5     ; Signed Integer                ;
++----------------+-------+-------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------+
+; Port Connectivity Checks: "decoder_traffic_sign:T8" ;
++--------+-------+----------+-------------------------+
+; Port   ; Type  ; Severity ; Details                 ;
++--------+-------+----------+-------------------------+
+; dec_in ; Input ; Info     ; Stuck at VCC            ;
++--------+-------+----------+-------------------------+
+
+
++-----------------------------------------------------+
+; Port Connectivity Checks: "decoder_traffic_sign:T7" ;
++--------+-------+----------+-------------------------+
+; Port   ; Type  ; Severity ; Details                 ;
++--------+-------+----------+-------------------------+
+; dec_in ; Input ; Info     ; Stuck at VCC            ;
++--------+-------+----------+-------------------------+
+
+
++-----------------------------------------------------+
+; Port Connectivity Checks: "decoder_traffic_sign:T6" ;
++--------+-------+----------+-------------------------+
+; Port   ; Type  ; Severity ; Details                 ;
++--------+-------+----------+-------------------------+
+; dec_in ; Input ; Info     ; Stuck at VCC            ;
++--------+-------+----------+-------------------------+
+
+
++-----------------------------------------------------+
+; Port Connectivity Checks: "decoder_traffic_sign:T5" ;
++--------+-------+----------+-------------------------+
+; Port   ; Type  ; Severity ; Details                 ;
++--------+-------+----------+-------------------------+
+; dec_in ; Input ; Info     ; Stuck at VCC            ;
++--------+-------+----------+-------------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "counter_k_init:seconds_counter"                                                          ;
++-----------+--------+----------+-------------------------------------------------------------------------------------+
+; Port      ; Type   ; Severity ; Details                                                                             ;
++-----------+--------+----------+-------------------------------------------------------------------------------------+
+; k[23..19] ; Input  ; Info     ; Stuck at VCC                                                                        ;
+; k[15..12] ; Input  ; Info     ; Stuck at VCC                                                                        ;
+; k[30..26] ; Input  ; Info     ; Stuck at GND                                                                        ;
+; k[11..8]  ; Input  ; Info     ; Stuck at GND                                                                        ;
+; k[6..0]   ; Input  ; Info     ; Stuck at GND                                                                        ;
+; k[25]     ; Input  ; Info     ; Stuck at VCC                                                                        ;
+; k[24]     ; Input  ; Info     ; Stuck at GND                                                                        ;
+; k[18]     ; Input  ; Info     ; Stuck at GND                                                                        ;
+; k[17]     ; Input  ; Info     ; Stuck at VCC                                                                        ;
+; k[16]     ; Input  ; Info     ; Stuck at GND                                                                        ;
+; k[7]      ; Input  ; Info     ; Stuck at VCC                                                                        ;
+; q         ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; init      ; Input  ; Info     ; Stuck at GND                                                                        ;
++-----------+--------+----------+-------------------------------------------------------------------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:02     ;
++----------------+--------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus II 64-Bit Analysis & Synthesis
+    Info: Version 13.1.4 Build 182 03/12/2014 SJ Web Edition
+    Info: Processing started: Fri May 13 19:26:04 2016
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off Lab8 -c Lab8
+Warning (20028): Parallel compilation is not licensed and has been disabled
+Info (12021): Found 2 design units, including 1 entities, in source file exp8_part2.vhd
+    Info (12022): Found design unit 1: Exp8_Part2-behavior
+    Info (12023): Found entity 1: Exp8_Part2
+Info (12021): Found 2 design units, including 1 entities, in source file decoder_traffic_sign.vhd
+    Info (12022): Found design unit 1: decoder_traffic_sign-behavior
+    Info (12023): Found entity 1: decoder_traffic_sign
+Info (12021): Found 2 design units, including 1 entities, in source file timer.vhd
+    Info (12022): Found design unit 1: timer-behavior
+    Info (12023): Found entity 1: timer
+Info (12021): Found 2 design units, including 1 entities, in source file exp8_part1.vhd
+    Info (12022): Found design unit 1: Exp8_Part1-behavior
+    Info (12023): Found entity 1: Exp8_Part1
+Info (12021): Found 2 design units, including 1 entities, in source file counter_k_init.vhd
+    Info (12022): Found design unit 1: counter_k_init-rtl
+    Info (12023): Found entity 1: counter_k_init
+Info (12127): Elaborating entity "Exp8_Part2" for the top level hierarchy
+Warning (10492): VHDL Process Statement warning at Exp8_Part2.vhd(144): signal "CLOCK_50" is read inside the Process Statement but isn't in the Process Statement's sensitivity list
+Warning (10873): Using initial value X (don't care) for net "LEDR[5..0]" at Exp8_Part2.vhd(16)
+Info (12128): Elaborating entity "counter_k_init" for hierarchy "counter_k_init:seconds_counter"
+Info (12128): Elaborating entity "timer" for hierarchy "timer:TY1"
+Info (12128): Elaborating entity "timer" for hierarchy "timer:TS1"
+Info (12128): Elaborating entity "decoder_traffic_sign" for hierarchy "decoder_traffic_sign:T1"
+Info (13000): Registers with preset signals will power-up high
+Info (13003): DEV_CLRn pin will set, and not reset, register with preset signal due to NOT Gate Push-Back
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "LEDR[0]" is stuck at GND
+    Warning (13410): Pin "LEDR[1]" is stuck at GND
+    Warning (13410): Pin "LEDR[2]" is stuck at GND
+    Warning (13410): Pin "LEDR[3]" is stuck at GND
+    Warning (13410): Pin "LEDR[4]" is stuck at GND
+    Warning (13410): Pin "LEDR[5]" is stuck at GND
+    Warning (13410): Pin "HEX0[0]" is stuck at VCC
+    Warning (13410): Pin "HEX0[1]" is stuck at VCC
+    Warning (13410): Pin "HEX0[2]" is stuck at VCC
+    Warning (13410): Pin "HEX0[3]" is stuck at VCC
+    Warning (13410): Pin "HEX0[4]" is stuck at VCC
+    Warning (13410): Pin "HEX0[5]" is stuck at VCC
+    Warning (13410): Pin "HEX0[6]" is stuck at VCC
+    Warning (13410): Pin "HEX2[0]" is stuck at VCC
+    Warning (13410): Pin "HEX2[1]" is stuck at VCC
+    Warning (13410): Pin "HEX2[2]" is stuck at VCC
+    Warning (13410): Pin "HEX2[3]" is stuck at VCC
+    Warning (13410): Pin "HEX2[4]" is stuck at VCC
+    Warning (13410): Pin "HEX2[5]" is stuck at VCC
+    Warning (13410): Pin "HEX2[6]" is stuck at VCC
+    Warning (13410): Pin "HEX3[6]" is stuck at GND
+    Warning (13410): Pin "HEX4[0]" is stuck at VCC
+    Warning (13410): Pin "HEX4[1]" is stuck at VCC
+    Warning (13410): Pin "HEX4[2]" is stuck at VCC
+    Warning (13410): Pin "HEX4[3]" is stuck at VCC
+    Warning (13410): Pin "HEX4[4]" is stuck at VCC
+    Warning (13410): Pin "HEX4[5]" is stuck at VCC
+    Warning (13410): Pin "HEX4[6]" is stuck at VCC
+    Warning (13410): Pin "HEX6[0]" is stuck at VCC
+    Warning (13410): Pin "HEX6[1]" is stuck at VCC
+    Warning (13410): Pin "HEX6[2]" is stuck at VCC
+    Warning (13410): Pin "HEX6[3]" is stuck at VCC
+    Warning (13410): Pin "HEX6[4]" is stuck at VCC
+    Warning (13410): Pin "HEX6[5]" is stuck at VCC
+    Warning (13410): Pin "HEX6[6]" is stuck at VCC
+    Warning (13410): Pin "HEX7[6]" is stuck at GND
+Critical Warning (18061): Ignored Power-Up Level option on the following registers
+    Critical Warning (18010): Register timer:TS2|count[0] will power up to High
+    Critical Warning (18010): Register timer:TS1|count[0] will power up to High
+    Critical Warning (18010): Register timer:TY2|count[0] will power up to High
+    Critical Warning (18010): Register timer:TY1|count[0] will power up to High
+    Critical Warning (18010): Register timer:TP2|count[0] will power up to High
+    Critical Warning (18010): Register timer:TP1|count[0] will power up to High
+Info (286030): Timing-Driven Synthesis is running
+Info (17049): 1 registers lost all their fanouts during netlist optimizations.
+Warning (20013): Ignored assignments for entity "de2i150" -- entity does not exist in design
+    Warning (20014): Assignment for entity set_instance_assignment -name VIRTUAL_PIN ON -to FS_ADDR[0] -entity de2i150 was ignored
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Warning (21074): Design contains 17 input pin(s) that do not drive logic
+    Warning (15610): No output dependent on input pin "SW[2]"
+    Warning (15610): No output dependent on input pin "SW[3]"
+    Warning (15610): No output dependent on input pin "SW[4]"
+    Warning (15610): No output dependent on input pin "SW[5]"
+    Warning (15610): No output dependent on input pin "SW[6]"
+    Warning (15610): No output dependent on input pin "SW[7]"
+    Warning (15610): No output dependent on input pin "SW[8]"
+    Warning (15610): No output dependent on input pin "SW[9]"
+    Warning (15610): No output dependent on input pin "SW[10]"
+    Warning (15610): No output dependent on input pin "SW[11]"
+    Warning (15610): No output dependent on input pin "SW[12]"
+    Warning (15610): No output dependent on input pin "SW[13]"
+    Warning (15610): No output dependent on input pin "SW[14]"
+    Warning (15610): No output dependent on input pin "SW[15]"
+    Warning (15610): No output dependent on input pin "SW[16]"
+    Warning (15610): No output dependent on input pin "SW[17]"
+    Warning (15610): No output dependent on input pin "KEY[1]"
+Info (21057): Implemented 499 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 21 input pins
+    Info (21059): Implemented 82 output pins
+    Info (21061): Implemented 396 logic cells
+Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 67 warnings
+    Info: Peak virtual memory: 577 megabytes
+    Info: Processing ended: Fri May 13 19:26:16 2016
+    Info: Elapsed time: 00:00:12
+    Info: Total CPU time (on all processors): 00:00:03
+
+
