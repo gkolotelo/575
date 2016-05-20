@@ -6,9 +6,9 @@ entity Exp9_Part2 is
             SW: in std_logic_vector(17 downto 0);
             LEDR: out std_logic_vector(17 downto 0);
             LEDG: out std_logic_vector(7 downto 0);
-            KEY: in std_logic_vector(1 downto 0);
+            KEY: in std_logic_vector(3 downto 0);
             CLOCK_50: in std_logic;
-            HEX0, HEX1, HEX7:     out std_logic_vector(6 downto 0)
+            HEX0, HEX1, HEX2, HEX3, HEX4, HEX5, HEX6, HEX7:     out std_logic_vector(6 downto 0)
           );
 end Exp9_Part2;
 
@@ -62,8 +62,8 @@ architecture behavior OF Exp9_Part2 is
     signal wren, wren_ffd_out: std_logic_vector(0 downto 0);
 
     --parte 2
-    signal SelM1, SelM2, SelRA, SelRB, clearRegs, CLK_M, CLK_Z, CLK_R, AddSubR: std_logic;
-    signal Areg_out, Breg_out, M, G, Zreg_out, TecD, : std_logic_vector(7 downto 0);
+    signal SelM1, SelM2, SelRA, SelRB, clearRegs, CLK_M, CLK_Z, CLK_R, AddSubR, alu_of: std_logic;
+    signal Areg_out, Breg_out, M, G, Zreg_out, TecD : std_logic_vector(7 downto 0);
 
 begin
     CLK_Z <= not(KEY(0));
@@ -72,7 +72,7 @@ begin
     clearRegs <= not(KEY(3));
     TecD <= SW(7 downto 0);
     TecE <= '0' & SW(11 downto 8);
-    wren <= SW(12);
+    wren(0) <= SW(12);
     SelM2 <= SW(13);
     SelM1 <= SW(14);
     SelRB <= SW(15);
@@ -110,19 +110,19 @@ begin
                     port map(Zreg_out, TecD, SelM2, input_data);
 
     -- M9K (parte 1)
-    address_ffd: flipflop_d_nbits
-                    generic map (n => 5) -- '0' & address(4bit)
-                    port map (D => TecE, Clk => CLK_M, Rst => clearRegs, Q => address_ffd_out);
+--  address_ffd: flipflop_d_nbits
+--                  generic map (n => 5) -- '0' & address(4bit)
+--                  port map (D => TecE, Clk => CLK_M, Rst => clearRegs, Q => address_ffd_out);
+--
+--  input_data_ffd: flipflop_d_nbits
+--                  generic map (n => 8)
+--                  port map (D => input_data, Clk => CLK_M, Rst => clearRegs, Q => input_data_ffd_out);
+--
+--  wren_ffd: flipflop_d_nbits
+--                  generic map (n => 1)
+--                  port map (D => wren, Clk => CLK_M, Rst => clearRegs, Q => wren_ffd_out);
 
-    input_data_ffd: flipflop_d_nbits
-                    generic map (n => 8)
-                    port map (D => input_data, Clk => CLK_M, Rst => clearRegs, Q => input_data_ffd_out);
-
-    wren_ffd: flipflop_d_nbits
-                    generic map (n => 1)
-                    port map (D => wren, Clk => CLK_M, Rst => clearRegs, Q => wren_ffd_out);
-
-    m9k: ramlpm port map (address_ffd_out, CLK_M, input_data_ffd_out, wren_ffd_out(0), mem_data_out);
+    m9k: ramlpm port map (TecE, CLK_M, input_data, wren(0), mem_data_out);
 
 
     --dec_addr7: decodificador port map (address_ffd_out(3 downto 0), HEX7);
