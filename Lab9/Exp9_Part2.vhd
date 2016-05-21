@@ -80,7 +80,7 @@ begin
     AddSubR <= SW(17);
 
 --    input_data <= SW(17 downto 10);
---	  address <= '0' & SW(3 downto 0);
+--    address <= '0' & SW(3 downto 0);
 --    wren(0 downto 0) <= SW(8 downto 8);
 --    LEDG(0 downto 0) <= wren_ffd_out(0 downto 0);
 
