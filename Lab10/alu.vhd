@@ -2,6 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity alu is
+    generic (n: integer := 16);
     port (  A : in std_logic_vector(15 downto 0);
             B : in std_logic_vector(15 downto 0);
             O : in std_logic_vector(15 downto 0);
@@ -9,12 +10,45 @@ entity alu is
             overflow : out std_logic);
 end alu;
 
-architecture Behavior of alu is
-    signal operando: std_logic_vector(n-1 downto 0);
-    signal soma: std_logic_vector(n downto 0);
-begin 
-    operando <= entrada2 when addsub ='0' else not entrada2 + addsub;
-    soma <= ('0' & entrada1) + ('0'& operando);
-    saida <= soma(n-1 downto 0);
-    overflow <= saida(n-1) xor soma(n) xor operando(n-1) xor entrada1(n-1);
-end Behavior;
+architecture behavior of alu is
+    signal operand: std_logic_vector(n-1 downto 0);
+    signal result: std_logic_vector(n downto 0);
+begin
+    
+    alu_process: process (A, B, alufn)
+    begin
+        case (alufn) is
+            -- sum
+            when "000" =>
+                result <= ('0'&A) + ('0'&B);
+                O <= result(n-1 downto 0);
+                overflow <= result(n-1) xor result(n);
+            -- subtraction
+            when "001" =>
+                operand <= not(entrada2) + '1';
+                result <= ('0'&A) + ('0'&operand);
+                O <= result(n-1 downto 0);
+                overflow <= result(n-1) xor result(n) xor B(n-1) xor A(n-1);
+            -- and
+            when "010" =>
+                O <= A and B;
+                overflow <= '0';
+            -- or
+            when "011" =>
+                O <= A or B;
+                overflow <= '0';
+            -- LS by one
+            when "100" =>
+                O = B(n-2 downto 0) & '0';
+                overflow <= '0';
+            -- RS by one
+            when "101" =>
+                O = '0' & B(n-1 downto 1)
+                overflow <= '0';
+            ----
+            --when "110" =>
+            ---- 
+            --when "111" =>    
+        end case ;
+    end process;
+end behavior;

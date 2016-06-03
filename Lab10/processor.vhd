@@ -27,7 +27,7 @@ component alu
             overflow : out std_logic);
 end component alu;
 
-component multiplexer is 
+component multiplexer
     generic ( n: integer := 16);
     port (  entrada1: in std_logic_vector(n-1 downto 0);
             entrada2: in std_logic_vector(n-1 downto 0);
@@ -35,11 +35,12 @@ component multiplexer is
             saida: out std_logic_vector(n-1 downto 0));
 end component multiplexer;
 
+component dec3to8
+    port (  W : in std_logic_vector(2 downto 0);
+            En : in std_logic;
+            Y : out std_logic_vector(0 TO 7));
+end component dec3to8;
 
-
--- . . . declare signals
-    --type State_type is (T0, T1, T2, T3);
-    --signal Tstep_Q, Tstep_D: State_type;
     type instruction_state is (fetch, mv, mvi, add_1, add_2, add_3, sub_1, sub_2, sub_3);
     signal current_state, next_state: instruction_state;
     current_state <= fetch;
@@ -56,32 +57,17 @@ end component multiplexer;
 begin
     High <= '1';
     Low <= '0';
-    --I <= IR(1 to 3);
-    --decX: dec3to8 port map (IR(4 to 6), High, Xreg);
-    --decY: dec3to8 port map (IR(7 to 9), High, Yreg);
-
-    
-    
-    --statetable: process (Tstep_Q, Run, Done)
-    --begin
-    --    case Tstep_Q is
-    --    when T0 => if(Run = '0') then Tstep_D <= T0;
-    --    else Tstep_D <= T1;
-    --    end if; -- data is loaded into IR in this time step
-    --    -- . . . other states
-    --    end case;
-    --end process;
 
     IR: regn port map(DIN, IR_enable, Clock, opcode&Rx&Ry&offset);
 
-    R0: regn port map(BusWires, R0_enable, Clock, R0_out);
-    R1: regn port map(BusWires, R1_enable, Clock, R1_out);
-    R2: regn port map(BusWires, R2_enable, Clock, R2_out);
-    R3: regn port map(BusWires, R3_enable, Clock, R3_out);
-    R4: regn port map(BusWires, R4_enable, Clock, R4_out);
-    R5: regn port map(BusWires, R5_enable, Clock, R5_out);
-    R6: regn port map(BusWires, R6_enable, Clock, R6_out);
-    R7: regn port map(BusWires, R7_enable, Clock, R7_out);
+    R0: regn port map(BusWires, R_enable(0), Clock, R0_out);
+    R1: regn port map(BusWires, R_enable(1), Clock, R1_out);
+    R2: regn port map(BusWires, R_enable(2), Clock, R2_out);
+    R3: regn port map(BusWires, R_enable(3), Clock, R3_out);
+    R4: regn port map(BusWires, R_enable(4), Clock, R4_out);
+    R5: regn port map(BusWires, R_enable(5), Clock, R5_out);
+    R6: regn port map(BusWires, R_enable(6), Clock, R6_out);
+    R7: regn port map(BusWires, R_enable(7), Clock, R7_out);
 
     A: regn port map(BusWires, A_enable, Clock, A_out);
     G: regn port map(ALU_out, G_enable, Clock, G_out);   
@@ -92,33 +78,22 @@ begin
                                       mux_control,
                                       BusWires); 
 
+    decx: dec3to8 port map(Rx, '1', Rx_extended);
+    decy: dec3to8 port map(Ry, '1', Ry_extended);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    controlsignals: process (current_state, opcode, Rx, Ry, Run)
+    controlsignals: process (current_state, opcode, Rx_extended, Ry_extended, Run)
     --control signals:
-    --  IR_enable
-    --  mux_control
-    --  R0...R7_enable
-    --  A_enable
-    --  G_enable
-    --  alufn
-    --  Done
+    --  IR_enable (1bit)
+    --  mux_control (10 bit vector)
+    --  R0...R7_enable (8bit vector)
+    --  A_enable (1bit)
+    --  G_enable (1bit)
+    --  alufn (3bit vector)
+    --  Done (1bit)
     begin
         case current_state is 
             when fetch =>
+                IR_enable <= High;
                 Done <= Low;
                 if Run = High then
                     next_state <= fetch;
@@ -130,26 +105,75 @@ begin
                     when "0011" => next_state <= sub;
                 end case;
             when mv =>
-                mux_control <= '0'&Ry;
-                next_state <= fetch;
+                -- Control signals
+                IR_enable <= Low;
+                mux_control <= '0'&Ry_extended&'0';
+                R_enable <= Rx_extended;
                 Done <= High;
+                -- State
+                next_state <= fetch;
             when mvi =>
-                next_state <= fetch;
+                -- Control signals
+                IR_enable <= Low;
+                mux_control <= "1000000000";
+                R_enable <= Rx_extended;
                 Done <= High;
+                -- State
+                next_state <= fetch;
             when add_1 =>
+                -- Control signals
+                IR_enable <= Low;
+                mux_control <= '0'&Rx_extended&'0';
+                R_enable <= "00000000";
+                A_enable <= High;
+                -- State
                 next_state <= add_2;
             when add_2 =>
+                -- Control signals
+                IR_enable <= Low;
+                mux_control <= '0'&Ry_extended&'0';
+                R_enable <= "00000000";
+                A_enable <= Low;
+                G_enable <= High;
+                alufn <= "000" -- sum
+                -- State
                 next_state <= add_3;
             when add_3 =>
-                next_state <= fetch;
+                -- Control signals
+                IR_enable <= Low;
+                mux_control <= "0000000001";
+                R_enable <= Rx_extended;
+                G_enable <= Low;
                 Done <= High;
+                -- State
+                next_state <= fetch;
             when sub_1 =>
+                -- Control signals
+                IR_enable <= Low;
+                mux_control <= '0'&Rx_extended&'0';
+                R_enable <= "00000000";
+                A_enable <= High;
+                -- State
                 next_state <= sub_2;
             when sub_2 =>
+                -- Control signals
+                IR_enable <= Low;
+                mux_control <= '0'&Ry_extended&'0';
+                R_enable <= "00000000";
+                A_enable <= Low;
+                G_enable <= High;
+                alufn <= "001" -- subtraction
+                -- State
                 next_state <= sub_3;
             when sub_3 =>
-                next_state <= fetch;
+                -- Control signals
+                IR_enable <= Low;
+                mux_control <= "0000000001";
+                R_enable <= Rx_extended;
+                G_enable <= Low;
                 Done <= High;
+                -- State
+                next_state <= fetch;
         end case;
     end process;
     
@@ -164,7 +188,5 @@ begin
         end if;
     end process;
     
-    reg_0: regn port map (BusWires, Rin(0), Clock, R0);
-    -- . . . instantiate other registers and the adder/subtracter unit
-    -- . . . define the bus
+    
     end Behavior;
