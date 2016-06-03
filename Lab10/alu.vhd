@@ -9,7 +9,6 @@ entity alu is
             overflow : out std_logic);
 end alu;
 
-
 architecture Behavior of alu is
     signal operando: std_logic_vector(n-1 downto 0);
     signal soma: std_logic_vector(n downto 0);

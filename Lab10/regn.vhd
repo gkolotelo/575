@@ -6,7 +6,7 @@ entity regn is
 	port (  R : IN std_logic_vector(n-1 downto 0);
 			Rin, Clock : IN std_logic;
 			Q : buffer std_logic_vector(n-1 downto 0));
-	end regn;
+end regn;
 
 
 architecture Behavior OF regn is
