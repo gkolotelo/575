@@ -74,7 +74,7 @@ begin
 
     ALU: alu port map(A_out, BusWires, ALU_out, alufn, alu_overflow);
 
-    mux: multiplexer_16_todo port map(DIN, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, G_out,
+    mux: mux_16x10 port map(DIN, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, G_out,
                                       mux_control,
                                       BusWires); 
 
