@@ -5,7 +5,9 @@ entity processor is
     port ( DIN : in std_logic_vector(15 downto 0);
     Resetn, Clock, Run : in std_logic;
     Done : buffer std_logic;
-    BusWires : buffer std_logic_vector(15 downto 0));
+    BusWires : buffer std_logic_vector(15 downto 0);
+	 LEDR: out std_logic_vector(17 downto 0)
+	 );
 end processor;
 
 architecture Behavior of processor is
@@ -22,18 +24,19 @@ end component regn;
 component alu
     port (  A : in std_logic_vector(15 downto 0);
             B : in std_logic_vector(15 downto 0);
-            O : in std_logic_vector(15 downto 0);
+            O : out std_logic_vector(15 downto 0);
             alufn : in std_logic_vector(2 downto 0);
             overflow : out std_logic);
 end component alu;
 
-component multiplexer
-    generic ( n: integer := 16);
-    port (  entrada1: in std_logic_vector(n-1 downto 0);
-            entrada2: in std_logic_vector(n-1 downto 0);
-            selecao: in std_logic;
-            saida: out std_logic_vector(n-1 downto 0));
-end component multiplexer;
+
+component mux_16x10
+    generic ( n: integer := 8);
+    port ( 	DIN, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, G_out: in std_logic_vector(15 downto 0);
+			selection: in std_logic_vector(9 downto 0);
+			mux_out: out std_logic_vector(15 downto 0)
+	);
+end component mux_16x10;
 
 component dec3to8
     port (  W : in std_logic_vector(2 downto 0);
@@ -43,22 +46,34 @@ end component dec3to8;
 
     type instruction_state is (fetch, mv, mvi, add_1, add_2, add_3, sub_1, sub_2, sub_3);
     signal current_state, next_state: instruction_state;
-    current_state <= fetch;
+
+    signal ALU_out, A_out, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, G_out, IR_out: std_logic_vector(15 downto 0);
+    signal R_enable: std_logic_vector(7 downto 0);
 
     signal High, Low: std_logic;
 
-    signal IR_enable: std_logic;
+    signal IR_enable, G_enable, A_enable: std_logic;
 
     signal opcode: std_logic_vector(3 downto 0);
-    signal Rx: std_logic_vector(2 downto 0);
-    signal Ry: std_logic_vector(2 downto 0);
+    signal Rx, Ry: std_logic_vector(2 downto 0);
+    signal Rx_extended, Ry_extended: std_logic_vector(7 downto 0);
+
+    signal alufn: std_logic_vector(2 downto 0);
+    signal alu_overflow: std_logic;
+    signal mux_control: std_logic_vector(9 downto 0);
+	 signal offset: std_logic_vector(5 downto 0);
+
     --signal offset: std_logic_vector(15 downto 0);
 
 begin
     High <= '1';
     Low <= '0';
 
-    IR: regn port map(DIN, IR_enable, Clock, opcode&Rx&Ry&offset);
+    IR: regn port map(DIN, IR_enable, Clock, IR_out);
+	 opcode <= IR_out(15 downto 12);
+	 Rx <= IR_out(11 downto 9);
+	 Ry <= IR_out(8 downto 6);
+	 offset <= IR_out(5 downto 0);
 
     R0: regn port map(BusWires, R_enable(0), Clock, R0_out);
     R1: regn port map(BusWires, R_enable(1), Clock, R1_out);
@@ -72,7 +87,7 @@ begin
     A: regn port map(BusWires, A_enable, Clock, A_out);
     G: regn port map(ALU_out, G_enable, Clock, G_out);   
 
-    ALU: alu port map(A_out, BusWires, ALU_out, alufn, alu_overflow);
+    ALU_component: alu port map(A_out, BusWires, ALU_out, alufn, alu_overflow);
 
     mux: mux_16x10 port map(DIN, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, G_out,
                                       mux_control,
@@ -90,55 +105,65 @@ begin
     --  G_enable (1bit)
     --  alufn (3bit vector)
     --  Done (1bit)
+    variable next_state_var: instruction_state;
     begin
         case current_state is 
             when fetch =>
+					ledr(0) <= '1';
                 IR_enable <= High;
                 Done <= Low;
-                if Run = High then
-                    next_state <= fetch;
+                if Run = Low then
+                    next_state_var := fetch;
+                else
+							ledr(15 downto 12) <= opcode;
+                    case opcode is
+                        when "0000" => next_state_var := mv;
+                        when "0001" => next_state_var := mvi;
+                        when "0010" => next_state_var := add_1;
+                        when "0011" => next_state_var := sub_1;
+    					when others => next_state_var := fetch;
+                    end case;
                 end if;
-                case opcode is
-                    when "0000" => next_state <= mv;
-                    when "0001" => next_state <= mvi;
-                    when "0010" => next_state <= add;
-                    when "0011" => next_state <= sub;
-                end case;
             when mv =>
+					ledr <= (1 => '1', others => '0');
                 -- Control signals
                 IR_enable <= Low;
                 mux_control <= '0'&Ry_extended&'0';
                 R_enable <= Rx_extended;
                 Done <= High;
                 -- State
-                next_state <= fetch;
+                next_state_var := fetch;
             when mvi =>
+				ledr <= (2 => '1', others => '0');
                 -- Control signals
                 IR_enable <= Low;
                 mux_control <= "1000000000";
                 R_enable <= Rx_extended;
                 Done <= High;
                 -- State
-                next_state <= fetch;
+                next_state_var := fetch;
             when add_1 =>
+				ledr <= (3 => '1', others => '0');
                 -- Control signals
                 IR_enable <= Low;
                 mux_control <= '0'&Rx_extended&'0';
                 R_enable <= "00000000";
                 A_enable <= High;
                 -- State
-                next_state <= add_2;
+                next_state_var := add_2;
             when add_2 =>
+				ledr <= (4 => '1', others => '0');
                 -- Control signals
                 IR_enable <= Low;
                 mux_control <= '0'&Ry_extended&'0';
                 R_enable <= "00000000";
                 A_enable <= Low;
                 G_enable <= High;
-                alufn <= "000" -- sum
+                alufn <= "000"; -- sum
                 -- State
-                next_state <= add_3;
+                next_state_var := add_3;
             when add_3 =>
+				ledr <= (5 => '1', others => '0');
                 -- Control signals
                 IR_enable <= Low;
                 mux_control <= "0000000001";
@@ -146,26 +171,29 @@ begin
                 G_enable <= Low;
                 Done <= High;
                 -- State
-                next_state <= fetch;
+                next_state_var := fetch;
             when sub_1 =>
+				ledr <= (6 => '1', others => '0'); 
                 -- Control signals
                 IR_enable <= Low;
                 mux_control <= '0'&Rx_extended&'0';
                 R_enable <= "00000000";
                 A_enable <= High;
                 -- State
-                next_state <= sub_2;
+                next_state_var := sub_2;
             when sub_2 =>
+				ledr <= (7 => '1', others => '0');
                 -- Control signals
                 IR_enable <= Low;
                 mux_control <= '0'&Ry_extended&'0';
                 R_enable <= "00000000";
                 A_enable <= Low;
                 G_enable <= High;
-                alufn <= "001" -- subtraction
+                alufn <= "001"; -- subtraction
                 -- State
-                next_state <= sub_3;
+                next_state_var := sub_3;
             when sub_3 =>
+				ledr <= (8 => '1', others => '0');
                 -- Control signals
                 IR_enable <= Low;
                 mux_control <= "0000000001";
@@ -173,20 +201,23 @@ begin
                 G_enable <= Low;
                 Done <= High;
                 -- State
-                next_state <= fetch;
+                next_state_var := fetch;
         end case;
+		  next_state <= next_state_var;
     end process;
     
     fsmflipflops: process (Clock, Resetn, next_state)
+	 variable current_state_var: instruction_state;
     begin
-        if Resetn = High then
-            current_state <= fetch;
+        if Resetn = Low then
+            current_state_var := fetch;
             -- what else?
+        elsif rising_edge(Clock) then
+            current_state_var := next_state;
         end if;
-        if rising_edge(Clock) then
-            current_state <= next_state;
-        end if;
+		  current_state <= current_state_var;
     end process;
+
     
     
     end Behavior;

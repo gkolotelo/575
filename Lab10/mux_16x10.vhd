@@ -35,6 +35,8 @@ begin
 				mux_out <= R7_out;
 			when "0000000001" =>
 				mux_out <= G_out;
+			when others =>
+				mux_out <= (others => '0');
 		end case;
     end process;
 end architecture;
