@@ -1,5 +1,5 @@
 Assembler report for Lab10
-Fri Jun 03 21:01:01 2016
+Mon Jun 06 21:43:36 2016
 Quartus II 64-Bit Version 13.1.4 Build 182 03/12/2014 SJ Web Edition
 
 
@@ -10,7 +10,7 @@ Quartus II 64-Bit Version 13.1.4 Build 182 03/12/2014 SJ Web Edition
   2. Assembler Summary
   3. Assembler Settings
   4. Assembler Generated Files
-  5. Assembler Device Options: F:/ES575A/Lab10/output_files/Lab10.sof
+  5. Assembler Device Options: C:/Users/ES575A/Downloads/tmp/Lab10_gkk_asi/output_files/Lab10.sof
   6. Assembler Messages
 
 
@@ -37,7 +37,7 @@ applicable agreement for further details.
 +---------------------------------------------------------------+
 ; Assembler Summary                                             ;
 +-----------------------+---------------------------------------+
-; Assembler Status      ; Successful - Fri Jun 03 21:01:01 2016 ;
+; Assembler Status      ; Successful - Mon Jun 06 21:43:36 2016 ;
 ; Revision Name         ; Lab10                                 ;
 ; Top-level Entity Name ; Exp10_Part1                           ;
 ; Family                ; Cyclone IV GX                         ;
@@ -77,24 +77,24 @@ applicable agreement for further details.
 +-----------------------------------------------------------------------------+----------+---------------+
 
 
-+----------------------------------------+
-; Assembler Generated Files              ;
-+----------------------------------------+
-; File Name                              ;
-+----------------------------------------+
-; F:/ES575A/Lab10/output_files/Lab10.sof ;
-+----------------------------------------+
++--------------------------------------------------------------------+
+; Assembler Generated Files                                          ;
++--------------------------------------------------------------------+
+; File Name                                                          ;
++--------------------------------------------------------------------+
+; C:/Users/ES575A/Downloads/tmp/Lab10_gkk_asi/output_files/Lab10.sof ;
++--------------------------------------------------------------------+
 
 
-+------------------------------------------------------------------+
-; Assembler Device Options: F:/ES575A/Lab10/output_files/Lab10.sof ;
-+----------------+-------------------------------------------------+
-; Option         ; Setting                                         ;
-+----------------+-------------------------------------------------+
-; Device         ; EP4CGX150DF31C7                                 ;
-; JTAG usercode  ; 0x00767543                                      ;
-; Checksum       ; 0x00767543                                      ;
-+----------------+-------------------------------------------------+
++----------------------------------------------------------------------------------------------+
+; Assembler Device Options: C:/Users/ES575A/Downloads/tmp/Lab10_gkk_asi/output_files/Lab10.sof ;
++----------------+-----------------------------------------------------------------------------+
+; Option         ; Setting                                                                     ;
++----------------+-----------------------------------------------------------------------------+
+; Device         ; EP4CGX150DF31C7                                                             ;
+; JTAG usercode  ; 0x00767F96                                                                  ;
+; Checksum       ; 0x00767F96                                                                  ;
++----------------+-----------------------------------------------------------------------------+
 
 
 +--------------------+
@@ -103,14 +103,14 @@ applicable agreement for further details.
 Info: *******************************************************************
 Info: Running Quartus II 64-Bit Assembler
     Info: Version 13.1.4 Build 182 03/12/2014 SJ Web Edition
-    Info: Processing started: Fri Jun 03 21:00:49 2016
+    Info: Processing started: Mon Jun 06 21:43:30 2016
 Info: Command: quartus_asm --read_settings_files=off --write_settings_files=off Lab10 -c Lab10
 Info (115031): Writing out detailed assembly data for power analysis
 Info (115030): Assembler is generating device programming files
 Info: Quartus II 64-Bit Assembler was successful. 0 errors, 0 warnings
-    Info: Peak virtual memory: 541 megabytes
-    Info: Processing ended: Fri Jun 03 21:01:02 2016
-    Info: Elapsed time: 00:00:13
-    Info: Total CPU time (on all processors): 00:00:06
+    Info: Peak virtual memory: 548 megabytes
+    Info: Processing ended: Mon Jun 06 21:43:36 2016
+    Info: Elapsed time: 00:00:06
+    Info: Total CPU time (on all processors): 00:00:05
 
 

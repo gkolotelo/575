@@ -4,7 +4,7 @@ use ieee.std_logic_1164.all;
 entity dec3to8 is
     port (  W : in std_logic_vector(2 downto 0);
             En : in std_logic;
-            Y : out std_logic_vector(0 TO 7));
+            Y : out std_logic_vector(7 downto 0));
 end dec3to8;
 
 

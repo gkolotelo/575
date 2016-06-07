@@ -1,0 +1,59 @@
+# Reading C:/altera/13.1/modelsim_ase/tcl/vsim/pref.tcl 
+# do Lab10_run_msim_rtl_vhdl.do 
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Copying C:\altera\13.1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# ** Warning: Copied C:\altera\13.1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini.
+#          Updated modelsim.ini.
+# 
+# vcom -93 -work work {C:/Users/ES575A/Downloads/tmp/Lab10_gkk_asi/aluu.vhd}
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package std_logic_arith
+# -- Loading package STD_LOGIC_UNSIGNED
+# -- Compiling entity aluu
+# -- Compiling architecture behavior of aluu
+# ** Error: C:/Users/ES575A/Downloads/tmp/Lab10_gkk_asi/aluu.vhd(21): (vcom-1339) Case statement choices cover only 8 out of 729 cases.
+# 
+# ** Error: C:/Users/ES575A/Downloads/tmp/Lab10_gkk_asi/aluu.vhd(55): VHDL Compiler exiting
+# ** Error: C:/altera/13.1/modelsim_ase/win32aloem/vcom failed.
+# Error in macro ./Lab10_run_msim_rtl_vhdl.do line 8
+# C:/altera/13.1/modelsim_ase/win32aloem/vcom failed.
+#     while executing
+# "vcom -93 -work work {C:/Users/ES575A/Downloads/tmp/Lab10_gkk_asi/aluu.vhd}"
+# Load canceled
+cd C:/Users/ES575A/Downloads/tmp/Lab10_gkk_asi
+# reading C:\altera\13.1\modelsim_ase\win32aloem/../modelsim.ini
+# Load canceled
+cd C:/Users/ES575A/Downloads/tmp/Lab10_gkk_asi
+vlib work
+vcom -reportprogress 300 -work work C:/Users/ES575A/Downloads/tmp/Lab10_gkk_asi/processor.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package std_logic_arith
+# -- Loading package STD_LOGIC_SIGNED
+# -- Compiling entity processor
+# -- Compiling architecture Behavior of processor
+vcom -reportprogress 300 -work work C:/Users/ES575A/Downloads/tmp/Lab10_gkk_asi/processor.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package std_logic_arith
+# -- Loading package STD_LOGIC_SIGNED
+# -- Compiling entity processor
+# -- Compiling architecture Behavior of processor
+cd C:/Users/ES575A/Downloads/tmp/Lab10_gkk_asi/work
+vcom -reportprogress 300 -work work C:/Users/ES575A/Downloads/tmp/Lab10_gkk_asi/work/processor.vhd
+# Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+# ** Error: (vcom-19) Failed to access library 'work' at "work".
+# 
+# No such file or directory. (errno = ENOENT)

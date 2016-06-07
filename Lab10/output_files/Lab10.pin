@@ -79,15 +79,15 @@ NC                           : A2        :        :                   :         
 ~ALTERA_DATA0~ / RESERVED_INPUT_WITH_WEAK_PULLUP : A3        : input  : 2.5 V             :         : 9         : N              
 RESERVED_INPUT               : A4        :        :                   :         : 8         :                
 RESERVED_INPUT               : A5        :        :                   :         : 8         :                
-RESERVED_INPUT               : A6        :        :                   :         : 8         :                
-RESERVED_INPUT               : A7        :        :                   :         : 8         :                
+HEX5[4]                      : A6        : output : 2.5 V             :         : 8         : Y              
+HEX5[3]                      : A7        : output : 2.5 V             :         : 8         : Y              
 RESERVED_INPUT               : A8        :        :                   :         : 8         :                
-RESERVED_INPUT               : A9        :        :                   :         : 8         :                
-RESERVED_INPUT               : A10       :        :                   :         : 8         :                
-RESERVED_INPUT               : A11       :        :                   :         : 8         :                
+HEX5[2]                      : A9        : output : 2.5 V             :         : 8         : Y              
+HEX5[1]                      : A10       : output : 2.5 V             :         : 8         : Y              
+HEX5[5]                      : A11       : output : 2.5 V             :         : 8         : Y              
 RESERVED_INPUT               : A12       :        :                   :         : 8         :                
-RESERVED_INPUT               : A13       :        :                   :         : 8         :                
-RESERVED_INPUT               : A14       :        :                   :         : 8         :                
+HEX4[1]                      : A13       : output : 2.5 V             :         : 8         : Y              
+HEX4[0]                      : A14       : output : 2.5 V             :         : 8         : Y              
 GND+                         : A15       :        :                   :         : 7         :                
 RESERVED_INPUT               : A16       :        :                   :         : 7         :                
 RESERVED_INPUT               : A17       :        :                   :         : 7         :                
@@ -406,11 +406,11 @@ GND                          : B2        : gnd    :                   :         
 ~ALTERA_DCLK~                : B3        : output : 2.5 V             :         : 9         : N              
 ~ALTERA_NCSO~ / RESERVED_INPUT_WITH_WEAK_PULLUP : B4        : input  : 2.5 V             :         : 9         : N              
 GND                          : B5        : gnd    :                   :         :           :                
-RESERVED_INPUT               : B6        :        :                   :         : 8         :                
+HEX5[6]                      : B6        : output : 2.5 V             :         : 8         : Y              
 RESERVED_INPUT               : B7        :        :                   :         : 8         :                
 GND                          : B8        : gnd    :                   :         :           :                
-RESERVED_INPUT               : B9        :        :                   :         : 8         :                
-RESERVED_INPUT               : B10       :        :                   :         : 8         :                
+HEX6[0]                      : B9        : output : 2.5 V             :         : 8         : Y              
+HEX6[1]                      : B10       : output : 2.5 V             :         : 8         : Y              
 GND                          : B11       : gnd    :                   :         :           :                
 RESERVED_INPUT               : B12       :        :                   :         : 8         :                
 HEX1[1]                      : B13       : output : 2.5 V             :         : 8         : Y              
@@ -433,16 +433,16 @@ GND                          : B29       : gnd    :                   :         
 RESERVED_INPUT               : B30       :        :                   :         : 7         :                
 nCE                          : C1        :        :                   :         : 9         :                
 SW[3]                        : C2        : input  : 2.5 V             :         : 8         : Y              
-RESERVED_INPUT               : C3        :        :                   :         : 8         :                
-RESERVED_INPUT               : C4        :        :                   :         : 8         :                
-RESERVED_INPUT               : C5        :        :                   :         : 8         :                
-RESERVED_INPUT               : C6        :        :                   :         : 8         :                
-RESERVED_INPUT               : C7        :        :                   :         : 8         :                
-RESERVED_INPUT               : C8        :        :                   :         : 8         :                
-RESERVED_INPUT               : C9        :        :                   :         : 8         :                
-RESERVED_INPUT               : C10       :        :                   :         : 8         :                
-RESERVED_INPUT               : C11       :        :                   :         : 8         :                
-RESERVED_INPUT               : C12       :        :                   :         : 8         :                
+HEX4[6]                      : C3        : output : 2.5 V             :         : 8         : Y              
+HEX4[5]                      : C4        : output : 2.5 V             :         : 8         : Y              
+HEX4[4]                      : C5        : output : 2.5 V             :         : 8         : Y              
+HEX4[3]                      : C6        : output : 2.5 V             :         : 8         : Y              
+HEX4[2]                      : C7        : output : 2.5 V             :         : 8         : Y              
+HEX6[2]                      : C8        : output : 2.5 V             :         : 8         : Y              
+HEX6[3]                      : C9        : output : 2.5 V             :         : 8         : Y              
+HEX7[3]                      : C10       : output : 2.5 V             :         : 8         : Y              
+HEX7[4]                      : C11       : output : 2.5 V             :         : 8         : Y              
+HEX7[5]                      : C12       : output : 2.5 V             :         : 8         : Y              
 RESERVED_INPUT               : C13       :        :                   :         : 8         :                
 RESERVED_INPUT               : C14       :        :                   :         : 8         :                
 RESERVED_INPUT               : C15       :        :                   :         : 8         :                
@@ -463,16 +463,16 @@ RESERVED_INPUT               : C29       :        :                   :         
 SW[16]                       : C30       : input  : 2.5 V             :         : 6         : Y              
 RESERVED_INPUT               : D1        :        :                   :         : 8         :                
 GND                          : D2        : gnd    :                   :         :           :                
-RESERVED_INPUT               : D3        :        :                   :         : 8         :                
+HEX5[0]                      : D3        : output : 2.5 V             :         : 8         : Y              
 HEX3[6]                      : D4        : output : 2.5 V             :         : 8         : Y              
 HEX3[5]                      : D5        : output : 2.5 V             :         : 8         : Y              
 RESERVED_INPUT               : D6        :        :                   :         : 8         :                
 HEX3[1]                      : D7        : output : 2.5 V             :         : 8         : Y              
-RESERVED_INPUT               : D8        :        :                   :         : 8         :                
-RESERVED_INPUT               : D9        :        :                   :         : 8         :                
+HEX6[4]                      : D8        : output : 2.5 V             :         : 8         : Y              
+HEX6[5]                      : D9        : output : 2.5 V             :         : 8         : Y              
 HEX3[0]                      : D10       : output : 2.5 V             :         : 8         : Y              
 RESERVED_INPUT               : D11       :        :                   :         : 8         :                
-RESERVED_INPUT               : D12       :        :                   :         : 8         :                
+HEX7[6]                      : D12       : output : 2.5 V             :         : 8         : Y              
 RESERVED_INPUT               : D13       :        :                   :         : 8         :                
 RESERVED_INPUT               : D14       :        :                   :         : 8         :                
 RESERVED_INPUT               : D15       :        :                   :         : 8         :                
@@ -499,8 +499,8 @@ GND                          : E5        : gnd    :                   :         
 HEX3[2]                      : E6        : output : 2.5 V             :         : 8         : Y              
 RESERVED_INPUT               : E7        :        :                   :         : 8         :                
 GND                          : E8        : gnd    :                   :         :           :                
-RESERVED_INPUT               : E9        :        :                   :         : 8         :                
-RESERVED_INPUT               : E10       :        :                   :         : 8         :                
+HEX6[6]                      : E9        : output : 2.5 V             :         : 8         : Y              
+HEX7[0]                      : E10       : output : 2.5 V             :         : 8         : Y              
 GND                          : E11       : gnd    :                   :         :           :                
 HEX0[1]                      : E12       : output : 2.5 V             :         : 8         : Y              
 RESERVED_INPUT               : E13       :        :                   :         : 8         :                
@@ -528,8 +528,8 @@ HEX2[5]                      : F4        : output : 2.5 V             :         
 RESERVED_INPUT               : F5        :        :                   :         : 8         :                
 HEX2[4]                      : F6        : output : 2.5 V             :         : 8         : Y              
 HEX2[2]                      : F7        : output : 2.5 V             :         : 8         : Y              
-RESERVED_INPUT               : F8        :        :                   :         : 8         :                
-RESERVED_INPUT               : F9        :        :                   :         : 8         :                
+HEX7[1]                      : F8        : output : 2.5 V             :         : 8         : Y              
+HEX7[2]                      : F9        : output : 2.5 V             :         : 8         : Y              
 HEX2[6]                      : F10       : output : 2.5 V             :         : 8         : Y              
 HEX0[3]                      : F11       : output : 2.5 V             :         : 8         : Y              
 HEX1[3]                      : F12       : output : 2.5 V             :         : 8         : Y              
