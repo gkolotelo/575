@@ -128,40 +128,129 @@ BEGIN
     -- multiplexer 16-bits wide, fan-in of 10.
     mux: mux_16x10 port map(
             DIN, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, G_out,
-            mux_control,
+            mux_selection,
             BusWires);
 
     --... instantiate other registers and the adder/subtracter unit 
     --... deﬁne the bus 
     
 -- Processes
+
+    -- Instruction timing FSM
     statetable: PROCESS (TstepQ_Curr, Run, Done) 
     BEGIN 
         CASE TstepQ_Curr IS 
             WHEN T0 => 
-                IF(Run = '0') THEN 
+            -- data is loaded into IR in this time step 
+                IF(Run = Low) THEN 
                     TstepD_Next <= T0;
                 ELSE 
                     TstepD_Next <= T1;
                 END IF;
-        -- data is loaded into IR in this time step 
-        --... other states END CASE;
+            when T1 =>
+                if(Done = High) THEN
+                    TstepD_Next <= T0;
+                else
+                    TstepD_Next <= T2;
+                end if
+            when T2 =>
+                if(Done = High) THEN
+                    TstepD_Next <= T0;
+                else
+                    TstepD_Next <= T3;
+                end if
+            when T3 =>
+                TstepD_Next <= T0;
+        END CASE;
     END PROCESS;
 
     -- Processor control signals
+    -- Setting, for each time step, the signals to the corresponding instruction.
     controlsignals: PROCESS (TstepQ_Curr, curr_instr, Xreg, Yreg) 
     BEGIN 
         --... specify initial values 
         CASE TstepQ_Curr IS 
-            WHEN T0 => -- store DIN in IR as long as TstepQ_Curr = 0 IRin <= '1';
-            WHEN T1 => -- deﬁne signals in time step T1 
-                CASE curr_instr IS 
+            WHEN T0 =>
+                IR_enable <= High;
+                Done <= Low;
+                mux_selection <= "0000000000"; -- Disable mux
+                R_enable <= "00000000";
+                A_enable <= Low;
+                G_enable <= Low;
+                --alufn <= "000"; -- There is no 'stop' function
+
+            WHEN T1 =>
+                IR_enable <= Low;
+                CASE curr_instr IS
+                    when mv =>
+                        Done <= High;
+                        mux_selection <= "0"&Ry&"0";
+                        R_enable <= Rx;
+                        A_enable <= Low;
+                        G_enable <= Low;
+                        --alufn <= "000"; -- There is no 'stop' function
+                    when mvi =>
+                        Done <= High;
+                        mux_selection <= "1000000000";
+                        R_enable <= Rx;
+                        A_enable <= Low;
+                        G_enable <= Low;
+                        --alufn <= "000"; -- There is no 'stop' function
+                    when add =>
+                        Done <= Low;
+                        mux_selection <= "0"&Rx&"0";
+                        R_enable <= "00000000";
+                        A_enable <= High;
+                        G_enable <= Low;
+                        --alufn <= "000"; -- There is no 'stop' function
+                    when sub =>
+                        Done <= Low;
+                        mux_selection <= "0"&Rx&"0";
+                        R_enable <= "00000000";
+                        A_enable <= High;
+                        G_enable <= Low;
+                        --alufn <= "000"; -- There is no 'stop' function
+                    --when invalid => Done <= High;
                 END CASE;
-            WHEN T2 => -- deﬁne signals in time step T2 
-                CASE curr_instr IS 
+
+            WHEN T2 =>
+                IR_enable <= Low;
+                CASE curr_instr IS
+                    when add =>
+                        Done <= Low;
+                        mux_selection <= "0"&Ry&"0";
+                        R_enable <= Rx;
+                        A_enable <= Low;
+                        G_enable <= High;
+                        alufn <= "000";
+                    when sub =>
+                        Done <= Low;
+                        mux_selection <= "0"&Ry&"0";
+                        R_enable <= Rx;
+                        A_enable <= Low;
+                        G_enable <= High;
+                        alufn <= "001";
+                    --when invalid => Done <= High;
                 END CASE;
-            WHEN T3 => -- deﬁne signals in time step T3 
-                CASE curr_instr IS 
+
+            WHEN T3 =>
+                IR_enable <= Low;
+                CASE curr_instr IS
+                    when add =>
+                        Done <= High;
+                        mux_selection <= "0000000001";
+                        R_enable <= Rx;
+                        A_enable <= Low;
+                        G_enable <= Low;
+                        --alufn <= "000"; -- There is no 'stop' function
+                    when sub =>
+                        Done <= High;
+                        mux_selection <= "0000000001";
+                        R_enable <= Rx;
+                        A_enable <= Low;
+                        G_enable <= Low;
+                        --alufn <= "000"; -- There is no 'stop' function
+                    --when invalid => Done <= High;
                 END CASE;
         END CASE;
     END PROCESS;
@@ -174,7 +263,6 @@ BEGIN
         elsif (rising_edge(Clock)) THEN
             TstepQ_Curr <= TstepD_Next;
         end if
-
     END PROCESS;
 
 END Behavior;

@@ -61,7 +61,7 @@ end component dec3to8;
 
     signal alufn: std_logic_vector(2 downto 0);
     signal alu_overflow: std_logic;
-    signal mux_control: std_logic_vector(9 downto 0);
+    signal mux_selection: std_logic_vector(9 downto 0);
     signal offset: std_logic_vector(5 downto 0);
 
     --signal offset: std_logic_vector(15 downto 0);
@@ -94,7 +94,7 @@ begin
     ALU_component: alu port map(A_out, BusWires, ALU_out, alufn, alu_overflow);
 
     mux: mux_16x10 port map(DIN, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, G_out,
-                                      mux_control,
+                                      mux_selection,
                                       BusWires); 
 
     decx: dec3to8 port map(Rx, '1', Rx_extended);
@@ -104,7 +104,7 @@ begin
     controlsignals: process (current_state, opcode, Rx_extended, Ry_extended, Run)
     --control signals:
     --  IR_enable (1bit)
-    --  mux_control (10 bit vector)
+    --  mux_selection (10 bit vector)
     --  R0...R7_enable (8bit vector)
     --  A_enable (1bit)
     --  G_enable (1bit)
@@ -133,7 +133,7 @@ begin
                     LEDR <= (1 => '1', others => '0');
                 -- Control signals
                 IR_enable <= Low;
-                mux_control <= '0'&Ry_extended&'0';
+                mux_selection <= '0'&Ry_extended&'0';
                 R_enable <= Rx_extended;
                 Done <= High;
                 -- State
@@ -142,7 +142,7 @@ begin
                 LEDR <= (2 => '1', others => '0');
                 -- Control signals
                 IR_enable <= Low;
-                mux_control <= "1000000000";
+                mux_selection <= "1000000000";
                 R_enable <= Rx_extended;
                 -- State
                 next_state_var := mvi_2;
@@ -150,7 +150,7 @@ begin
                 LEDR <= (2 => '1', others => '0');
                 -- Control signals
                 IR_enable <= Low;
-                mux_control <= "0000000000";
+                mux_selection <= "0000000000";
                 R_enable <= "00000000";
                 Done <= High;
                 -- State
@@ -159,7 +159,7 @@ begin
                 LEDR <= (3 => '1', others => '0');
                 -- Control signals
                 IR_enable <= Low;
-                mux_control <= '0'&Rx_extended&'0';
+                mux_selection <= '0'&Rx_extended&'0';
                 R_enable <= "00000000";
                 A_enable <= High;
                 -- State
@@ -168,7 +168,7 @@ begin
                 LEDR <= (4 => '1', others => '0');
                 -- Control signals
                 IR_enable <= Low;
-                mux_control <= '0'&Ry_extended&'0';
+                mux_selection <= '0'&Ry_extended&'0';
                 R_enable <= "00000000";
                 A_enable <= Low;
                 G_enable <= High;
@@ -179,7 +179,7 @@ begin
                 LEDR <= (5 => '1', others => '0');
                 -- Control signals
                 IR_enable <= Low;
-                mux_control <= "0000000001";
+                mux_selection <= "0000000001";
                 R_enable <= Rx_extended;
                 G_enable <= Low;
                 Done <= High;
@@ -189,7 +189,7 @@ begin
                 LEDR <= (6 => '1', others => '0'); 
                 -- Control signals
                 IR_enable <= Low;
-                mux_control <= '0'&Rx_extended&'0';
+                mux_selection <= '0'&Rx_extended&'0';
                 R_enable <= "00000000";
                 A_enable <= High;
                 -- State
@@ -198,7 +198,7 @@ begin
                 LEDR <= (7 => '1', others => '0');
                 -- Control signals
                 IR_enable <= Low;
-                mux_control <= '0'&Ry_extended&'0';
+                mux_selection <= '0'&Ry_extended&'0';
                 R_enable <= "00000000";
                 A_enable <= Low;
                 G_enable <= High;
@@ -209,7 +209,7 @@ begin
                 LEDR <= (8 => '1', others => '0');
                 -- Control signals
                 IR_enable <= Low;
-                mux_control <= "0000000001";
+                mux_selection <= "0000000001";
                 R_enable <= Rx_extended;
                 G_enable <= Low;
                 Done <= High;
