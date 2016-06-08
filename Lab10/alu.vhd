@@ -6,7 +6,7 @@ entity alu is
     generic (n: integer := 16);
     port (  A : in std_logic_vector(15 downto 0);
             B : in std_logic_vector(15 downto 0);
-            O : out std_logic_vector(15 downto 0);
+            O : buffer std_logic_vector(15 downto 0);
             alufn : in std_logic_vector(2 downto 0);
             overflow : out std_logic);
 end alu;

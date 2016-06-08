@@ -25,7 +25,7 @@ end component regn;
 component alu
     port (  A : in std_logic_vector(15 downto 0);
             B : in std_logic_vector(15 downto 0);
-            O : out std_logic_vector(15 downto 0);
+            O : buffer std_logic_vector(15 downto 0);
             alufn : in std_logic_vector(2 downto 0);
             overflow : out std_logic);
 end component alu;
@@ -35,7 +35,7 @@ component mux_16x10
     generic ( n: integer := 8);
     port (  DIN, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, G_out: in std_logic_vector(15 downto 0);
             selection: in std_logic_vector(9 downto 0);
-            mux_out: out std_logic_vector(15 downto 0)
+            mux_out: buffer std_logic_vector(15 downto 0)
     );
 end component mux_16x10;
 

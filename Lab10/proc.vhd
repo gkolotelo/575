@@ -37,7 +37,7 @@ ARCHITECTURE Behavior OF proc IS
     component alu
         port (  A : in std_logic_vector(15 downto 0);
                 B : in std_logic_vector(15 downto 0);
-                O : out std_logic_vector(15 downto 0);
+                O : buffer std_logic_vector(15 downto 0);
                 alufn : in std_logic_vector(2 downto 0);
                 overflow : out std_logic);
     end component alu;
@@ -47,7 +47,7 @@ ARCHITECTURE Behavior OF proc IS
         generic ( n: integer := 8);
         port (  DIN, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, G_out: in std_logic_vector(15 downto 0);
                 selection: in std_logic_vector(9 downto 0);
-                mux_out: out std_logic_vector(15 downto 0)
+                mux_out: buffer std_logic_vector(15 downto 0)
         );
     end component mux_16x10;
 
@@ -70,7 +70,7 @@ ARCHITECTURE Behavior OF proc IS
     signal ALU_out, A_out, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, G_out, IR_out: std_logic_vector(15 downto 0);
     
     -- Register write enable
-    signal R_enable: std_logic_vector(7 downto 0);
+    signal R_enable: std_logic_vector(0 to 7); -- 0 to 7 = left to right
     signal IR_enable, G_enable, A_enable: std_logic;
 
     -- Instruction signal
@@ -90,6 +90,7 @@ ARCHITECTURE Behavior OF proc IS
     signal High, Low: std_logic;
 
 BEGIN 
+-- Signals and components
     -- Standardizing logic levels
     High <= '1';
     Low <= '0';
@@ -103,17 +104,46 @@ BEGIN
         sub     when "011";
         invalid when others; 
 
+    -- Register address decoder
     decX: dec3to8 PORT MAP (IR_out(4 TO 6), High, Rx); --(11 downto 9)
     decY: dec3to8 PORT MAP (IR_out(7 TO 9), High, Ry); --(8 downto 6)
 
+    -- Processor registers (0 to 7 = left to right)
+    reg_0: regn PORT MAP (BusWires, R_enable(0), Clock, R0_out);
+    reg_1: regn PORT MAP (BusWires, R_enable(1), Clock, R1_out);
+    reg_2: regn PORT MAP (BusWires, R_enable(2), Clock, R2_out);
+    reg_3: regn PORT MAP (BusWires, R_enable(3), Clock, R3_out);
+    reg_4: regn PORT MAP (BusWires, R_enable(4), Clock, R4_out);
+    reg_5: regn PORT MAP (BusWires, R_enable(5), Clock, R5_out);
+    reg_6: regn PORT MAP (BusWires, R_enable(6), Clock, R6_out);
+    reg_7: regn PORT MAP (BusWires, R_enable(7), Clock, R7_out);
+
+    -- ALU's Register A (input) and G (output)
+    reg_A: regn port map(BusWires, A_enable, Clock, A_out);
+    reg_G: regn port map(ALU_out, G_enable, Clock, G_out);
+
+    -- ALU component
+    ALU_component: alu port map(A_out, BusWires, ALU_out, alufn, alu_overflow);
+
+    -- multiplexer 16-bits wide, fan-in of 10.
+    mux: mux_16x10 port map(
+            DIN, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, G_out,
+            mux_control,
+            BusWires);
+
+    --... instantiate other registers and the adder/subtracter unit 
+    --... deﬁne the bus 
     
+-- Processes
     statetable: PROCESS (TstepQ_Curr, Run, Done) 
     BEGIN 
         CASE TstepQ_Curr IS 
             WHEN T0 => 
-                IF(Run = '0') THEN TstepD_Next <= T0;
-                ELSE TstepD_Next <= T1;
-        END IF;
+                IF(Run = '0') THEN 
+                    TstepD_Next <= T0;
+                ELSE 
+                    TstepD_Next <= T1;
+                END IF;
         -- data is loaded into IR in this time step 
         --... other states END CASE;
     END PROCESS;
@@ -139,10 +169,12 @@ BEGIN
     -- FSM: state updating
     fsmﬂipﬂops: PROCESS (Clock, Resetn, TstepD_Next) 
     BEGIN 
-        --... 
+        if (Resetn = Low) THEN
+            TstepQ_Curr <= T0;
+        elsif (rising_edge(Clock)) THEN
+            TstepQ_Curr <= TstepD_Next;
+        end if
+
     END PROCESS;
 
-    reg_0: regn PORT MAP (BusWires, Rin(0), Clock, R0);
-    --... instantiate other registers and the adder/subtracter unit 
-    --... deﬁne the bus 
 END Behavior;
