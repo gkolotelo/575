@@ -95,18 +95,24 @@ BEGIN
     High <= '1';
     Low <= '0';
 
+    IR: regn port map(DIN, IR_enable, Clock, IR_out);
+
     -- Lookup table for curr_instr(opcode)
-    opcode <= IR_out(0 to 3); --(15 downto 12)
+    --opcode <= IR_out(0 to 3); --(15 downto 12)
+    opcode <= IR_out(15 downto 12);
+    --Rx <= IR_out(11 downto 9);
+    --Ry <= IR_out(8 downto 6);
+    offset <= IR_out(5 downto 0);
     with opcode select curr_instr <=
-        mv      when "000";
-        mvi     when "001";
-        add     when "010";
-        sub     when "011";
+        mv      when "000",
+        mvi     when "001",
+        add     when "010",
+        sub     when "011",
         invalid when others; 
 
     -- Register address decoder
-    decX: dec3to8 PORT MAP (IR_out(4 TO 6), High, Rx); --(11 downto 9)
-    decY: dec3to8 PORT MAP (IR_out(7 TO 9), High, Ry); --(8 downto 6)
+    decX: dec3to8 PORT MAP (IR_out(11 downto 9), High, Rx); --(11 downto 9)
+    decY: dec3to8 PORT MAP (IR_out(8 downto 6), High, Ry); --(8 downto 6)
 
     -- Processor registers (0 to 7 = left to right)
     reg_0: regn PORT MAP (BusWires, R_enable(0), Clock, R0_out);
@@ -152,13 +158,13 @@ BEGIN
                     TstepD_Next <= T0;
                 else
                     TstepD_Next <= T2;
-                end if
+                end if;
             when T2 =>
                 if(Done = High) THEN
                     TstepD_Next <= T0;
                 else
                     TstepD_Next <= T3;
-                end if
+                end if;
             when T3 =>
                 TstepD_Next <= T0;
         END CASE;
@@ -166,7 +172,7 @@ BEGIN
 
     -- Processor control signals
     -- Setting, for each time step, the signals to the corresponding instruction.
-    controlsignals: PROCESS (TstepQ_Curr, curr_instr, Xreg, Yreg) 
+    controlsignals: PROCESS (TstepQ_Curr, curr_instr, Rx, Ry) 
     BEGIN 
         --... specify initial values 
         CASE TstepQ_Curr IS 
@@ -262,7 +268,7 @@ BEGIN
             TstepQ_Curr <= T0;
         elsif (rising_edge(Clock)) THEN
             TstepQ_Curr <= TstepD_Next;
-        end if
+        end if;
     END PROCESS;
 
 END Behavior;
