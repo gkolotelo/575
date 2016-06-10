@@ -74,7 +74,7 @@ ARCHITECTURE Behavior OF proc IS
 
 -- Signals
     -- FSM state signal
-    TYPE state_type IS (T0, T1, T2, T3);
+    TYPE state_type IS (T0, T0_f1, T0_f2, T1, T2, T3);
     SIGNAL TstepQ_Curr, TstepD_Next: state_type;
 
     TYPE instruction_type is (mv, mvi, add, sub, invalid, ld, st, mvnz);
@@ -183,9 +183,19 @@ BEGIN
                 ledr(7 downto 4) <= "0001";
                 IF(Run = Low) THEN 
                     TstepD_Next <= T0;
-                ELSE 
-                    TstepD_Next <= T1;
+                ELSE
+                    if(invalid_instruction = High) THEN
+                        TstepD_Next <= T0_f1;
+                    else
+                        TstepD_Next <= T1;
+                    end if;
                 END IF;
+            WHEN T0_f1 =>
+                ledr(7 downto 4) <= "0011";
+                TstepD_Next <= T0_f2;
+            WHEN T0_f2 => 
+                ledr(7 downto 4) <= "0111";
+                TstepD_Next <= T1;
             when T1 =>
                 ledr(7 downto 4) <= "0010";
                 if(Done = High) THEN
@@ -213,6 +223,19 @@ BEGIN
         --... specify initial values 
         CASE TstepQ_Curr IS 
             WHEN T0 =>
+<<<<<<< HEAD
+                IR_enable <= High;
+                Done <= Low;
+                mux_selection <= "0000000010"; -- Select PC
+                R_enable <= "00000000";
+                A_enable <= Low;
+                G_enable <= Low;
+                Addr_enable <= High;
+                Data_enable <= Low;
+                W_D <= Low;
+                Incr_PC <= High;
+                invalid_instruction <= Low;
+=======
                     Done <= Low;
                     mux_selection <= "0000000010"; -- Select PC
                     R_enable <= "00000000";
@@ -252,6 +275,7 @@ BEGIN
                     W_D <= Low;
                     Incr_PC <= High;
                     invalid_instruction <= Low;
+>>>>>>> cb9b87b97f50ae9dbd8c091c15d19e4b782a4109
 
             WHEN T1 =>
                 IR_enable <= Low;
@@ -266,6 +290,7 @@ BEGIN
                         Data_enable <= Low;
                         W_D <= Low;
                         Incr_PC <= Low;
+                        invalid_instruction <= Low;
                     when mvi =>
                         Done <= High;
                         mux_selection <= "1000000000";
@@ -276,6 +301,7 @@ BEGIN
                         Data_enable <= Low;
                         W_D <= Low;
                         Incr_PC <= High;
+                        invalid_instruction <= Low;
                     when add =>
                         Done <= Low;
                         mux_selection <= "0"&Rx&"0";
@@ -289,6 +315,7 @@ BEGIN
                         Data_enable <= Low;
                         W_D <= Low;
                         Incr_PC <= Low;
+                        invalid_instruction <= Low;
                     when sub =>
                         Done <= Low;
                         mux_selection <= "0"&Rx&"0";
@@ -299,6 +326,7 @@ BEGIN
                         Data_enable <= Low;
                         W_D <= Low;
                         Incr_PC <= Low;
+                        invalid_instruction <= Low;
                     when ld =>
                         Done <= Low;
                         mux_selection <= "0"&Ry&"0";
@@ -309,6 +337,7 @@ BEGIN
                         Data_enable <= Low;
                         W_D <= Low;
                         Incr_PC <= Low;
+                        invalid_instruction <= Low;
                     when st =>
                         Done <= Low;
                         mux_selection <= "0"&Ry&"0";
@@ -319,6 +348,7 @@ BEGIN
                         Data_enable <= Low;
                         W_D <= Low;
                         Incr_PC <= Low;
+                        invalid_instruction <= Low;
                     when mvnz =>
                         Done <= High;
                         mux_selection <= "0"&Ry&"0";
@@ -329,6 +359,7 @@ BEGIN
                         Data_enable <= Low;
                         W_D <= Low;
                         Incr_PC <= Low;
+                        invalid_instruction <= Low;
                     --when invalid => Done <= High;
                     when others => Done <= High;
                 END CASE;
@@ -347,6 +378,7 @@ BEGIN
                         Data_enable <= Low;
                         W_D <= Low;
                         Incr_PC <= Low;
+                        invalid_instruction <= Low;
                     when sub =>
                         Done <= Low;
                         mux_selection <= "0"&Ry&"0";
@@ -358,6 +390,7 @@ BEGIN
                         Data_enable <= Low;
                         W_D <= Low;
                         Incr_PC <= Low;
+                        invalid_instruction <= Low;
                     when ld => -- 
                         Done <= Low;
                         mux_selection <= "0000000010";
@@ -367,7 +400,8 @@ BEGIN
                         Addr_enable <= High;
                         Data_enable <= Low;
                         W_D <= Low;
-                        Incr_PC <= High;
+                        Incr_PC <= Low;
+                        invalid_instruction <= Low;
                     when st =>
                         Done <= High;
                         mux_selection <= "0"&Rx&"0";
@@ -378,6 +412,7 @@ BEGIN
                         Data_enable <= High;
                         W_D <= High;
                         Incr_PC <= Low;
+                        invalid_instruction <= High;
                     --when invalid => Done <= High;
                     when others => Done <= High;
                 END CASE;
@@ -395,6 +430,7 @@ BEGIN
                         Data_enable <= Low;
                         W_D <= Low;
                         Incr_PC <= Low;
+                        invalid_instruction <= Low;
                     when sub =>
                         Done <= High;
                         mux_selection <= "0000000001";
@@ -405,6 +441,7 @@ BEGIN
                         Data_enable <= Low;
                         W_D <= Low;
                         Incr_PC <= Low;
+                        invalid_instruction <= Low;
                     when ld =>
                         Done <= High;
                         mux_selection <= "1000000000";
@@ -415,16 +452,17 @@ BEGIN
                         Data_enable <= Low;
                         W_D <= Low;
                         Incr_PC <= Low;
-                    when st =>
-                        Done <= High;
-                        mux_selection <= "0000000000";
-                        R_enable <= "00000000";
-                        A_enable <= Low;
-                        G_enable <= Low;
-                        Addr_enable <= Low;
-                        Data_enable <= Low;
-                        W_D <= Low;
-                        Incr_PC <= High;
+                        invalid_instruction <= High;
+--                    when st =>
+--                        Done <= High;
+--                        mux_selection <= "0000000000";
+--                        R_enable <= "00000000";
+--                        A_enable <= Low;
+--                        G_enable <= Low;
+--                        Addr_enable <= Low;
+--                        Data_enable <= Low;
+--                        W_D <= Low;
+--                        Incr_PC <= Low;
                     --when invalid => Done <= High;
                     when others => Done <= High;
                 END CASE;
