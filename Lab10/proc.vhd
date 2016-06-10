@@ -224,6 +224,7 @@ BEGIN
         --... specify initial values 
         CASE TstepQ_Curr IS 
             WHEN T0 =>
+<<<<<<< HEAD
                 IR_enable <= High;
                 Done <= Low;
                 mux_selection <= "0000000010"; -- Select PC
@@ -235,6 +236,47 @@ BEGIN
                 W_D <= Low;
                 Incr_PC <= High;
                 invalid_instruction <= Low;
+=======
+                    Done <= Low;
+                    mux_selection <= "0000000010"; -- Select PC
+                    R_enable <= "00000000";
+                    A_enable <= Low;
+                    G_enable <= Low;
+                    Addr_enable <= High;
+                    Data_enable <= Low;
+                    W_D <= Low;
+                    Incr_PC <= High;
+                    if invalid_instruction = Low then
+                            IR_enable <= High;
+                    else
+                            IR_enable <= Low;
+                    end if;
+
+            when T0_f1 =>
+                    IR_enable <= Low;
+                    Done <= Low;
+                    mux_selection <= "0000000010"; -- Select PC
+                    R_enable <= "00000000";
+                    A_enable <= Low;
+                    G_enable <= Low;
+                    Addr_enable <= High;
+                    Data_enable <= Low;
+                    W_D <= Low;
+                    Incr_PC <= High;
+
+            when T0_f2 =>
+                    IR_enable <= High;
+                    Done <= Low;
+                    mux_selection <= "0000000010"; -- Select PC
+                    R_enable <= "00000000";
+                    A_enable <= Low;
+                    G_enable <= Low;
+                    Addr_enable <= High;
+                    Data_enable <= Low;
+                    W_D <= Low;
+                    Incr_PC <= High;
+                    invalid_instruction <= Low;
+>>>>>>> cb9b87b97f50ae9dbd8c091c15d19e4b782a4109
 
             WHEN T1 =>
                 IR_enable <= Low;
