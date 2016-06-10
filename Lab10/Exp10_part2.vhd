@@ -16,7 +16,7 @@ architecture Behavior of Exp10_part1 is
 -- Components:
 signal alufn: std_logic_vector(2 downto 0);
 signal BusWires, outport, Mem_out: std_logic_vector(15 downto 0);
-signal Clock, Run, Done, Resetn: std_logic;
+signal Clock_P, Clock_M, Run, Done, Resetn: std_logic;
 signal PC_out: std_logic_vector(4 downto 0);
 
 component decoder_7segment_hex
@@ -31,7 +31,6 @@ component proc
             Resetn, Clock, Run : in std_logic;
             Done : buffer std_logic;
             BusWires : buffer std_logic_vector(15 downto 0);
-            W: out std_logic_vector(0 downto 0);
             LEDR: out std_logic_vector(10 downto 0);
             outport: out std_logic_vector(15 downto 0));
 end component proc;
@@ -45,23 +44,35 @@ component memory
     );
 END component memory;
 
+component pc
+    PORT
+    (
+        aclr        : IN STD_LOGIC ;
+        clock       : IN STD_LOGIC ;
+        cnt_en      : IN STD_LOGIC ;
+        data        : IN STD_LOGIC_VECTOR (15 DOWNTO 0);
+        sload       : IN STD_LOGIC ;
+        q       : OUT STD_LOGIC_VECTOR (15 DOWNTO 0)
+    );
+end component;
+
 begin
 
 --DIN <= SW(15 downto 0);
 Resetn <= KEY(0);
-Clock <= not(KEY(1));
-Clock <= not(KEY(2));
+Clock_P <= not(KEY(1));
+Clock_M <= not(KEY(2));
 Run <= SW(17);
 
-LEDG(5) <= Clock;
-LEDG(3) <= Clock;
+LEDG(5) <= Clock_M;
+LEDG(3) <= Clock_P;
 LEDG(0) <= Done;
 
+pc: counter port map (not(Resetn), Clock_M, PC_out);
 
+mem: memory port map (PC_out, Clock_M, Mem_out);
 
-mem: memory port map (PC_out, Clock, Mem_out);
-
-proc_instance: proc port map(Mem_out, Resetn, Clock, Run, Done, BusWires, LEDR(10 downto 0), outport);
+proc_instance: proc port map(Mem_out, Resetn, Clock_P, Run, Done, BusWires, LEDR(10 downto 0), outport);
 
 disp3: decoder_7segment_hex port map(BusWires(15 downto 12), HEX3);
 disp2: decoder_7segment_hex port map(BusWires(11 downto 8), HEX2);
