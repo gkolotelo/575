@@ -17,9 +17,11 @@ ENTITY proc IS
             Resetn, Clock, Run : IN STD_LOGIC;
             Done : BUFFER STD_LOGIC;
             BusWires : BUFFER STD_LOGIC_VECTOR(15 DOWNTO 0);
-            W: out std_logic_vector(0 downto 0);
-            ledr: out STD_LOGIC_VECTOR(10 DOWNTO 0);
-            outport: out STD_LOGIC_VECTOR(15 DOWNTO 0)
+            debug_signals: out STD_LOGIC_VECTOR(15 DOWNTO 0);
+            outport: out STD_LOGIC_VECTOR(15 DOWNTO 0);
+            Addr_out: out STD_LOGIC_VECTOR(15 DOWNTO 0);
+            Data_out: out STD_LOGIC_VECTOR(15 DOWNTO 0);
+            W: out std_logic_vector(0 downto 0)
         );
     END proc;
 
@@ -106,7 +108,7 @@ ARCHITECTURE Behavior OF proc IS
     -- Memory access signals
     signal Addr_enable, Data_enable: std_logic;
     signal W_D: std_logic_vector(0 downto 0);
-    signal Addr_out, Data_out : std_logic_vector(15 DOWNTO 0);
+    --signal Addr_out, Data_out : std_logic_vector(15 DOWNTO 0);
 
 
 
@@ -170,8 +172,8 @@ BEGIN
 
     --... instantiate other registers and the adder/subtracter unit 
     
-    --outport <= R0_out;
-    ledr(3 downto 0) <= opcode;
+    outport <= BusWires;
+    debug_signals(3 downto 0) <= opcode;
     
 -- Processes
     -- Instruction timing FSM
@@ -180,7 +182,7 @@ BEGIN
         CASE TstepQ_Curr IS 
             WHEN T0 => 
             -- data is loaded into IR in this time step 
-                ledr(7 downto 4) <= "0001";
+                debug_signals(7 downto 4) <= "0001";
                 IF(Run = Low) THEN 
                     TstepD_Next <= T0;
                 ELSE
@@ -191,27 +193,27 @@ BEGIN
                     end if;
                 END IF;
             WHEN T0_f1 =>
-                ledr(7 downto 4) <= "0011";
+                debug_signals(7 downto 4) <= "0011";
                 TstepD_Next <= T0_f2;
             WHEN T0_f2 => 
-                ledr(7 downto 4) <= "0111";
+                debug_signals(7 downto 4) <= "0111";
                 TstepD_Next <= T1;
             when T1 =>
-                ledr(7 downto 4) <= "0010";
+                debug_signals(7 downto 4) <= "0010";
                 if(Done = High) THEN
                     TstepD_Next <= T0;
                 else
                     TstepD_Next <= T2;
                 end if;
             when T2 =>
-                ledr(7 downto 4) <= "0100";
+                debug_signals(7 downto 4) <= "0100";
                 if(Done = High) THEN
                     TstepD_Next <= T0;
                 else
                     TstepD_Next <= T3;
                 end if;
             when T3 =>
-                ledr(7 downto 4) <= "1000";
+                debug_signals(7 downto 4) <= "1000";
                 TstepD_Next <= T0;
         END CASE;
     END PROCESS;

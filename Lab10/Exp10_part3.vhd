@@ -15,9 +15,11 @@ end Exp10_Part1;
 architecture Behavior of Exp10_part1 is
 -- Components:
 signal alufn: std_logic_vector(2 downto 0);
-signal BusWires, outport, Mem_out: std_logic_vector(15 downto 0);
-signal Clock_P, Clock_M, Run, Done, Resetn: std_logic;
+signal BusWires, outport, ReadData, debug_signals: std_logic_vector(15 downto 0);
+signal Clock, Run, Done, Resetn: std_logic;
 signal PC_out: std_logic_vector(4 downto 0);
+signal W: std_logic_vector(0 downto 0);
+signal Addr_out, WriteData, LED_reg_out : std_logic_vector(15 DOWNTO 0);
 
 component decoder_7segment_hex
     port (
@@ -31,8 +33,11 @@ component proc
             Resetn, Clock, Run : in std_logic;
             Done : buffer std_logic;
             BusWires : buffer std_logic_vector(15 downto 0);
-            debug_signals: out std_logic_vector(10 downto 0);
-            outport: out std_logic_vector(15 downto 0));
+            debug_signals: out std_logic_vector(15 downto 0);
+            outport: out std_logic_vector(15 downto 0);
+            Addr_out: out STD_LOGIC_VECTOR(15 DOWNTO 0);
+            Data_out: out STD_LOGIC_VECTOR(15 DOWNTO 0);
+            W: out std_logic_vector(0 downto 0));
 end component proc;
 
 component memory
@@ -44,35 +49,37 @@ component memory
     );
 END component memory;
 
-component pc
-    PORT
-    (
-        aclr        : IN STD_LOGIC ;
-        clock       : IN STD_LOGIC ;
-        cnt_en      : IN STD_LOGIC ;
-        data        : IN STD_LOGIC_VECTOR (15 DOWNTO 0);
-        sload       : IN STD_LOGIC ;
-        q       : OUT STD_LOGIC_VECTOR (15 DOWNTO 0)
-    );
-end component;
-
 begin
 
 --DIN <= SW(15 downto 0);
 Resetn <= KEY(0);
-Clock_P <= not(KEY(1));
-Clock_M <= not(KEY(2));
-Run <= SW(17);
+Clock <= CLOCK_50;
 
-LEDG(5) <= Clock_M;
-LEDG(3) <= Clock_P;
+LEDG(5) <= Clock;
 LEDG(0) <= Done;
 
-pc: counter port map (not(Resetn), Clock_M, PC_out);
+run_reg: regn  generic map (n => 1)
+               port map(SW(17), '1', Clock, '1', Run);
 
-mem: memory port map (PC_out, Clock_M, Mem_out);
 
-proc_instance: proc port map(Mem_out, Resetn, Clock_P, Run, Done, BusWires, LEDR(10 downto 0), outport);
+
+MemAddr <= Addr_out(6 downto 0);
+MemAddrEn <= (not(Addr_out(12) or Addr_out(13) or Addr_out(14) or Addr_out(15)) and W);
+mem_ram: memory port map (MemAddr, WriteData, MemAddrEn, Clock, ReadData);
+-- 7 bits wide (128 words)
+
+
+
+proc_instance: proc port map(ReadData, Resetn, Clock, Run, Done, BusWires, debug_signals, outport, Addr_out, WriteData, W);
+
+
+LEDAddrEn <= (not(not(Addr_out(12)) or Addr_out(13) or Addr_out(14) or Addr_out(15)) and W);
+LED_reg: regn port map(WriteData, LEDAddrEn, Clock, '1', LED_reg_out);
+LEDR(15 downto 0) <= LED_reg_out;
+
+
+address_
+
 
 disp3: decoder_7segment_hex port map(BusWires(15 downto 12), HEX3);
 disp2: decoder_7segment_hex port map(BusWires(11 downto 8), HEX2);
@@ -84,6 +91,6 @@ disp6: decoder_7segment_hex port map(outport(11 downto 8), HEX6);
 disp5: decoder_7segment_hex port map(outport(7 downto 4), HEX5);
 disp4: decoder_7segment_hex port map(outport(3 downto 0), HEX4);
 
-LEDR(17 downto 11) <= Mem_out(15 downto 9);
+
 
 end Behavior;

@@ -32,7 +32,7 @@ component proc
             Done : buffer std_logic;
             BusWires : buffer std_logic_vector(15 downto 0);
             W: out std_logic_vector(0 downto 0);
-            LEDR: out std_logic_vector(10 downto 0);
+            debug_signals: out std_logic_vector(10 downto 0);
             outport: out std_logic_vector(15 downto 0));
 end component proc;
 
