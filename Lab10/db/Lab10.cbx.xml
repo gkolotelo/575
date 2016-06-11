@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<LOG_ROOT>
+	<PROJECT NAME="Lab10">
+		<CBX_INST_ENTRY INSTANCE_NAME="|Exp10_part3|RAM:mem_ram|altsyncram:altsyncram_component" CBX_FILE_NAME="altsyncram_2ss3.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|Exp10_part3|proc:proc_instance|pc:pc_instance|lpm_counter:LPM_COUNTER_component" CBX_FILE_NAME="cntr_t0k.tdf"/>
+	</PROJECT>
+</LOG_ROOT>

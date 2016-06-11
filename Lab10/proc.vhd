@@ -106,7 +106,7 @@ ARCHITECTURE Behavior OF proc IS
     signal High, Low: std_logic;
     
     -- Memory access signals
-    signal Addr_enable, Data_enable: std_logic;
+    signal Addr_enable, Data_enable, invalid_instruction: std_logic;
     signal W_D: std_logic_vector(0 downto 0);
     --signal Addr_out, Data_out : std_logic_vector(15 DOWNTO 0);
 
@@ -166,7 +166,7 @@ BEGIN
 
     -- multiplexer 16-bits wide, fan-in of 10.
     mux: mux_16x10 port map(
-            DIN, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, G_out,
+            DIN, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, PC_out, G_out,
             mux_selection,
             BusWires);
 
@@ -186,11 +186,7 @@ BEGIN
                 IF(Run = Low) THEN 
                     TstepD_Next <= T0;
                 ELSE
-                    if(invalid_instruction = High) THEN
-                        TstepD_Next <= T0_f1;
-                    else
-                        TstepD_Next <= T1;
-                    end if;
+                    TstepD_Next <= T0_f1;
                 END IF;
             WHEN T0_f1 =>
                 debug_signals(7 downto 4) <= "0011";
@@ -232,7 +228,7 @@ BEGIN
                 G_enable <= Low;
                 Addr_enable <= High;
                 Data_enable <= Low;
-                W_D <= Low;
+                W_D(0) <= Low;
                 Incr_PC <= High;
                 if invalid_instruction = Low then
                         IR_enable <= High;
@@ -249,7 +245,7 @@ BEGIN
                     G_enable <= Low;
                     Addr_enable <= High;
                     Data_enable <= Low;
-                    W_D <= Low;
+                    W_D(0) <= Low;
                     Incr_PC <= High;
 
             when T0_f2 =>
@@ -261,7 +257,7 @@ BEGIN
                     G_enable <= Low;
                     Addr_enable <= High;
                     Data_enable <= Low;
-                    W_D <= Low;
+                    W_D(0) <= Low;
                     Incr_PC <= High;
                     invalid_instruction <= Low;
 
@@ -276,7 +272,7 @@ BEGIN
                         G_enable <= Low;
                         Addr_enable <= Low;
                         Data_enable <= Low;
-                        W_D <= Low;
+                        W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
                     when mvi =>
@@ -285,9 +281,9 @@ BEGIN
                         R_enable <= Rx;
                         A_enable <= Low;
                         G_enable <= Low;
-                        Addr_enable <= Low;
+                        Addr_enable <= High;
                         Data_enable <= Low;
-                        W_D <= Low;
+                        W_D(0) <= Low;
                         Incr_PC <= High;
                         invalid_instruction <= Low;
                     when add =>
@@ -298,10 +294,10 @@ BEGIN
                         G_enable <= Low;
                         Addr_enable <= Low;
                         Data_enable <= Low;
-                        W_D <= Low;
+                        W_D(0) <= Low;
                         Addr_enable <= Low;
                         Data_enable <= Low;
-                        W_D <= Low;
+                        W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
                     when sub =>
@@ -312,7 +308,7 @@ BEGIN
                         G_enable <= Low;
                         Addr_enable <= Low;
                         Data_enable <= Low;
-                        W_D <= Low;
+                        W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
                     when ld =>
@@ -323,7 +319,7 @@ BEGIN
                         G_enable <= Low;
                         Addr_enable <= High;
                         Data_enable <= Low;
-                        W_D <= Low;
+                        W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
                     when st =>
@@ -334,18 +330,22 @@ BEGIN
                         G_enable <= Low;
                         Addr_enable <= High;
                         Data_enable <= Low;
-                        W_D <= Low;
+                        W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
                     when mvnz =>
                         Done <= High;
                         mux_selection <= "0"&Ry&"0";
-                        R_enable <= Rx when G = "0000000000000000" else "00000000";
+								if G_out = "0000000000000000" then
+									R_enable <= Rx;
+								else
+									R_enable <= "00000000";
+								end if;
                         A_enable <= Low;
                         G_enable <= Low;
                         Addr_enable <= Low;
                         Data_enable <= Low;
-                        W_D <= Low;
+                        W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
                     --when invalid => Done <= High;
@@ -364,7 +364,7 @@ BEGIN
                         alufn <= "000";
                         Addr_enable <= Low;
                         Data_enable <= Low;
-                        W_D <= Low;
+                        W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
                     when sub =>
@@ -376,7 +376,7 @@ BEGIN
                         alufn <= "001";
                         Addr_enable <= Low;
                         Data_enable <= Low;
-                        W_D <= Low;
+                        W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
                     when ld => -- 
@@ -387,7 +387,7 @@ BEGIN
                         G_enable <= Low;
                         Addr_enable <= High;
                         Data_enable <= Low;
-                        W_D <= Low;
+                        W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
                     when st =>
@@ -398,7 +398,7 @@ BEGIN
                         G_enable <= Low;
                         Addr_enable <= Low;
                         Data_enable <= High;
-                        W_D <= High;
+                        W_D(0) <= High;
                         Incr_PC <= Low;
                         invalid_instruction <= High;
                     --when invalid => Done <= High;
@@ -416,7 +416,7 @@ BEGIN
                         G_enable <= Low;
                         Addr_enable <= Low;
                         Data_enable <= Low;
-                        W_D <= Low;
+                        W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
                     when sub =>
@@ -427,7 +427,7 @@ BEGIN
                         G_enable <= Low;
                         Addr_enable <= Low;
                         Data_enable <= Low;
-                        W_D <= Low;
+                        W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
                     when ld =>
@@ -438,7 +438,7 @@ BEGIN
                         G_enable <= Low;
                         Addr_enable <= Low;
                         Data_enable <= Low;
-                        W_D <= Low;
+                        W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= High;
 --                    when st =>
@@ -449,7 +449,7 @@ BEGIN
 --                        G_enable <= Low;
 --                        Addr_enable <= Low;
 --                        Data_enable <= Low;
---                        W_D <= Low;
+--                        W_D(0) <= Low;
 --                        Incr_PC <= Low;
                     --when invalid => Done <= High;
                     when others => Done <= High;

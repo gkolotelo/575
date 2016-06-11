@@ -1,0 +1,9 @@
+
+State Machine - |Exp10_Part3|proc:proc_instance|TstepQ_Curr
+Name TstepQ_Curr.T3 TstepQ_Curr.T2 TstepQ_Curr.T1 TstepQ_Curr.T0_f2 TstepQ_Curr.T0_f1 TstepQ_Curr.T0 
+TstepQ_Curr.T0 0 0 0 0 0 0 
+TstepQ_Curr.T0_f1 0 0 0 0 1 1 
+TstepQ_Curr.T0_f2 0 0 0 1 0 1 
+TstepQ_Curr.T1 0 0 1 0 0 1 
+TstepQ_Curr.T2 0 1 0 0 0 1 
+TstepQ_Curr.T3 1 0 0 0 0 1 

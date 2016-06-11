@@ -38,7 +38,7 @@
 
 set_global_assignment -name FAMILY "Cyclone IV GX"
 set_global_assignment -name DEVICE EP4CGX150DF31C7
-set_global_assignment -name TOP_LEVEL_ENTITY Exp10_part1
+set_global_assignment -name TOP_LEVEL_ENTITY Exp10_part3
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 13.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "19:49:56  MAY 20, 2016"
 set_global_assignment -name LAST_QUARTUS_VERSION 13.1
@@ -752,10 +752,12 @@ set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -
 set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -fall
 set_global_assignment -name ACTIVE_SERIAL_CLOCK FREQ_40MHZ
 set_global_assignment -name CYCLONEII_RESERVE_NCEO_AFTER_CONFIGURATION "USE AS REGULAR IO"
-set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
-set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
-set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
+set_global_assignment -name SOURCE_FILE RAM.cmp
+set_global_assignment -name VHDL_FILE seg7_scroll.vhd
+set_global_assignment -name VHDL_FILE Exp10_part4.vhd
+set_global_assignment -name VHDL_FILE Exp10_part3.vhd
+set_global_assignment -name VHDL_FILE Exp10_part2.vhd
 set_global_assignment -name SOURCE_FILE pc.cmp
 set_global_assignment -name VHDL_FILE pc.vhd
 set_global_assignment -name SOURCE_FILE counter.cmp
@@ -765,7 +767,6 @@ set_global_assignment -name VHDL_FILE memory.vhd
 set_global_assignment -name VHDL_FILE proc.vhd
 set_global_assignment -name VHDL_FILE alu.vhd
 set_global_assignment -name VHDL_FILE decoder_7segment_hex.vhd
-set_global_assignment -name VHDL_FILE Exp10_part1.vhd
 set_global_assignment -name VHDL_FILE regn.vhd
 set_global_assignment -name VHDL_FILE processor.vhd
 set_global_assignment -name VHDL_FILE mux_16x10.vhd
@@ -776,4 +777,8 @@ set_global_assignment -name VHDL_FILE dec3to8.vhd
 set_global_assignment -name QIP_FILE memory.qip
 set_global_assignment -name QIP_FILE counter.qip
 set_global_assignment -name QIP_FILE pc.qip
+set_global_assignment -name QIP_FILE RAM.qip
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

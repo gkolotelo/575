@@ -1,0 +1,185 @@
+------------------------------------------------------------
+TimeQuest Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow 1200mV 85C Model Setup 'KEY[1]'
+Slack : -9.751
+TNS   : -1450.691
+
+Type  : Slow 1200mV 85C Model Setup 'proc:proc_instance|alufn[0]'
+Slack : -9.393
+TNS   : -142.697
+
+Type  : Slow 1200mV 85C Model Setup 'proc:proc_instance|TstepQ_Curr.T2'
+Slack : -3.834
+TNS   : -45.596
+
+Type  : Slow 1200mV 85C Model Setup 'proc:proc_instance|TstepQ_Curr.T0_f2'
+Slack : -3.486
+TNS   : -3.486
+
+Type  : Slow 1200mV 85C Model Setup 'proc:proc_instance|TstepQ_Curr.T1'
+Slack : -3.340
+TNS   : -35.957
+
+Type  : Slow 1200mV 85C Model Hold 'proc:proc_instance|TstepQ_Curr.T1'
+Slack : -2.038
+TNS   : -37.654
+
+Type  : Slow 1200mV 85C Model Hold 'proc:proc_instance|TstepQ_Curr.T2'
+Slack : -1.803
+TNS   : -31.280
+
+Type  : Slow 1200mV 85C Model Hold 'KEY[1]'
+Slack : -1.079
+TNS   : -11.026
+
+Type  : Slow 1200mV 85C Model Hold 'proc:proc_instance|TstepQ_Curr.T0_f2'
+Slack : -0.554
+TNS   : -0.554
+
+Type  : Slow 1200mV 85C Model Hold 'proc:proc_instance|alufn[0]'
+Slack : 1.118
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'KEY[1]'
+Slack : -3.000
+TNS   : -318.579
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'proc:proc_instance|TstepQ_Curr.T1'
+Slack : 0.315
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'proc:proc_instance|TstepQ_Curr.T2'
+Slack : 0.330
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'proc:proc_instance|alufn[0]'
+Slack : 0.394
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'proc:proc_instance|TstepQ_Curr.T0_f2'
+Slack : 0.462
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Setup 'KEY[1]'
+Slack : -8.726
+TNS   : -1296.855
+
+Type  : Slow 1200mV 0C Model Setup 'proc:proc_instance|alufn[0]'
+Slack : -8.586
+TNS   : -130.825
+
+Type  : Slow 1200mV 0C Model Setup 'proc:proc_instance|TstepQ_Curr.T2'
+Slack : -3.528
+TNS   : -43.409
+
+Type  : Slow 1200mV 0C Model Setup 'proc:proc_instance|TstepQ_Curr.T0_f2'
+Slack : -3.218
+TNS   : -3.218
+
+Type  : Slow 1200mV 0C Model Setup 'proc:proc_instance|TstepQ_Curr.T1'
+Slack : -3.087
+TNS   : -34.653
+
+Type  : Slow 1200mV 0C Model Hold 'proc:proc_instance|TstepQ_Curr.T1'
+Slack : -1.708
+TNS   : -30.920
+
+Type  : Slow 1200mV 0C Model Hold 'proc:proc_instance|TstepQ_Curr.T2'
+Slack : -1.489
+TNS   : -25.199
+
+Type  : Slow 1200mV 0C Model Hold 'KEY[1]'
+Slack : -1.071
+TNS   : -11.338
+
+Type  : Slow 1200mV 0C Model Hold 'proc:proc_instance|TstepQ_Curr.T0_f2'
+Slack : -0.497
+TNS   : -0.497
+
+Type  : Slow 1200mV 0C Model Hold 'proc:proc_instance|alufn[0]'
+Slack : 1.166
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'KEY[1]'
+Slack : -3.000
+TNS   : -318.447
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'proc:proc_instance|TstepQ_Curr.T1'
+Slack : 0.272
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'proc:proc_instance|TstepQ_Curr.T2'
+Slack : 0.293
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'proc:proc_instance|alufn[0]'
+Slack : 0.320
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'proc:proc_instance|TstepQ_Curr.T0_f2'
+Slack : 0.379
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Setup 'KEY[1]'
+Slack : -4.574
+TNS   : -666.327
+
+Type  : Fast 1200mV 0C Model Setup 'proc:proc_instance|alufn[0]'
+Slack : -4.361
+TNS   : -65.472
+
+Type  : Fast 1200mV 0C Model Setup 'proc:proc_instance|TstepQ_Curr.T2'
+Slack : -1.574
+TNS   : -6.774
+
+Type  : Fast 1200mV 0C Model Setup 'proc:proc_instance|TstepQ_Curr.T0_f2'
+Slack : -1.382
+TNS   : -1.382
+
+Type  : Fast 1200mV 0C Model Setup 'proc:proc_instance|TstepQ_Curr.T1'
+Slack : -1.333
+TNS   : -2.850
+
+Type  : Fast 1200mV 0C Model Hold 'proc:proc_instance|TstepQ_Curr.T1'
+Slack : -1.330
+TNS   : -26.331
+
+Type  : Fast 1200mV 0C Model Hold 'proc:proc_instance|TstepQ_Curr.T2'
+Slack : -1.202
+TNS   : -22.925
+
+Type  : Fast 1200mV 0C Model Hold 'KEY[1]'
+Slack : -0.581
+TNS   : -6.259
+
+Type  : Fast 1200mV 0C Model Hold 'proc:proc_instance|TstepQ_Curr.T0_f2'
+Slack : -0.272
+TNS   : -0.272
+
+Type  : Fast 1200mV 0C Model Hold 'proc:proc_instance|alufn[0]'
+Slack : 0.405
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'KEY[1]'
+Slack : -3.000
+TNS   : -242.188
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'proc:proc_instance|alufn[0]'
+Slack : 0.366
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'proc:proc_instance|TstepQ_Curr.T2'
+Slack : 0.368
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'proc:proc_instance|TstepQ_Curr.T1'
+Slack : 0.372
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'proc:proc_instance|TstepQ_Curr.T0_f2'
+Slack : 0.396
+TNS   : 0.000
+
+------------------------------------------------------------

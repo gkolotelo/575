@@ -1,0 +1,105 @@
+library ieee; use ieee.std_logic_1164.all;
+use ieee.std_logic_signed.all;
+
+entity Exp10_Part4 is
+      port (
+            SW: in std_logic_vector(17 downto 0);
+				LEDR: out std_logic_vector(17 downto 0);
+            LEDG: out std_logic_vector(7 downto 0);
+            KEY: in std_logic_vector(2 downto 0);
+            CLOCK_50: in std_logic;
+            HEX0, HEX1, HEX2, HEX3, HEX4, HEX5, HEX6, HEX7:     out std_logic_vector(6 downto 0)
+          );
+end Exp10_Part4;
+
+architecture Behavior of Exp10_part4 is
+-- Components:
+signal alufn: std_logic_vector(2 downto 0);
+signal BusWires, outport, ReadData, debug_signals: std_logic_vector(15 downto 0);
+signal Clock, Run, Done, Resetn: std_logic;
+signal PC_out: std_logic_vector(4 downto 0);
+signal W: std_logic_vector(0 downto 0);
+signal Addr_out, WriteData, LED_reg_out : std_logic_vector(15 DOWNTO 0);
+
+component decoder_7segment_hex
+    port (
+        dec_in: in std_logic_vector(3 downto 0);
+        dec_out: out std_logic_vector(6 downto 0)
+    );
+end component decoder_7segment_hex;
+
+component proc
+    port (  DIN : in std_logic_vector(15 downto 0);
+            Resetn, Clock, Run : in std_logic;
+            Done : buffer std_logic;
+            BusWires : buffer std_logic_vector(15 downto 0);
+            debug_signals: out std_logic_vector(15 downto 0);
+            outport: out std_logic_vector(15 downto 0);
+            Addr_out: out STD_LOGIC_VECTOR(15 DOWNTO 0);
+            Data_out: out STD_LOGIC_VECTOR(15 DOWNTO 0);
+            W: out std_logic_vector(0 downto 0));
+end component proc;
+
+component memory
+    PORT
+    (
+        address     : IN STD_LOGIC_VECTOR (4 DOWNTO 0);
+        clock       : IN STD_LOGIC  := '1';
+        q       : OUT STD_LOGIC_VECTOR (15 DOWNTO 0)
+    );
+END component memory;
+
+component seg7_scroll
+    port(Seg7Addr: in std_logic_vector(2 downto 0);
+         Seg7Data: in std_logic_vector(6 downto 0);
+         Seg7AddrEn: in std_logic;
+         Clock: in std_logic;
+         Resetn: in std_logic;
+         H0: out std_logic_vector(6 downto 0);
+         H1: out std_logic_vector(6 downto 0);
+         H2: out std_logic_vector(6 downto 0);
+         H3: out std_logic_vector(6 downto 0);
+         H4: out std_logic_vector(6 downto 0);
+         H5: out std_logic_vector(6 downto 0);
+         H6: out std_logic_vector(6 downto 0);
+         H7: out std_logic_vector(6 downto 0)
+    );
+end component seg7_scroll;
+
+begin
+
+--DIN <= SW(15 downto 0);
+Resetn <= KEY(0);
+Clock <= CLOCK_50;
+
+LEDG(5) <= Clock;
+LEDG(0) <= Done;
+
+run_reg: regn  generic map (n => 1)
+               port map(SW(17), '1', Clock, '1', Run);
+
+
+
+MemAddr <= Addr_out(6 downto 0);
+MemAddrEn <= (not(Addr_out(12) or Addr_out(13) or Addr_out(14) or Addr_out(15)) and W);
+mem_ram: memory port map (MemAddr, WriteData, MemAddrEn, Clock, ReadData);
+-- 7 bits wide (128 words)
+
+
+
+proc_instance: proc port map(ReadData, Resetn, Clock, Run, Done, BusWires, debug_signals, outport, Addr_out, WriteData, W);
+
+
+LEDAddrEn <= (not(not(Addr_out(12)) or Addr_out(13) or Addr_out(14) or Addr_out(15)) and W);
+LED_reg: regn port map(WriteData, LEDAddrEn, Clock, '1', LED_reg_out);
+LEDR(15 downto 0) <= LED_reg_out;
+
+--Addr: 0b 0010 000000000 ppp
+--Data: 0b 000000000 ddddddd
+Seg7AddrEn <= (not(Addr_out(12) or not(Addr_out(13)) or Addr_out(14) or Addr_out(15)) and W);
+Seg7Addr <= Addr_out(2 downto 0);
+S7scroll: seg7_scroll port map(Seg7Addr, WriteData(6 downto 0), Seg7AddrEn, Clock, Resetn, HEX0, HEX1, HEX2, HEX3, HEX4, HEX5, HEX6, HEX7);
+
+
+
+end Behavior;
