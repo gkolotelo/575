@@ -79,7 +79,7 @@ ARCHITECTURE Behavior OF proc IS
     TYPE state_type IS (T0, T0_f1, T0_f2, T1, T2, T3);
     SIGNAL TstepQ_Curr, TstepD_Next: state_type;
 
-    TYPE instruction_type is (mv, mvi, add, sub, invalid, ld, st, mvnz);
+    TYPE instruction_type is (mv, mvi, add, sub, invalid, ld, st, mvnz, alu_and, alu_or, alu_ls, alu_rs, alu_rotl, alu_rotr);
     signal curr_instr: instruction_type;
 
     -- Data signals (16-bits)
@@ -126,15 +126,23 @@ BEGIN
     --Rx <= IR_out(11 downto 9);
     --Ry <= IR_out(8 downto 6);
     offset <= IR_out(5 downto 0);
+    --Instruction format: op(4bit) + Rx(3bit) + Ry(3bit) + offset(6bit)
+    -- oooo xxx yyy ffffff
     with opcode select curr_instr <=
-        mv      when "0000",
-        mvi     when "0001",
-        add     when "0010",
-        sub     when "0011",
-        ld      when "0100",
-        st      when "0101",
-        mvnz    when "0110",
-        invalid when others; 
+        mv          when "0000",    -- mv       Rx <- Ry
+        mvi         when "0001",    -- mvi      Rx <- #D (16bit immediate)
+        add         when "0010",    -- add      Rx <- Rx + Ry
+        sub         when "0011",    -- sub      Rx <- Rx - Ry
+        ld          when "0100",    -- ld       Rx <- Mem(Ry)
+        st          when "0101",    -- st       Mem(Ry) <- Rx
+        mvnz        when "0110",    -- mvnz     G!=0? Rx <- Ry : do nothing
+        alu_and     when "0111",    -- alu_and  Rx <- Rx and Ry              new!
+        alu_or      when "1000",    -- alu_or   Rx <- Rx or Ry               new!
+        alu_ls      when "1001",    -- alu_ls   Rx <- LS(Rx) by one bit      new!
+        alu_rs      when "1010",    -- alu_rs   Rx <- RS(Rx) by one bit      new!
+        alu_rotl    when "1011",    -- alu_rotl Rx <- RL(Rx) by one bit      new!
+        alu_rotr    when "1100",    -- alu_rotr Rx <- RR(Rx) by one bit      new!
+        invalid     when others;
 
     -- Register address decoder
     decX: dec3to8 PORT MAP (IR_out(11 downto 9), High, Rx); --(11 downto 9)
@@ -295,9 +303,6 @@ BEGIN
                         Addr_enable <= Low;
                         Data_enable <= Low;
                         W_D(0) <= Low;
-                        Addr_enable <= Low;
-                        Data_enable <= Low;
-                        W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
                     when sub =>
@@ -348,7 +353,78 @@ BEGIN
                         W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
+
                     --when invalid => Done <= High;
+                    when alu_and =>
+                        Done <= Low;
+                        mux_selection <= "0"&Rx&"0";
+                        R_enable <= "00000000";
+                        A_enable <= High;
+                        G_enable <= Low;
+                        Addr_enable <= Low;
+                        Data_enable <= Low;
+                        W_D(0) <= Low;
+                        Incr_PC <= Low;
+                        invalid_instruction <= Low;
+                    when alu_or =>
+                        Done <= Low;
+                        mux_selection <= "0"&Rx&"0";
+                        R_enable <= "00000000";
+                        A_enable <= High;
+                        G_enable <= Low;
+                        Addr_enable <= Low;
+                        Data_enable <= Low;
+                        W_D(0) <= Low;
+                        Incr_PC <= Low;
+                        invalid_instruction <= Low;
+                    when alu_ls =>
+                        Done <= Low;
+                        mux_selection <= "0"&Rx&"0";
+                        R_enable <= "00000000";
+                        A_enable <= Low;
+                        G_enable <= High;
+                        alufn <= "100";
+                        Addr_enable <= Low;
+                        Data_enable <= Low;
+                        W_D(0) <= Low;
+                        Incr_PC <= Low;
+                        invalid_instruction <= Low;
+                    when alu_rs =>
+                        Done <= Low;
+                        mux_selection <= "0"&Rx&"0";
+                        R_enable <= "00000000";
+                        A_enable <= Low;
+                        G_enable <= High;
+                        alufn <= "101";
+                        Addr_enable <= Low;
+                        Data_enable <= Low;
+                        W_D(0) <= Low;
+                        Incr_PC <= Low;
+                        invalid_instruction <= Low;
+                    when alu_rotl =>
+                        Done <= Low;
+                        mux_selection <= "0"&Rx&"0";
+                        R_enable <= "00000000";
+                        A_enable <= Low;
+                        G_enable <= High;
+                        alufn <= "110";
+                        Addr_enable <= Low;
+                        Data_enable <= Low;
+                        W_D(0) <= Low;
+                        Incr_PC <= Low;
+                        invalid_instruction <= Low;
+                    when alu_rotr =>
+                        Done <= Low;
+                        mux_selection <= "0"&Rx&"0";
+                        R_enable <= "00000000";
+                        A_enable <= Low;
+                        G_enable <= High;
+                        alufn <= "111";
+                        Addr_enable <= Low;
+                        Data_enable <= Low;
+                        W_D(0) <= Low;
+                        Incr_PC <= Low;
+                        invalid_instruction <= Low;
                     when others => Done <= High;
                 END CASE;
 
@@ -358,7 +434,7 @@ BEGIN
                     when add =>
                         Done <= Low;
                         mux_selection <= "0"&Ry&"0";
-                        R_enable <= Rx;
+                        R_enable <= "00000000";
                         A_enable <= Low;
                         G_enable <= High;
                         alufn <= "000";
@@ -370,7 +446,7 @@ BEGIN
                     when sub =>
                         Done <= Low;
                         mux_selection <= "0"&Ry&"0";
-                        R_enable <= Rx;
+                        R_enable <= "00000000";
                         A_enable <= Low;
                         G_enable <= High;
                         alufn <= "001";
@@ -402,6 +478,74 @@ BEGIN
                         Incr_PC <= Low;
                         invalid_instruction <= High;
                     --when invalid => Done <= High;
+                    when alu_and =>
+                        Done <= Low;
+                        mux_selection <= "0"&Ry&"0";
+                        R_enable <= "00000000";
+                        A_enable <= Low;
+                        G_enable <= High;
+                        alufn <= "010";
+                        Addr_enable <= Low;
+                        Data_enable <= Low;
+                        W_D(0) <= Low;
+                        Incr_PC <= Low;
+                        invalid_instruction <= Low;
+                    when alu_or =>
+                        Done <= Low;
+                        mux_selection <= "0"&Ry&"0";
+                        R_enable <= "00000000";
+                        A_enable <= Low;
+                        G_enable <= High;
+                        alufn <= "011";
+                        Addr_enable <= Low;
+                        Data_enable <= Low;
+                        W_D(0) <= Low;
+                        Incr_PC <= Low;
+                        invalid_instruction <= Low;
+                    when alu_ls =>
+                        Done <= High;
+                        mux_selection <= "0000000001";
+                        R_enable <= Rx;
+                        A_enable <= Low;
+                        G_enable <= Low;
+                        Addr_enable <= Low;
+                        Data_enable <= Low;
+                        W_D(0) <= Low;
+                        Incr_PC <= Low;
+                        invalid_instruction <= Low;
+                    when alu_rs =>
+                        Done <= High;
+                        mux_selection <= "0000000001";
+                        R_enable <= Rx;
+                        A_enable <= Low;
+                        G_enable <= Low;
+                        Addr_enable <= Low;
+                        Data_enable <= Low;
+                        W_D(0) <= Low;
+                        Incr_PC <= Low;
+                        invalid_instruction <= Low;
+                    when alu_rotl =>
+                        Done <= High;
+                        mux_selection <= "0000000001";
+                        R_enable <= Rx;
+                        A_enable <= Low;
+                        G_enable <= Low;
+                        Addr_enable <= Low;
+                        Data_enable <= Low;
+                        W_D(0) <= Low;
+                        Incr_PC <= Low;
+                        invalid_instruction <= Low;
+                    when alu_rotr =>
+                        Done <= High;
+                        mux_selection <= "0000000001";
+                        R_enable <= Rx;
+                        A_enable <= Low;
+                        G_enable <= Low;
+                        Addr_enable <= Low;
+                        Data_enable <= Low;
+                        W_D(0) <= Low;
+                        Incr_PC <= Low;
+                        invalid_instruction <= Low;
                     when others => Done <= High;
                 END CASE;
 
@@ -452,6 +596,28 @@ BEGIN
 --                        W_D(0) <= Low;
 --                        Incr_PC <= Low;
                     --when invalid => Done <= High;
+                    when alu_and =>
+                        Done <= High;
+                        mux_selection <= "0000000001";
+                        R_enable <= Rx;
+                        A_enable <= Low;
+                        G_enable <= Low;
+                        Addr_enable <= Low;
+                        Data_enable <= Low;
+                        W_D(0) <= Low;
+                        Incr_PC <= Low;
+                        invalid_instruction <= Low;
+                    when alu_or =>
+                        Done <= High;
+                        mux_selection <= "0000000001";
+                        R_enable <= Rx;
+                        A_enable <= Low;
+                        G_enable <= Low;
+                        Addr_enable <= Low;
+                        Data_enable <= Low;
+                        W_D(0) <= Low;
+                        Incr_PC <= Low;
+                        invalid_instruction <= Low;
                     when others => Done <= High;
                 END CASE;
         END CASE;
