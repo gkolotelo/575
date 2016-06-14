@@ -19,37 +19,39 @@ begin
     alu_process: process (A, B, alufn)
     begin
         case (alufn) is
-            -- sum
+            -- Sum
             when "000" =>
                 result <= ('0'&A) + ('0'&B);
                 O <= result(n-1 downto 0);
                 overflow <= result(n-1) xor result(n);
-            -- subtraction
+            -- Subtraction
             when "001" =>
                 operand <= not(B) + '1';
                 result <= ('0'&A) + ('0'&operand);
                 O <= result(n-1 downto 0);
                 overflow <= result(n-1) xor result(n) xor B(n-1) xor A(n-1);
-            -- and
+            -- AND
             when "010" =>
                 O <= A and B;
                 overflow <= '0';
-            -- or
+            -- OR
             when "011" =>
                 O <= A or B;
                 overflow <= '0';
-            -- LS by one
+            -- LShift by one bit (uses B input only!)
             when "100" =>
                 O <= B(n-2 downto 0) & '0';
                 overflow <= '0';
-            -- RS by one
+            -- RShift by one bit (uses B input only!)
             when "101" =>
                 O <= '0' & B(n-1 downto 1);
                 overflow <= '0';
+            -- LRotate by one bit (uses B input only!)
             when "110" =>
-					O <= (others => '0');
+					O <= (0 => B(n-1), (n-1 downto 1) => B(n-2 downto 0));
+            -- RRotate by one bit (uses B input only!)
             when "111" =>    
-					O <= (others => '0');
+					O <= (n-1 => B(0), (n-2 downto 0) => B(n-1 downto 1));
         end case ;
     end process;
 end behavior;
