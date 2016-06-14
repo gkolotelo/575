@@ -1,0 +1,9 @@
+mv, r0, r0
+mvi r0, #0b0000000000001111
+mvi r1, #0b0000000011110000
+mv r2, r0
+add r2, r1
+mv r3, r2
+sub r3, r1
+sub r3, r1
+mv r0, r3
