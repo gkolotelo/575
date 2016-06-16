@@ -1,3 +1,35 @@
+"""
+The MIT License (MIT)
+Copyright (c) 2016 Alexandre Seidy and Guilherme Kolotelo
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+"""
+
+# --------------------------------------------------
+# -- Laboratorio de Circuitos Logicos - Turma A   --
+# --------------------------------------------------
+# -- 135964 Guilherme Kairalla Kolotelo           --
+# -- 137943 Alexandre Seidy Ioshisaqui            --
+# --------------------------------------------------
+# -- Laboratorio 10: Projeto: Processador simples --
+# --------------------------------------------------
+
 import sys
 import time
 
@@ -167,7 +199,7 @@ file_header = file_header + '\n-- The MIT License (MIT)\n' \
 
 if flags in ["--mif", "-m"]:
     mif_file = file_header
-    mif_header = "WIDTH=16;\nDEPTH=32;\nADDRESS_RADIX=DEC;\nDATA_RADIX=BIN;\nCONTENT\nBEGIN\n\n\n"
+    mif_header = "WIDTH=16;\nDEPTH=128;\nADDRESS_RADIX=DEC;\nDATA_RADIX=BIN;\nCONTENT\nBEGIN\n\n\n"
     mif_file = mif_file + mif_header
     counter = 0
     for i, c in zip(bin_file.split('\n'), comment_file.split('\n')):

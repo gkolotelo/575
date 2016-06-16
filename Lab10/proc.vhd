@@ -23,11 +23,13 @@ ENTITY proc IS
             Data_out: out STD_LOGIC_VECTOR(15 DOWNTO 0);
             W: out std_logic_vector(0 downto 0)
         );
-    END proc;
+    end proc;
 
 ARCHITECTURE Behavior OF proc IS
 
--- Components
+----------------
+-- Components --
+----------------
     -- Register n-bits
     component regn
         generic (n : integer := 16);
@@ -73,8 +75,9 @@ ARCHITECTURE Behavior OF proc IS
         );
     end component;
 
-
--- Signals
+-------------
+-- Signals --
+-------------
     -- FSM state signal
     TYPE state_type IS (T0, T0_f1, T0_f2, T1, T2, T3);
     SIGNAL TstepQ_Curr, TstepD_Next: state_type;
@@ -112,22 +115,26 @@ ARCHITECTURE Behavior OF proc IS
 
 
 
-BEGIN 
--- Signals and components
+begin 
+----------------------------
+-- Signals and components --
+----------------------------
     -- Standardizing logic levels
     High <= '1';
     Low <= '0';
 
     IR: regn port map(DIN, IR_enable, Clock, Resetn, IR_out);
 
-    -- Lookup table for curr_instr(opcode)
-    --opcode <= IR_out(0 to 3); --(15 downto 12)
+    -- Instruction decoding
     opcode <= IR_out(15 downto 12);
-    --Rx <= IR_out(11 downto 9);
-    --Ry <= IR_out(8 downto 6);
     offset <= IR_out(5 downto 0);
-    --Instruction format: op(4bit) + Rx(3bit) + Ry(3bit) + offset(6bit)
-    -- oooo xxx yyy ffffff
+    decX: dec3to8 PORT MAP (IR_out(11 downto 9), High, Rx);
+    decY: dec3to8 PORT MAP (IR_out(8 downto 6), High, Ry);
+
+
+    -- Lookup table for curr_instr(opcode)
+        --Instruction format: op(4bit) + Rx(3bit) + Ry(3bit) + offset(6bit)
+        -- oooo xxx yyy ffffff
     with opcode select curr_instr <=
         mv          when "0000",    -- mv       Rx <- Ry
         mvi         when "0001",    -- mvi      Rx <- #D (16bit immediate)
@@ -143,10 +150,6 @@ BEGIN
         alu_rotl    when "1011",    -- alu_rotl Rx <- RL(Rx) by one bit      new!
         alu_rotr    when "1100",    -- alu_rotr Rx <- RR(Rx) by one bit      new!
         invalid     when others;
-
-    -- Register address decoder
-    decX: dec3to8 PORT MAP (IR_out(11 downto 9), High, Rx); --(11 downto 9)
-    decY: dec3to8 PORT MAP (IR_out(8 downto 6), High, Ry); --(8 downto 6)
 
     -- Processor registers (0 to 7 = left to right)
     reg_0: regn PORT MAP (BusWires, R_enable(0), Clock, Resetn, R0_out);
@@ -172,34 +175,34 @@ BEGIN
     -- ALU component
     ALU_component: alu port map(A_out, BusWires, ALU_out, alufn, alu_overflow);
 
-    -- multiplexer 16-bits wide, fan-in of 10.
+    -- Multiplexer 16-bits wide, fan-in of 10.
     mux: mux_16x10 port map(
             DIN, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, PC_out, G_out,
             mux_selection,
             BusWires);
-
-    --... instantiate other registers and the adder/subtracter unit 
     
     outport <= BusWires;
     debug_signals(3 downto 0) <= opcode;
-    
--- Processes
+
+---------------
+-- Processes --
+---------------
     -- Instruction timing FSM
-    statetable: PROCESS (TstepQ_Curr, Run, Done) 
-    BEGIN 
-        CASE TstepQ_Curr IS 
-            WHEN T0 => 
+    statetable: process (TstepQ_Curr, Run, Done) 
+    begin 
+        case TstepQ_Curr IS 
+            when T0 => 
             -- data is loaded into IR in this time step 
                 debug_signals(7 downto 4) <= "0001";
                 IF(Run = Low) THEN 
                     TstepD_Next <= T0;
                 ELSE
                     TstepD_Next <= T0_f1;
-                END IF;
-            WHEN T0_f1 =>
+                end IF;
+            when T0_f1 =>
                 debug_signals(7 downto 4) <= "0011";
                 TstepD_Next <= T0_f2;
-            WHEN T0_f2 => 
+            when T0_f2 => 
                 debug_signals(7 downto 4) <= "0111";
                 TstepD_Next <= T1;
             when T1 =>
@@ -219,16 +222,15 @@ BEGIN
             when T3 =>
                 debug_signals(7 downto 4) <= "1000";
                 TstepD_Next <= T0;
-        END CASE;
-    END PROCESS;
+        end case;
+    end PROCESS;
 
     -- Processor control signals
-    -- Setting, for each time step, the signals to the corresponding instruction.
-    controlsignals: PROCESS (TstepQ_Curr, curr_instr, Rx, Ry) 
-    BEGIN 
-        --... specify initial values 
-        CASE TstepQ_Curr IS 
-            WHEN T0 =>
+        -- Setting, for each time step, the signals to the corresponding instruction.
+    controlsignals: process (TstepQ_Curr, curr_instr, Rx, Ry) 
+    begin
+        case TstepQ_Curr IS 
+            when T0 =>
                 Done <= Low;
                 mux_selection <= "0000000010"; -- Select PC
                 R_enable <= "00000000";
@@ -269,9 +271,9 @@ BEGIN
                     Incr_PC <= High;
                     invalid_instruction <= Low;
 
-            WHEN T1 =>
+            when T1 =>
                 IR_enable <= Low;
-                CASE curr_instr IS
+                case curr_instr IS
                     when mv =>
                         Done <= High;
                         mux_selection <= "0"&Ry&"0";
@@ -354,7 +356,6 @@ BEGIN
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
 
-                    --when invalid => Done <= High;
                     when alu_and =>
                         Done <= Low;
                         mux_selection <= "0"&Rx&"0";
@@ -425,12 +426,13 @@ BEGIN
                         W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
+                    --when invalid => Done <= High;
                     when others => Done <= High;
-                END CASE;
+                end case;
 
-            WHEN T2 =>
+            when T2 =>
                 IR_enable <= Low;
-                CASE curr_instr IS
+                case curr_instr IS
                     when add =>
                         Done <= Low;
                         mux_selection <= "0"&Ry&"0";
@@ -477,7 +479,6 @@ BEGIN
                         W_D(0) <= High;
                         Incr_PC <= Low;
                         invalid_instruction <= High;
-                    --when invalid => Done <= High;
                     when alu_and =>
                         Done <= Low;
                         mux_selection <= "0"&Ry&"0";
@@ -546,12 +547,13 @@ BEGIN
                         W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
+                    --when invalid => Done <= High;
                     when others => Done <= High;
-                END CASE;
+                end case;
 
-            WHEN T3 =>
+            when T3 =>
                 IR_enable <= Low;
-                CASE curr_instr IS
+                case curr_instr IS
                     when add =>
                         Done <= High;
                         mux_selection <= "0000000001";
@@ -585,17 +587,6 @@ BEGIN
                         W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= High;
---                    when st =>
---                        Done <= High;
---                        mux_selection <= "0000000000";
---                        R_enable <= "00000000";
---                        A_enable <= Low;
---                        G_enable <= Low;
---                        Addr_enable <= Low;
---                        Data_enable <= Low;
---                        W_D(0) <= Low;
---                        Incr_PC <= Low;
-                    --when invalid => Done <= High;
                     when alu_and =>
                         Done <= High;
                         mux_selection <= "0000000001";
@@ -618,19 +609,20 @@ BEGIN
                         W_D(0) <= Low;
                         Incr_PC <= Low;
                         invalid_instruction <= Low;
+                    --when invalid => Done <= High;
                     when others => Done <= High;
-                END CASE;
-        END CASE;
-    END PROCESS;
+                end case;
+        end case;
+    end PROCESS;
 
     -- FSM: state updating
-    fsmflipflops: PROCESS (Clock, Resetn, TstepD_Next) 
-    BEGIN 
+    fsmflipflops: process (Clock, Resetn, TstepD_Next) 
+    begin 
         if (Resetn = Low) THEN
             TstepQ_Curr <= T0;
         elsif (rising_edge(Clock)) THEN
             TstepQ_Curr <= TstepD_Next;
         end if;
-    END PROCESS;
+    end PROCESS;
 
-END Behavior;
+end Behavior;
