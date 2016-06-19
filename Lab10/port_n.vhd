@@ -1,3 +1,12 @@
+--------------------------------------------------
+-- Laboratorio de Circuitos Logicos - Turma A   --
+--------------------------------------------------
+-- 135964 Guilherme Kairalla Kolotelo           --
+-- 137943 Alexandre Seidy Ioshisaqui            --
+--------------------------------------------------
+-- Laboratorio 10: Projeto: Processador simples --
+--------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
 

@@ -1,3 +1,12 @@
+--------------------------------------------------
+-- Laboratorio de Circuitos Logicos - Turma A   --
+--------------------------------------------------
+-- 135964 Guilherme Kairalla Kolotelo           --
+-- 137943 Alexandre Seidy Ioshisaqui            --
+--------------------------------------------------
+-- Laboratorio 10: Projeto: Processador simples --
+--------------------------------------------------
+
 library ieee; use ieee.std_logic_1164.all;
 use ieee.std_logic_signed.all;
 
@@ -63,7 +72,6 @@ end component;
 
 begin
 
---DIN <= SW(15 downto 0);
 Resetn <= KEY(0);
 Clock <= key(1);
 
@@ -73,27 +81,26 @@ LEDG(0) <= Done;
 Run <= Run_v(0);
 run_reg: regn  generic map (n => 1)
                port map(SW(17 downto 17), '1', Clock, '1', Run_v(0 downto 0));
-
-
-
-
+-- Memory (RAM)
 MemAddr <= Addr_out(6 downto 0);
 MemAddrEn <= (not(Addr_out(12) or Addr_out(13) or Addr_out(14) or Addr_out(15)) and W(0));
-mem_ram: RAM port map (MemAddr, Clock, WriteData, MemAddrEn, ReadData);
--- 7 bits wide (128 words)
+mem_ram: RAM port map (MemAddr, Clock, WriteData, MemAddrEn, ReadData); -- 7 bits wide (128 words)
 
-
-
+-- Processor
 proc_instance: proc port map(ReadData, Resetn, Clock, Run, Done, BusWires, debug_signals, outport, Addr_out, WriteData, W);
 
+-------------------------------------- Peripheral --------------------------------------
 
+-- LED peripheral
+-- Addr: 0b 0001 0000 0000 0000
+-- Data: 0b dddd dddd dddd dddd
 LEDAddrEn <= (not(not(Addr_out(12)) or Addr_out(13) or Addr_out(14) or Addr_out(15)) and W(0));
 LED_reg: regn port map(WriteData, LEDAddrEn, Clock, '1', LED_reg_out);
 LEDR(15 downto 0) <= debug_signals; --LED_reg_out;
 
 
 
-
+--------------------------------------- Displays ----------------------------------------
 disp3: decoder_7segment_hex port map(BusWires(15 downto 12), HEX3);
 disp2: decoder_7segment_hex port map(BusWires(11 downto 8), HEX2);
 disp1: decoder_7segment_hex port map(BusWires(7 downto 4), HEX1);
