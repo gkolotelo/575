@@ -22,6 +22,7 @@ library ieee;
 use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all;
 use ieee.std_logic_1164.all;
+use ieee.std_logic_misc.all;
 
 -- Port signal definition:
 --		A: 		 Base
@@ -79,17 +80,17 @@ architecture behavior of modexp is
 	signal modsquare_mux_out, modmultiplier_mux1_out, modmultiplier_mux2_out, modmultiplier_mux3_out, modmultiplier_mux4_out: std_logic_vector(KEY_SIZE-1 downto 0);
 	signal calc_trigger: std_logic_vector(0 downto 0);
 	signal modmultiplier_ready, modsquare_ready, first_iteration: std_logic;
-	signal done_temp: std_logic;
+	signal done_internal: std_logic;
 
 begin
 ---------------------------       Signal Routing:     ---------------------------
 
-	Done <= done_temp;
+	Done <= done_internal;
 
-	modexp_manager: process (Reset, Clock, Trigger, done_temp)
+	modexp_manager: process (Reset, Clock, Trigger, done_internal)
 	begin	
 		if rising_edge(Clock) then
-			if Trigger = '1' and done_temp = '1' then -- Begin calculation. 1st cycle!
+			if Trigger = '1' and done_internal = '1' then -- Begin calculation. 1st cycle!
 				first_iteration <= '1';
 			else
 				first_iteration <= '0';
@@ -101,26 +102,25 @@ begin
 	counter_manager: process (Reset, Clock, Trigger, C, b, modmultiplier_out, modmultiplier_ready, modsquare_ready, calc_trigger, first_iteration)
 	begin
 		if Reset = '1' then	
-			done_temp <= '1';
-			R <= (others => '0');
-			counter <= (others => '0'); -- TEST!!!!!!
-			--counter <= b;-- find somewhere else  -- TEST!!!!!!
+			done_internal <= '1';
+			counter <= (others => '0');
+			--counter <= b;-- find somewhere else  -- old
 		elsif rising_edge(Clock) then
 			if first_iteration = '1' then
-				--counter <= b; -- counter <= exponential. Binary method of modular exponentiation is used. -- TEST!!!!!!
-				done_temp <= '0'; -- Calculation started
+				--counter <= b; -- counter <= exponential. Binary method of modular exponentiation is used. -- old
+				done_internal <= '0'; -- Calculation started
 			elsif (modmultiplier_ready and modsquare_ready and not(calc_trigger(0))) = '1' then
-		 		if counter = 0 then
-					R <= modmultiplier_out; -- If counter has zeroed, calculation is complete!
-					done_temp <= '1';
+		 		--if counter = 0 then
+		 		if or_reduce(counter) = '0' then
+					done_internal <= '1';
 				else
 					counter <= '0' & counter(KEY_SIZE-1 downto 1); -- Right shift counter each iteration
 				end if;
 			end if;
 		end if;
-		if first_iteration = '1' then -- TEST!!!!!!
-			counter <= b; -- counter <= exponential. Binary method of modular exponentiation is used. -- TEST!!!!!!
-		end if; -- TEST!!!!!!
+		if first_iteration = '1' then 
+			counter <= b; -- counter <= exponential. Binary method of modular exponentiation is used. -- old
+		end if;
 	end process counter_manager;
 
     -- trigger_process: Mux to configure trigger signals
@@ -131,7 +131,8 @@ begin
 		elsif rising_edge(Clock) then
 			if modmultiplier_ready = '1' then
 				if modsquare_ready = '1' then
-					if counter /= 0 then
+					--if counter /= 0 then -- old
+					if or_reduce(counter) /= '0' then
 						calc_trigger(0) <= '1';
 					else
 						calc_trigger(0) <= '0';
@@ -205,5 +206,12 @@ begin
 										ds => calc_trigger(0),
 										reset => Reset,
 										ready => modsquare_ready);
+
+	-- result_mux1_out: Mux to choose either '0' or result if modexp done
+	result_mux1: multiplexer    generic map(n => KEY_SIZE)
+								port map(	entrada1 => (others => '0'),
+											entrada2 => modmultiplier_out,
+											selecao => done_internal,
+											saida => R);
 
 end behavior;
