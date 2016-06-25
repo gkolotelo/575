@@ -37,7 +37,7 @@ architecture behavior of rsa_toplevel is
             in_data: in std_logic_vector(KEY_SIZE-1 downto 0);
             exponent: in std_logic_vector(KEY_SIZE-1 downto 0);
             modulus: in std_logic_vector(KEY_SIZE-1 downto 0);
-            reset: in std_logic;
+            --reset: in std_logic;
             clock: in std_logic;
             out_data: std_logic_vector(KEY_SIZE-1 downto 0);
             start : in std_logic;

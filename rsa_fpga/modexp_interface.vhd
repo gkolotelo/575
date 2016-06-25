@@ -57,7 +57,7 @@ architecture behavior of modexp_interface is
 
     -- Register n-bits
     component regn
-        generic (n : integer := 16);
+        generic (n : integer := KEY_SIZE);
         port (  R : IN std_logic_vector(n-1 downto 0);
                 Rin, Clock, Rstn : IN std_logic;
                 Q : buffer std_logic_vector(n-1 downto 0));
