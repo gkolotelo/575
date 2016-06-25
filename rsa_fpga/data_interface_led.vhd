@@ -44,6 +44,7 @@ entity data_interface_led is
 	DATA_PROVIDER_OUT: out std_logic_vector(15 downto 0);
 	DATA_PROVIDER_FRESHDATA: in std_logic;
 	DATA_PROVIDER_READ_EN: out std_logic;
+	DATA_PROVIDER_WR_EN: out std_logic;
 	DATA_PROVIDER_CLOCK: in std_logic;
 	-- Parsed data provider accessors:
 	in_data: in std_logic_vector(KEY_SIZE-1 downto 0);
@@ -71,7 +72,7 @@ architecture behavior of data_interface_led is
 
 
 ---------------------------    Signal declarations:   ---------------------------
-	signal data_available_internal: std_logic;
+	signal data_available_internal, busy_internal: std_logic;
 
 ---------------------------       Signal Routing:     ---------------------------
 begin
@@ -94,51 +95,68 @@ begin
 
 	data_in: process
 	begin
-		if(reset = '1') then:
-			busy <= '0';
+		if(reset = '1') then
+			busy_internal <= '0';
 			done <= '0';
 			data_available_internal <= '0';
 			out_data <= (others => '0');
-		elsif(rising_edge(clock) and DATA_PROVIDER_FRESHDATA = '1' and data_available_internal = '1') then:
+		elsif(rising_edge(clock) and DATA_PROVIDER_FRESHDATA = '1' and data_available_internal = '1' and busy_internal = '0') then
 			done <= '0';
 			data_available_internal <= '0';
-			busy <= '1';
+			busy_internal <= '1';
 			wait until DATA_PROVIDER_CLOCK = '1' and DATA_PROVIDER_FRESHDATA = '1';
 			out_data(KEY_SIZE-1 downto KEY_SIZE-16) <= DATA_PROVIDER_IN;
 			wait until DATA_PROVIDER_CLOCK = '0';
 			wait until DATA_PROVIDER_CLOCK = '1' and DATA_PROVIDER_FRESHDATA = '1';
 			out_data(KEY_SIZE-1-16 downto 0) <= DATA_PROVIDER_IN;
-			busy <= '0';
+			busy_internal <= '0';
 			done <= '1';
 			data_available_internal <= '1';
 			wait until DATA_PROVIDER_CLOCK = '0';
-			end if;
 		end if;
+	end process;
 
-	data_available <= data_available_internal;
+	data_out: process
+	begin
+		if(rising_edge(clock) and data_transmit = '1' and busy_internal = '0') then
+			done <= '0';
+			busy_internal <= '1';
+			-- 1st block
+			DATA_PROVIDER_OUT <= in_data(KEY_SIZE-1 downto KEY_SIZE-8);
+			DATA_PROVIDER_WR_EN <= '1';
+			wait until DATA_PROVIDER_CLOCK = '1';
+			DATA_PROVIDER_WR_EN <= '0';
+			wait until DATA_PROVIDER_CLOCK = '0';
 
----------------------------    Component instances:   ---------------------------
-	modular_exp: modexp generic map (KEY_SIZE => KEY_SIZE)
-					port map (  A => in_data,
-								b => exponent,
-								C => modulus,
-								Reset => reset,
-								Clock => clock,
-								Trigger => trigger,
-								R => modexp_out,
-								Done => done
-					);
+            -- 2nd block
+            DATA_PROVIDER_OUT <= in_data(KEY_SIZE-1-8 downto KEY_SIZE-8-8);
+			DATA_PROVIDER_WR_EN <= '1';
+			wait until DATA_PROVIDER_CLOCK = '1';
+			DATA_PROVIDER_WR_EN <= '0';
+			wait until DATA_PROVIDER_CLOCK = '0';
 
-	run_reg:    regn generic map (n => KEY_SIZE)
-				port map(   R => modexp_out,
-							Rin => finished_internal,
-							Clock => clock,
-							--Rstn => not(reset),
-							Rstn => '1',  -- eu acho q nao precisa resetar pq dai o dado de saida fica ate o proximo pulso de finished_internal
-							Q => out_data
-				);
+			-- 3rd block
+			DATA_PROVIDER_OUT <= in_data(KEY_SIZE-1-8-8 downto KEY_SIZE-8-8-8);
+			DATA_PROVIDER_WR_EN <= '1';
+			wait until DATA_PROVIDER_CLOCK = '1';
+			DATA_PROVIDER_WR_EN <= '0';
+			wait until DATA_PROVIDER_CLOCK = '0';
 
+			-- 4th block
+			DATA_PROVIDER_OUT <= in_data(KEY_SIZE-1-8-8-8 downto 0);
+			DATA_PROVIDER_WR_EN <= '1';
+			wait until DATA_PROVIDER_CLOCK = '1';
+			DATA_PROVIDER_WR_EN <= '0';
+			wait until DATA_PROVIDER_CLOCK = '0';
+			busy_internal <= '0';
+			done <= '1';
+			wait until DATA_PROVIDER_CLOCK = '1';
+			wait until DATA_PROVIDER_CLOCK = '0';
+		end if;
+	end process;
 	
+	busy <= busy_internal;
+	data_available <= data_available_internal;
 
 
 end behavior;

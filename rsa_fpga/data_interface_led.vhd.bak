@@ -30,13 +30,13 @@ use ieee.std_logic_1164.all;
 -- When done is high, operation has completed 
 
 -- For LED/SW 16bit; KEY_SIZE 32bit:
--- DATA_PROVIDER_IN: 	O_rxData(8bit)
--- DATA_PROVIDER_OUT: 	I_txData(8bit)
--- DATA_PROVIDER_FRESHDATA: O_rxSig - does not deassert until new frame starts being received.
--- DATA_PROVIDER_CLOCK:	clock
--- DATA_PROVIDER_READ_EN: I_rxCont
+-- DATA_PROVIDER_IN: 	SW(15 downto 0)
+-- DATA_PROVIDER_OUT: 	LEDR(15 downto 0)
+-- DATA_PROVIDER_FRESHDATA: KEY(2)
+-- DATA_PROVIDER_CLOCK:	KEY(3)
+-- DATA_PROVIDER_READ_EN: not used
 
-entity data_interface_serial is
+entity data_interface_led is
 	generic ( KEY_SIZE: integer := 32);
 	port(
 	-- External raw data provider accessors and signals:
@@ -57,12 +57,22 @@ entity data_interface_serial is
 	busy: out std_logic;
 	done: out std_logic
 	);
-end data_interface_serial;
+end data_interface_led;
 
-architecture behavior of data_interface_serial is
+architecture behavior of data_interface_led is
+---------------------------  Component declarations:  ---------------------------
+
+	-- Register n-bits
+	component regn
+		generic (n : integer := KEY_SIZE);
+		port (  R : IN std_logic_vector(n-1 downto 0);
+				Rin, Clock, Rstn : IN std_logic;
+				Q : buffer std_logic_vector(n-1 downto 0));
+	end component regn;
+
 
 ---------------------------    Signal declarations:   ---------------------------
-	signal data_available_internal, busy_internal: std_logic;
+	signal data_available_internal: std_logic;
 
 ---------------------------       Signal Routing:     ---------------------------
 begin
@@ -89,31 +99,20 @@ begin
 			busy_internal <= '0';
 			done <= '0';
 			data_available_internal <= '0';
-			DATA_PROVIDER_READ_EN <= '1';
 			out_data <= (others => '0');
 		elsif(rising_edge(clock) and DATA_PROVIDER_FRESHDATA = '1' and data_available_internal = '1' and busy_internal = '0') then
 			done <= '0';
 			data_available_internal <= '0';
 			busy_internal <= '1';
-			-- 1st block
 			wait until DATA_PROVIDER_CLOCK = '1' and DATA_PROVIDER_FRESHDATA = '1';
-			out_data(KEY_SIZE-1 downto KEY_SIZE-8) <= DATA_PROVIDER_IN;
-			wait until DATA_PROVIDER_FRESHDATA = '0';
-            -- 2nd block
+			out_data(KEY_SIZE-1 downto KEY_SIZE-16) <= DATA_PROVIDER_IN;
+			wait until DATA_PROVIDER_CLOCK = '0';
 			wait until DATA_PROVIDER_CLOCK = '1' and DATA_PROVIDER_FRESHDATA = '1';
-			out_data(KEY_SIZE-1-8 downto KEY_SIZE-8-8) <= DATA_PROVIDER_IN;
-			wait until DATA_PROVIDER_FRESHDATA = '0';
-			-- 3rd block
-			wait until DATA_PROVIDER_CLOCK = '1' and DATA_PROVIDER_FRESHDATA = '1';
-			out_data(KEY_SIZE-1-8-8 downto KEY_SIZE-8-8-8) <= DATA_PROVIDER_IN;
-			wait until DATA_PROVIDER_FRESHDATA = '0';
-			-- 4th block
-			wait until DATA_PROVIDER_CLOCK = '1' and DATA_PROVIDER_FRESHDATA = '1';
-			out_data(KEY_SIZE-1-8-8-8 downto 0) <= DATA_PROVIDER_IN;
+			out_data(KEY_SIZE-1-16 downto 0) <= DATA_PROVIDER_IN;
 			busy_internal <= '0';
 			done <= '1';
 			data_available_internal <= '1';
-			wait until DATA_PROVIDER_FRESHDATA = '0'; -- Wait to clear
+			wait until DATA_PROVIDER_CLOCK = '0';
 		end if;
 	end process;
 
@@ -155,9 +154,9 @@ begin
 			wait until DATA_PROVIDER_CLOCK = '0';
 		end if;
 	end process;
-
+	
 	busy <= busy_internal;
 	data_available <= data_available_internal;
-	
+
 
 end behavior;

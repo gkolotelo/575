@@ -62,7 +62,7 @@ end data_interface_serial;
 architecture behavior of data_interface_serial is
 
 ---------------------------    Signal declarations:   ---------------------------
-	signal data_available_internal, busy_internal: std_logic;
+	signal data_available_internal: std_logic;
 
 ---------------------------       Signal Routing:     ---------------------------
 begin
