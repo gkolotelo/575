@@ -1,4 +1,14 @@
-{//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/comp.vhd} {1 {vcom -work work -2002 -explicit -stats=none {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/comp.vhd}
+{//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/multiplexer.vhd} {1 {vcom -work work -2002 -explicit -stats=none {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/multiplexer.vhd}
+Model Technology ModelSim ALTERA vcom 10.3d Compiler 2014.10 Oct  7 2014
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_SIGNED
+-- Compiling entity multiplexer
+-- Compiling architecture behavior of multiplexer
+
+} {} {}} {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/comp.vhd} {1 {vcom -work work -2002 -explicit -stats=none {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/comp.vhd}
 Model Technology ModelSim ALTERA vcom 10.3d Compiler 2014.10 Oct  7 2014
 -- Loading package STANDARD
 -- Loading package TEXTIO
@@ -19,5 +29,55 @@ Model Technology ModelSim ALTERA vcom 10.3d Compiler 2014.10 Oct  7 2014
 -- Loading package STD_LOGIC_UNSIGNED
 -- Compiling entity test
 -- Compiling architecture behavior of test
+
+} {} {}} {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp_interface.vhd} {0 {vcom -work work -2002 -explicit -stats=none {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp_interface.vhd}
+Model Technology ModelSim ALTERA vcom 10.3d Compiler 2014.10 Oct  7 2014
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity modexp_interface
+-- Compiling architecture behavior of modexp_interface
+** Error: //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp_interface.vhd(79): Cannot drive signal 'reset' of mode IN.
+** Error: //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp_interface.vhd(83): Cannot drive signal 'reset' of mode IN.
+** Error: //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp_interface.vhd(123): Cannot read output "finished".
+	VHDL 2008 allows reading outputs.
+	This facility is enabled by compiling with -2008.
+** Error: //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp_interface.vhd(121): (vcom-1436) Actual expression (prefix expression) of formal "Rstn" is not globally static.
+
+** Error: //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp_interface.vhd(122): Cannot assign to object "out_data" of mode IN.
+** Warning: //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp_interface.vhd(123): Cannot associate port "Q" of mode BUFFER with port "out_data" of mode IN.
+** Error: //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp_interface.vhd(126): VHDL Compiler exiting
+
+} {11.0 14.0 16.0 17.0 18.0 19.0 20.0 21.0} {}} {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp.vhd} {2 {vcom -work work -2002 -explicit -stats=none {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp.vhd}
+Model Technology ModelSim ALTERA vcom 10.3d Compiler 2014.10 Oct  7 2014
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Loading package ATTRIBUTES
+-- Loading package std_logic_misc
+-- Compiling entity modexp
+-- Compiling architecture behavior of modexp
+** Warning: //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp.vhd(155): (vcom-1074) Non-locally static OTHERS choice is allowed only if it is the only choice of the only association.
+
+** Warning: //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp.vhd(163): (vcom-1074) Non-locally static OTHERS choice is allowed only if it is the only choice of the only association.
+
+** Warning: //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp.vhd(169): (vcom-1074) Non-locally static OTHERS choice is allowed only if it is the only choice of the only association.
+
+
+} {} {}} {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modmult.vhd} {1 {vcom -work work -2002 -explicit -stats=none {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modmult.vhd}
+Model Technology ModelSim ALTERA vcom 10.3d Compiler 2014.10 Oct  7 2014
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity modmult
+-- Compiling architecture modmult1 of modmult
 
 } {} {}}

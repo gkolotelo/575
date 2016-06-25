@@ -9,7 +9,7 @@ z2
 cModel Technology
 d//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/test
 Ecomp
-Z0 w1466096405
+Z0 w1466363183
 Z1 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
 Z2 DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
 Z3 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
@@ -24,9 +24,9 @@ V82oH0ISlV6XdLB17i;CPM3
 !s100 PHf50L17kDgWF>Ln9dlHj0
 Z9 OV;C;10.3d;59
 32
-Z10 !s110 1466099876
+Z10 !s110 1466875255
 !i10b 1
-Z11 !s108 1466099876.465000
+Z11 !s108 1466875255.376000
 Z12 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/comp.vhd|
 Z13 !s107 //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/comp.vhd|
 !i113 1
@@ -54,26 +54,75 @@ R13
 R14
 R15
 Emodexp
-Z16 w1466099934
+Z16 w1466364761
+Z17 DPx8 synopsys 10 attributes 0 22 liCm]LV3<lX4Zl>o6^8IV1
+Z18 DPx4 ieee 14 std_logic_misc 0 22 BLzBaQbXS>Q1z>5YO]m[52
 R1
 R2
 R3
 R4
 R5
 R6
-Z17 8//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp.vhd
-Z18 F//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp.vhd
+Z19 8//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp.vhd
+Z20 F//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp.vhd
 l0
-L7
-VPGHk@PEFPD?NRMQP4N3dg0
-!s100 i4SFG=7f05zJ<fR7X:K]O0
+L37
+VKc95M2Bl3E^dKSk6UhZ=A1
+!s100 d2Y@?6W8JO9zgZnno99im1
 R9
 32
-Z19 !s110 1466099877
+Z21 !s110 1466875256
 !i10b 1
-Z20 !s108 1466099877.620000
-Z21 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp.vhd|
-Z22 !s107 //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp.vhd|
+Z22 !s108 1466875256.562000
+Z23 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp.vhd|
+Z24 !s107 //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp.vhd|
+!i113 1
+R14
+R15
+Abehavior
+R17
+R18
+R1
+R2
+R3
+R4
+R5
+DEx4 work 6 modexp 0 22 Kc95M2Bl3E^dKSk6UhZ=A1
+l85
+L50
+VPN]^T]h9_1WaIT<Ni?Ao^1
+!s100 f4P_Q9MVYR?T@U4nam5ee2
+R9
+32
+R21
+!i10b 1
+R22
+R23
+R24
+!i113 1
+R14
+R15
+Emodexp_interface
+Z25 w1466875253
+R1
+R2
+R3
+R4
+R5
+R6
+Z26 8//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp_interface.vhd
+Z27 F//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp_interface.vhd
+l0
+L27
+VJ5H=<VL>7mS9<XmY3S0Dz0
+!s100 5_SMbO<B^=OL_C^SDJFB;0
+R9
+32
+Z28 !s110 1466875257
+!i10b 1
+Z29 !s108 1466875257.778000
+Z30 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp_interface.vhd|
+Z31 !s107 //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp_interface.vhd|
 !i113 1
 R14
 R15
@@ -83,42 +132,173 @@ R2
 R3
 R4
 R5
-Z23 DEx4 work 6 modexp 0 22 PGHk@PEFPD?NRMQP4N3dg0
-l18
-L16
-V`Nhf?Pn_8gzK6AbAFWz9U0
-!s100 j^j[DXAhQfkO<Sfm[Ph?10
+DEx4 work 16 modexp_interface 0 22 J5H=<VL>7mS9<XmY3S0Dz0
+l73
+L41
+VZ;;kJ^MGk4n:T4dk4W^>E2
+!s100 KR2BzDMTS]4mbkh?m5Pi?1
 R9
 32
-R19
+R28
 !i10b 1
-R20
-R21
-R22
+R29
+R30
+R31
 !i113 1
 R14
 R15
-Etest
-Z24 w1466099107
+Emodmult
+R0
+R2
+R1
+R4
+R3
+R6
+Z32 8//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modmult.vhd
+Z33 F//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modmult.vhd
+l0
+L74
+V]cc4o<mF41BbJN30E2N3U2
+!s100 l><BQ>PBg;BT3m=MR]4iA1
+R9
+32
+Z34 !s110 1466875258
+!i10b 1
+Z35 !s108 1466875258.371000
+Z36 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modmult.vhd|
+Z37 !s107 //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modmult.vhd|
+!i113 1
+R14
+R15
+Amodmult1
+R2
+R1
+R4
+R3
+DEx4 work 7 modmult 0 22 ]cc4o<mF41BbJN30E2N3U2
+l97
+L86
+VXPQ`gdJgEAeCJgeWgO<M22
+!s100 oRz0GS[76<@@^[Ak_XJc]0
+R9
+32
+R34
+!i10b 1
+R35
+R36
+R37
+!i113 1
+R14
+R15
+Emultiplexer
+R0
+R1
+Z38 DPx4 ieee 16 std_logic_signed 0 22 C<aanc0R`<LWPSe[JYRP^3
+R4
+R3
+R6
+Z39 8//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/multiplexer.vhd
+Z40 F//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/multiplexer.vhd
+l0
+L5
+VP`02TbhYOgSHRO0LoiGU:0
+!s100 UVP0^1A4iMJgX]dzA^9aE2
+R9
+32
+Z41 !s110 1466875259
+!i10b 1
+Z42 !s108 1466875259.245000
+Z43 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/multiplexer.vhd|
+Z44 !s107 //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/multiplexer.vhd|
+!i113 1
+R14
+R15
+Abehavior
+R1
+R38
+R4
+R3
+Z45 DEx4 work 11 multiplexer 0 22 P`02TbhYOgSHRO0LoiGU:0
+l14
+L13
+Z46 Vk9OMf8c]Lf;B6_c0B_ME<0
+Z47 !s100 _26o^Q`Q7FKU;>3eJL7mo0
+R9
+32
+R41
+!i10b 1
+R42
+R43
+R44
+!i113 1
+R14
+R15
+Ersa_toplevel
+Z48 w1466874180
 R1
 R2
 R3
 R4
 R5
 R6
-Z25 8//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/test.vhd
-Z26 F//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/test.vhd
+Z49 8//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/rsa_toplevel.vhd
+Z50 F//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/rsa_toplevel.vhd
+l0
+L27
+V^GBzL7SDcC_ZaM[Gg=8GR1
+!s100 ^CS`U4g9V;L;hU5H7z8LC3
+R9
+32
+R28
+!i10b 1
+Z51 !s108 1466875257.186000
+Z52 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/rsa_toplevel.vhd|
+Z53 !s107 //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/rsa_toplevel.vhd|
+!i113 1
+R14
+R15
+Abehavior
+R1
+R2
+R3
+R4
+R5
+DEx4 work 12 rsa_toplevel 0 22 ^GBzL7SDcC_ZaM[Gg=8GR1
+l56
+L31
+V:GA9YAGXo`gEiE1iIgM^]3
+!s100 =?VJfMZW8<1ka^_:_;W7C1
+R9
+32
+R28
+!i10b 1
+R51
+R52
+R53
+!i113 1
+R14
+R15
+Etest
+R0
+R1
+R2
+R3
+R4
+R5
+R6
+Z54 8//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/test.vhd
+Z55 F//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/test.vhd
 l0
 L6
 Vd9]9YZQ?d5eF_;ZINe2>i2
 !s100 X3CY:>dj8::08F][R><lH3
 R9
 32
-R19
+R21
 !i10b 1
-Z27 !s108 1466099877.027000
-Z28 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/test.vhd|
-Z29 !s107 //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/test.vhd|
+Z56 !s108 1466875255.953000
+Z57 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/test.vhd|
+Z58 !s107 //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/test.vhd|
 !i113 1
 R14
 R15
@@ -135,11 +315,11 @@ V6A7P[>:Ad@Wi[_HW;D:9n2
 !s100 RgD>PRiC:2jd_ha?KVon21
 R9
 32
-R19
+R21
 !i10b 1
-R27
-R28
-R29
+R56
+R57
+R58
 !i113 1
 R14
 R15
