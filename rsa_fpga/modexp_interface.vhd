@@ -101,6 +101,7 @@ begin
             wait until Clock = '1'; wait until Clock = '0';
             finished_internal <= '0';
         end if;
+	wait until rising_edge(clock);
     END PROCESS;
 
     finished <= finished_internal;

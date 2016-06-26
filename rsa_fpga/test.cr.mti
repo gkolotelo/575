@@ -19,17 +19,13 @@ Model Technology ModelSim ALTERA vcom 10.3d Compiler 2014.10 Oct  7 2014
 -- Compiling entity comp
 -- Compiling architecture behavior of comp
 
-} {} {}} {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/rsa_toplevel.vhd} {2 {vcom -work work -2002 -explicit -stats=none {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/rsa_toplevel.vhd}
+} {} {}} {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/regn.vhd} {1 {vcom -work work -2002 -explicit -stats=none {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/regn.vhd}
 Model Technology ModelSim ALTERA vcom 10.3d Compiler 2014.10 Oct  7 2014
 -- Loading package STANDARD
 -- Loading package TEXTIO
 -- Loading package std_logic_1164
--- Loading package NUMERIC_STD
--- Loading package std_logic_arith
--- Loading package STD_LOGIC_UNSIGNED
--- Compiling entity rsa_toplevel
--- Compiling architecture behavior of rsa_toplevel
-** Warning: [4] //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/rsa_toplevel.vhd(116): (vcom-1207) An abstract literal and an identifier must have a separator between them.
+-- Compiling entity regn
+-- Compiling architecture Behavior of regn
 
 } {} {}} {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/test.vhd} {1 {vcom -work work -2002 -explicit -stats=none {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/test.vhd}
 Model Technology ModelSim ALTERA vcom 10.3d Compiler 2014.10 Oct  7 2014
@@ -52,6 +48,17 @@ Model Technology ModelSim ALTERA vcom 10.3d Compiler 2014.10 Oct  7 2014
 -- Loading package STD_LOGIC_UNSIGNED
 -- Compiling entity modexp_interface
 -- Compiling architecture behavior of modexp_interface
+
+} {} {}} {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/data_interface_serial.vhd} {1 {vcom -work work -2002 -explicit -stats=none {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/data_interface_serial.vhd}
+Model Technology ModelSim ALTERA vcom 10.3d Compiler 2014.10 Oct  7 2014
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity data_interface_serial
+-- Compiling architecture behavior of data_interface_serial
 
 } {} {}} {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/uart_simple.vhd} {1 {vcom -work work -2002 -explicit -stats=none {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/uart_simple.vhd}
 Model Technology ModelSim ALTERA vcom 10.3d Compiler 2014.10 Oct  7 2014
@@ -80,6 +87,17 @@ Model Technology ModelSim ALTERA vcom 10.3d Compiler 2014.10 Oct  7 2014
 
 ** Warning: //vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modexp.vhd(169): (vcom-1074) Non-locally static OTHERS choice is allowed only if it is the only choice of the only association.
 
+
+} {} {}} {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/data_interface_led.vhd} {1 {vcom -work work -2002 -explicit -stats=none {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/data_interface_led.vhd}
+Model Technology ModelSim ALTERA vcom 10.3d Compiler 2014.10 Oct  7 2014
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity data_interface_led
+-- Compiling architecture behavior of data_interface_led
 
 } {} {}} {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modmult.vhd} {1 {vcom -work work -2002 -explicit -stats=none {//vmware-host/Shared Folders/Documents/University/Current Semester/ES575/575/rsa_fpga/modmult.vhd}
 Model Technology ModelSim ALTERA vcom 10.3d Compiler 2014.10 Oct  7 2014
