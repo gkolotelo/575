@@ -87,7 +87,7 @@ begin
             wait until Clock = '0';
             reset_modexp <= '0';
             wait until Clock = '1';
-            wait until Clock = '0';
+				wait until Clock = '0';
             
             -- Load encryption data
             -- exponential <= x"00903ad9";
@@ -104,10 +104,10 @@ begin
             -- Finished outputs 1 pulse
             finished_internal <= '1';
             wait until Clock = '1';
-            wait until Clock = '0';
+				wait until Clock = '0';
             finished_internal <= '0';
         end if;
-	wait until rising_edge(clock);
+		  wait until rising_edge(clock);
     end process;
 
     finished <= finished_internal;

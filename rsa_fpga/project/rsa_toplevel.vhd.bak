@@ -115,7 +115,7 @@ architecture behavior of rsa_toplevel is
 	signal data_out_data: std_logic_vector(KEY_SIZE-1 downto 0);
 
 	-- Signals for serial comm.
-	signal I_clk_baud_count: std_logic_vector(15 downto 0) := X"1458"; -- 9600bps
+	signal I_clk_baud_count: std_logic_vector(15 downto 0) := X"1458" -- 9600bps
 	
 ---------------------------       Signal Routing:     ---------------------------
 begin
@@ -231,22 +231,22 @@ begin
 					done => data_done
 					);
 
-	--serial_interface: uart_simple port map ( 
-	--				I_clk => clock;
-	--				I_clk_baud_count => I_clk_baud_count;
-    --
-	--				I_reset=> reset;
-    --
-	--				I_txData => in  STD_LOGIC_VECTOR (7 downto 0);
-	--				I_txSig => in  STD_LOGIC;
-	--				O_txRdy => out  STD_LOGIC;
-	--				O_tx => out  STD_LOGIC;
-    --
-	--				I_rx => in STD_LOGIC;
-	--				I_rxCont=> in STD_LOGIC;
-	--				O_rxData => out STD_LOGIC_VECTOR (7 downto 0);
-	--				O_rxSig => out STD_LOGIC;
-	--				O_rxFrameError => out STD_LOGIC
-	--				);
+	serial_interface: uart_simple port map ( 
+					I_clk => clock;
+					I_clk_baud_count => I_clk_baud_count;
+
+					I_reset=> reset;
+
+					I_txData => in  STD_LOGIC_VECTOR (7 downto 0);
+					I_txSig => in  STD_LOGIC;
+					O_txRdy => out  STD_LOGIC;
+					O_tx => out  STD_LOGIC;
+
+					I_rx => in STD_LOGIC;
+					I_rxCont=> in STD_LOGIC;
+					O_rxData => out STD_LOGIC_VECTOR (7 downto 0);
+					O_rxSig => out STD_LOGIC;
+					O_rxFrameError => out STD_LOGIC
+					);
 
 end behavior;
