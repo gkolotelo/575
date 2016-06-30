@@ -68,6 +68,7 @@ architecture behavior of modexp_interface is
     signal modexp_trigger, modexp_done: std_logic;  -- Interfacing signals with modexp circuit
     signal modexp_out: std_logic_vector(KEY_SIZE-1 downto 0);  -- Output from modexp circuit
     signal finished_internal: std_logic;  -- Internal finished signal, registered for finished output signal
+    signal in_data_internal, exponent_internal, modulus_internal: std_logic_vector(KEY_SIZE-1 downto 0);  -- internal signals
 
     type state_type is (state_Idle, state_Start, state_Running, state_QuasiFinished, state_Finished);
     signal current_state, next_state: state_type;
@@ -91,6 +92,9 @@ begin
                 modexp_trigger <= '0';
                 finished_internal <= '0';
                 if(start = '1') then
+                    in_data_internal <= in_data;
+                    exponent_internal <= exponent;
+                    modulus_internal <= modulus;
                     next_state <= state_Start;
                 end if;
             when state_Start =>
@@ -115,9 +119,9 @@ begin
 
 ---------------------------    Component instances:   ---------------------------
     modular_exp: modexp generic map (KEY_SIZE => KEY_SIZE)
-                    port map (  A => in_data,
-                                b => exponent,
-                                C => modulus,
+                    port map (  A => in_data_internal,
+                                b => exponent_internal,
+                                C => modulus_internal,
                                 Reset => reset,
                                 Clock => clock,
                                 Trigger => modexp_trigger,
