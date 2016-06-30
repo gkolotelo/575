@@ -45,6 +45,7 @@ entity data_interface_led is
 	DATA_EXTERNAL_FRESHDATA: in std_logic;
 	DATA_EXTERNAL_READ_EN: out std_logic;
 	DATA_EXTERNAL_WR_EN: out std_logic;
+	DATA_EXTERNAL_WR_RDY: in std_logic;
 	DATA_EXTERNAL_CLOCK: in std_logic;
 	-- Parsed data provider accessors:
 	in_data: in std_logic_vector(KEY_SIZE-1 downto 0);

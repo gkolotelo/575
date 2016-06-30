@@ -40,6 +40,7 @@ architecture behavior of data_interface_led_testbench is
         DATA_EXTERNAL_FRESHDATA: in std_logic;
         DATA_EXTERNAL_READ_EN: out std_logic;
         DATA_EXTERNAL_WR_EN: out std_logic;
+        DATA_EXTERNAL_WR_RDY: in std_logic;
         DATA_EXTERNAL_CLOCK: in std_logic;
         -- Parsed data provider accessors:
         in_data: in std_logic_vector(KEY_SIZE-1 downto 0);
@@ -62,6 +63,7 @@ architecture behavior of data_interface_led_testbench is
         signal DATA_EXTERNAL_FRESHDATA: std_logic;
         signal DATA_EXTERNAL_READ_EN:  std_logic;
         signal DATA_EXTERNAL_WR_EN:  std_logic;
+        signal DATA_EXTERNAL_WR_RDY: std_logic;
         signal DATA_EXTERNAL_CLOCK: std_logic;
         signal in_data: std_logic_vector(KEY_SIZE-1 downto 0);
         signal out_data:  std_logic_vector(KEY_SIZE-1 downto 0);
@@ -80,6 +82,7 @@ begin
     begin
         reset <= '1';
         data_transmit <= '0';
+        DATA_EXTERNAL_CLOCK <= '0';
         wait until clock = '1';
         reset <= '0';
         wait until clock = '0';
@@ -130,6 +133,7 @@ begin
                     DATA_EXTERNAL_FRESHDATA => DATA_EXTERNAL_FRESHDATA,
                     --DATA_EXTERNAL_READ_EN => ,
                     --DATA_EXTERNAL_WR_EN => ,
+                    DATA_EXTERNAL_WR_RDY => '1',
                     DATA_EXTERNAL_CLOCK => DATA_EXTERNAL_CLOCK,
                     in_data => in_data, -- Data from RSA
                     out_data => out_data, -- Data to RSA
