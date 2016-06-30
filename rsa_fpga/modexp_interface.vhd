@@ -59,56 +59,57 @@ architecture behavior of modexp_interface is
     component regn
         generic (n : integer := KEY_SIZE);
         port (  R : IN std_logic_vector(n-1 downto 0);
-                Rin, Clock, Rstn : IN std_logic;
+                Rin, Clock, Rst : IN std_logic;
                 Q : buffer std_logic_vector(n-1 downto 0));
     end component regn;
 
 
 ---------------------------    Signal declarations:   ---------------------------
-    signal trigger, done, reset_modexp: std_logic;  -- Interfacing signals with modexp circuit
+    signal modexp_trigger, modexp_done: std_logic;  -- Interfacing signals with modexp circuit
     signal modexp_out: std_logic_vector(KEY_SIZE-1 downto 0);  -- Output from modexp circuit
     signal finished_internal: std_logic;  -- Internal finished signal, registered for finished output signal
+
+    type state_type is (state_Idle, state_Start, state_Running, state_QuasiFinished, state_Finished);
+    signal current_state, next_state: state_type;
 
 ---------------------------       Signal Routing:     ---------------------------
 begin
 
-    -- Sets encryption module signals and data
-    encryption: process
+    set_next: process(reset, clock, next_state)
     begin
         if(reset = '1') then
-            trigger <= '0';
-            finished_internal <= '0';
-
-        elsif (rising_edge(start)) then
-            -- wait for 120ns;
-            reset_modexp <= '1';
-            trigger <= '0';
-            -- wait for 20ns;
-            wait until Clock = '0';
-            reset_modexp <= '0';
-            wait until Clock = '1';
-            wait until Clock = '0';
-            
-            -- Load encryption data
-            -- exponential <= x"00903ad9";
-            -- modulus <= x"03b2c159";
-            -- input_data <= x"00724183"; 
-            
-            wait until Clock = '1';
-            -- wait for 2ns;
-            trigger <= '1';
-            wait until done = '0';
-            trigger <= '0';
-            wait until done = '1';
-            
-            -- Finished outputs 1 pulse
-            finished_internal <= '1';
-            wait until Clock = '1';
-            wait until Clock = '0';
-            finished_internal <= '0';
+            current_state <= state_Idle;
+        elsif(rising_edge(clock)) then
+            current_state <= next_state;
         end if;
-	wait until rising_edge(clock);
-    end process;
+    end process set_next;
+
+    find_next: process(start, modexp_done, current_state)
+    begin
+        case current_state is
+            when state_Idle =>
+                modexp_trigger <= '0';
+                finished_internal <= '0';
+                if(start = '1') then
+                    next_state <= state_Start;
+                end if;
+            when state_Start =>
+                modexp_trigger <= '1';
+                if(modexp_done = '0') then
+                    modexp_trigger <= '0';
+                    next_state <= state_Running;
+                end if;
+            when state_Running =>
+                if(modexp_done = '1') then
+                    next_state <= state_QuasiFinished;
+                end if;
+            when state_QuasiFinished =>
+                next_state <= state_Finished;
+            when state_Finished =>
+                finished_internal <= '1';
+                next_state <= state_Idle;
+        end case;
+    end process find_next;
 
     finished <= finished_internal;
 
@@ -117,18 +118,18 @@ begin
                     port map (  A => in_data,
                                 b => exponent,
                                 C => modulus,
-                                Reset => reset_modexp,
+                                Reset => reset,
                                 Clock => clock,
-                                Trigger => trigger,
+                                Trigger => modexp_trigger,
                                 R => modexp_out,
-                                Done => done
+                                Done => modexp_done
                 );
 
     run_reg:    regn generic map (n => KEY_SIZE)
                 port map(   R => modexp_out,
-                            Rin => finished_internal,
+                            Rin => modexp_done,
                             Clock => clock,
-                            Rstn => not(reset),
+                            Rst => reset,
                             Q => out_data
                 );
 
