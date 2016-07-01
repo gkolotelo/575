@@ -173,7 +173,7 @@ begin
     serial_operation <= data_to_rsa(KEY_SIZE+8-1 downto KEY_SIZE);
     in_data <= data_to_rsa(KEY_SIZE-1 downto 0);
 
-    --reset <= ???
+    reset <= not(KEY(0));
 
 --    comm_protocol: process(reset, data_available)
 --    begin
@@ -213,9 +213,7 @@ begin
 
     process(data_available, done, finished_encryption, finished_decryption, current_state, serial_operation)
     begin
-        if(reset = '1') then
-            current_state <= idle;
-        elsif(rising_edge(CLOCK_50)) then
+		if(rising_edge(CLOCK_50)) then
             case current_state is
                 when (idle) =>
 					LEDR(4 downto 0) <= "00001";
@@ -260,9 +258,11 @@ begin
     end process;
 
     -- ???????
-    process(next_state, CLOCK_50)
+    process(reset, CLOCK_50)
     begin
-        if (rising_edge(CLOCK_50)) then
+		if(reset = '1') then
+            current_state <= idle;
+        elsif (rising_edge(CLOCK_50)) then
             current_state <= next_state;
         end if;
     end process;

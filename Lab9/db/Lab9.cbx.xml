@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<LOG_ROOT>
+	<PROJECT NAME="Lab9">
+		<CBX_INST_ENTRY INSTANCE_NAME="|Exp9_Part1|ramlpm:m9k|altsyncram:altsyncram_component" CBX_FILE_NAME="altsyncram_nrp3.tdf"/>
+	</PROJECT>
+</LOG_ROOT>
