@@ -35,8 +35,8 @@ architecture behavior of data_interface_and_serial_testbench is
     generic ( KEY_SIZE: integer := 32);
     port(
         -- External raw data provider accessors and signals:
-        DATA_EXTERNAL_RX: in std_logic_vector(7 downto 0);
-        DATA_EXTERNAL_TX: out std_logic_vector(7 downto 0);
+        DATA_EXTERNAL_FROM_HOST: in std_logic_vector(7 downto 0);
+        DATA_EXTERNAL_TO_HOST: out std_logic_vector(7 downto 0);
         DATA_EXTERNAL_FRESHDATA: in std_logic;
         DATA_EXTERNAL_READ_EN: out std_logic;
         DATA_EXTERNAL_WR_EN: out std_logic;
@@ -88,8 +88,8 @@ architecture behavior of data_interface_and_serial_testbench is
 
 ---------------------------    Signal declarations:   ---------------------------
 
-        signal DATA_EXTERNAL_RX: std_logic_vector(7 downto 0);
-        signal DATA_EXTERNAL_TX:  std_logic_vector(7 downto 0);
+        signal DATA_EXTERNAL_FROM_HOST: std_logic_vector(7 downto 0);
+        signal DATA_EXTERNAL_TO_HOST:  std_logic_vector(7 downto 0);
         signal DATA_EXTERNAL_FRESHDATA: std_logic;
         signal DATA_EXTERNAL_READ_EN:  std_logic;
         signal DATA_EXTERNAL_WR_EN:  std_logic;
@@ -187,8 +187,8 @@ begin
 
 
     data_module: data_interface_serial port map(
-                    DATA_EXTERNAL_RX => DATA_EXTERNAL_RX,
-                    DATA_EXTERNAL_TX => DATA_EXTERNAL_TX,
+                    DATA_EXTERNAL_FROM_HOST => DATA_EXTERNAL_FROM_HOST,
+                    DATA_EXTERNAL_TO_HOST => DATA_EXTERNAL_TO_HOST,
                     DATA_EXTERNAL_FRESHDATA => DATA_EXTERNAL_FRESHDATA,
                     DATA_EXTERNAL_READ_EN => DATA_EXTERNAL_READ_EN,
                     DATA_EXTERNAL_WR_EN => DATA_EXTERNAL_WR_EN,
@@ -212,13 +212,13 @@ begin
                     I_clk => clock,
                     I_clk_baud_count => X"01b2",--X"1458", -- 115.2K or 9.6K
                     I_reset => reset,
-                    I_txData => DATA_EXTERNAL_TX,
+                    I_txData => DATA_EXTERNAL_TO_HOST,
                     I_txSig => DATA_EXTERNAL_WR_EN,
                     O_txRdy => DATA_EXTERNAL_WR_RDY,
                     O_tx => O_tx,
                     I_rx => I_rx,
                     I_rxCont => DATA_EXTERNAL_READ_EN,
-                    O_rxData => DATA_EXTERNAL_RX,
+                    O_rxData => DATA_EXTERNAL_FROM_HOST,
                     O_rxSig => DATA_EXTERNAL_FRESHDATA,
                     
                     O_rxFrameError => O_rxFrameError
