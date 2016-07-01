@@ -213,16 +213,16 @@ begin
 
     process(data_available, done, finished_encryption, finished_decryption, current_state, serial_operation)
     begin
---        if(reset = '1') then
-  --          current_state <= idle;
-    --    else
-            --case current_state is
-                if (current_state = idle) then
-                    if(rising_edge(data_available)) then
+        if(reset = '1') then
+            current_state <= idle;
+        elsif(rising_edge(CLOCK_50)) then
+            case current_state is
+                when (idle) =>
+                    if((data_available) = '1') then
                         next_state <= receiving;
                     end if;
-                elsif (current_state = receiving) then
-                    if(rising_edge(done)) then
+                when (receiving) =>
+                    if((done) = '1') then
                         case serial_operation is
                             when "01100101" =>  -- (e)Encrypt
                                 next_state <= encrypting;
@@ -233,44 +233,31 @@ begin
 									 when others => null;
                         end case;
                     end if;
-                elsif (current_state = encrypting) then
-                    if(rising_edge(finished_encryption)) then
+                when (encrypting) =>
+                    if((finished_encryption) = '1') then
                         start_encryption <= '0';
                         next_state <= transmiting;
                         data_from_rsa <= "00000000" & encrypt_out;
                     end if;
-                elsif (current_state = decrypting) then
-                    if(rising_edge(finished_decryption)) then
+                when (decrypting) =>
+                    if((finished_decryption) = '1') then
                         start_decryption <= '0';
                         next_state <= transmiting;
                         data_from_rsa <= "00000000" & decrypt_out;
                     end if;
-                elsif (current_state = transmiting) then 
-                    if(rising_edge(done)) then
+                when (transmiting) => 
+                    if((done) = '1') then
                         next_state <= idle;
                     end if;
-                end if;
-                --elsif (current_state = others) then null;
-            --end case;
-     --   end if;
+                when (others) => null;
+            end case;
+        end if;
     end process;
 
     -- ???????
     process(next_state, CLOCK_50)
     begin
         if (rising_edge(CLOCK_50)) then
---            case next_state is
---                when idle =>
---                    current_state <= idle;
---                when encrypting =>
---                    current_state <= encrypting;
---                when decrypting =>
---                    current_state <= decrypting;
---                when receiving =>
---                    current_state <= receiving;
---                when transmiting =>
---                    current_state <= transmiting;
---            end case ;
             current_state <= next_state;
         end if;
     end process;
