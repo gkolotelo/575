@@ -30,8 +30,8 @@ use ieee.std_logic_1164.all;
 -- When done is high, operation has completed 
 
 -- For LED/SW 16bit; KEY_SIZE 32bit:
--- DATA_EXTERNAL_IN: 	SW(15 downto 0)
--- DATA_EXTERNAL_OUT: 	LEDR(15 downto 0)
+-- DATA_EXTERNAL_FROM_HOST: 	SW(15 downto 0)
+-- DATA_EXTERNAL_TO_HOST: 	LEDR(15 downto 0)
 -- DATA_EXTERNAL_FRESHDATA: KEY(2)
 -- DATA_EXTERNAL_CLOCK:	KEY(3)
 -- DATA_EXTERNAL_READ_EN: not used
@@ -40,8 +40,8 @@ entity data_interface_led is
 	generic ( KEY_SIZE: integer := 32);
 	port(
 	-- External raw data provider accessors and signals:
-	DATA_EXTERNAL_IN: in std_logic_vector(15 downto 0);
-	DATA_EXTERNAL_OUT: out std_logic_vector(15 downto 0);
+	DATA_EXTERNAL_FROM_HOST: in std_logic_vector(15 downto 0);
+	DATA_EXTERNAL_TO_HOST: out std_logic_vector(15 downto 0);
 	DATA_EXTERNAL_FRESHDATA: in std_logic;
 	DATA_EXTERNAL_READ_EN: out std_logic;
 	DATA_EXTERNAL_WR_EN: out std_logic;
@@ -94,7 +94,7 @@ begin
     end process set_next;
 
 
-	data_transaction: process (current_state, DATA_EXTERNAL_CLOCK, DATA_EXTERNAL_FRESHDATA, DATA_EXTERNAL_IN, data_transmit, clock)
+	data_transaction: process (current_state, DATA_EXTERNAL_CLOCK, DATA_EXTERNAL_FRESHDATA, DATA_EXTERNAL_FROM_HOST, data_transmit, clock)
 	begin
 		case current_state is
 			when state_Reset =>
@@ -109,7 +109,7 @@ begin
 				data_available_internal <= '0';
 				busy_internal <= '0';
 				if(rising_edge(DATA_EXTERNAL_CLOCK) and DATA_EXTERNAL_FRESHDATA = '1') then
-					out_data(KEY_SIZE-1 downto KEY_SIZE-16) <= DATA_EXTERNAL_IN;  -- LS 16 bits
+					out_data(KEY_SIZE-1 downto KEY_SIZE-16) <= DATA_EXTERNAL_FROM_HOST;  -- LS 16 bits
 					receive_flag <= '1';
 					next_state <= state_Block1;
 				elsif(rising_edge(clock) and data_transmit = '1') then
@@ -120,11 +120,11 @@ begin
 				busy_internal <= '1';
 				if(receive_flag = '1') then
 					if(rising_edge(DATA_EXTERNAL_CLOCK) and DATA_EXTERNAL_FRESHDATA = '1') then
-						out_data(KEY_SIZE-1-16 downto 0) <= DATA_EXTERNAL_IN;  -- MS 16bits
+						out_data(KEY_SIZE-1-16 downto 0) <= DATA_EXTERNAL_FROM_HOST;  -- MS 16bits
 						next_state <= state_Block2;
 					end if;
 				elsif(transmit_flag = '1') then
-					DATA_EXTERNAL_OUT <= in_data(KEY_SIZE-1 downto KEY_SIZE-16);
+					DATA_EXTERNAL_TO_HOST <= in_data(KEY_SIZE-1 downto KEY_SIZE-16);
 					DATA_EXTERNAL_WR_EN <= '1';
 					if(rising_edge(DATA_EXTERNAL_CLOCK)) then
 						DATA_EXTERNAL_WR_EN <= '0';
@@ -135,7 +135,7 @@ begin
 				if(receive_flag = '1') then
 					next_state <= state_Finished;
 				elsif(transmit_flag = '1') then
-					DATA_EXTERNAL_OUT <= in_data(KEY_SIZE-1-16 downto 0);
+					DATA_EXTERNAL_TO_HOST <= in_data(KEY_SIZE-1-16 downto 0);
 					DATA_EXTERNAL_WR_EN <= '1';
 					if(rising_edge(DATA_EXTERNAL_CLOCK)) then
 						DATA_EXTERNAL_WR_EN <= '0';

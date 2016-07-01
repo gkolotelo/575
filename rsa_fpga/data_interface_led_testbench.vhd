@@ -35,8 +35,8 @@ architecture behavior of data_interface_led_testbench is
     generic ( KEY_SIZE: integer := 32);
     port(
         -- External raw data provider accessors and signals:
-        DATA_EXTERNAL_IN: in std_logic_vector(15 downto 0);
-        DATA_EXTERNAL_OUT: out std_logic_vector(15 downto 0);
+        DATA_EXTERNAL_FROM_HOST: in std_logic_vector(15 downto 0);
+        DATA_EXTERNAL_TO_HOST: out std_logic_vector(15 downto 0);
         DATA_EXTERNAL_FRESHDATA: in std_logic;
         DATA_EXTERNAL_READ_EN: out std_logic;
         DATA_EXTERNAL_WR_EN: out std_logic;
@@ -58,8 +58,8 @@ architecture behavior of data_interface_led_testbench is
 
 ---------------------------    Signal declarations:   ---------------------------
 
-        signal DATA_EXTERNAL_IN: std_logic_vector(15 downto 0);
-        signal DATA_EXTERNAL_OUT:  std_logic_vector(15 downto 0);
+        signal DATA_EXTERNAL_FROM_HOST: std_logic_vector(15 downto 0);
+        signal DATA_EXTERNAL_TO_HOST:  std_logic_vector(15 downto 0);
         signal DATA_EXTERNAL_FRESHDATA: std_logic;
         signal DATA_EXTERNAL_READ_EN:  std_logic;
         signal DATA_EXTERNAL_WR_EN:  std_logic;
@@ -86,7 +86,7 @@ begin
         wait until clock = '1';
         reset <= '0';
         wait until clock = '0';
-        DATA_EXTERNAL_IN <= x"DEAD";
+        DATA_EXTERNAL_FROM_HOST <= x"DEAD";
         wait until clock = '1';
         wait until clock = '0';
         DATA_EXTERNAL_FRESHDATA <= '1';
@@ -99,7 +99,7 @@ begin
         DATA_EXTERNAL_CLOCK <= '0';
         wait until clock = '1';
         wait until clock = '0';
-        DATA_EXTERNAL_IN <= x"BEEF";
+        DATA_EXTERNAL_FROM_HOST <= x"BEEF";
         wait until clock = '1';
         wait until clock = '0';
         DATA_EXTERNAL_FRESHDATA <= '1';
@@ -128,8 +128,8 @@ begin
 
 
     data_module: data_interface_led port map(
-                    DATA_EXTERNAL_IN => DATA_EXTERNAL_IN,
-                    DATA_EXTERNAL_OUT => DATA_EXTERNAL_OUT,
+                    DATA_EXTERNAL_FROM_HOST => DATA_EXTERNAL_FROM_HOST,
+                    DATA_EXTERNAL_TO_HOST => DATA_EXTERNAL_TO_HOST,
                     DATA_EXTERNAL_FRESHDATA => DATA_EXTERNAL_FRESHDATA,
                     --DATA_EXTERNAL_READ_EN => ,
                     --DATA_EXTERNAL_WR_EN => ,

@@ -30,8 +30,8 @@ use ieee.std_logic_1164.all;
 -- When done is high, operation has completed 
 
 -- For serial 8bit; KEY_SIZE 32bit:
--- DATA_EXTERNAL_RX: 	O_rxData(8bit)
--- DATA_EXTERNAL_TX: 	I_txData(8bit)
+-- DATA_EXTERNAL_FROM_HOST: 	O_rxData(8bit)
+-- DATA_EXTERNAL_TO_HOST: 	I_txData(8bit)
 -- DATA_EXTERNAL_FRESHDATA: O_rxSig - does not deassert until new frame starts being received.
 -- DATA_EXTERNAL_CLOCK:	clock
 -- DATA_EXTERNAL_READ_EN: I_rxCont
@@ -42,8 +42,8 @@ entity data_interface_serial is
 	generic ( KEY_SIZE: integer := 32); -- MULTIPLIER=KEY_SIZE/8
 	port(
 	-- External raw data provider accessors and signals:
-	DATA_EXTERNAL_RX: in std_logic_vector(7 downto 0);  -- Data from external data provider
-	DATA_EXTERNAL_TX: out std_logic_vector(7 downto 0);  -- Data to external data provider
+	DATA_EXTERNAL_FROM_HOST: in std_logic_vector(7 downto 0);  -- Data from external data provider
+	DATA_EXTERNAL_TO_HOST: out std_logic_vector(7 downto 0);  -- Data to external data provider
 	DATA_EXTERNAL_FRESHDATA: in std_logic;
 	DATA_EXTERNAL_READ_EN: out std_logic;
 	DATA_EXTERNAL_WR_EN: out std_logic;
@@ -90,7 +90,7 @@ begin
         end if;
     end process set_next;
 
-    data_transaction: process (current_state, DATA_EXTERNAL_CLOCK, DATA_EXTERNAL_FRESHDATA, DATA_EXTERNAL_RX, data_transmit, clock)
+    data_transaction: process (current_state, DATA_EXTERNAL_CLOCK, DATA_EXTERNAL_FRESHDATA, DATA_EXTERNAL_FROM_HOST, data_transmit, clock)
 	begin
 		case current_state is
 			when state_Reset =>
@@ -123,8 +123,8 @@ begin
 			--------------------------------------- Receive ---------------------------------------
 			when state_Receive =>
 				if(set_once = '0') then
-					data_to_rsa(KEY_SIZE-1-8*counter downto KEY_SIZE-8*(counter+1)) <= DATA_EXTERNAL_RX;
-					current_byte <= DATA_EXTERNAL_RX;
+					data_to_rsa(KEY_SIZE-1-8*counter downto KEY_SIZE-8*(counter+1)) <= DATA_EXTERNAL_FROM_HOST;
+					current_byte <= DATA_EXTERNAL_FROM_HOST;
 					next_state <= state_WaitReceive;
 				end if;
 				if(rising_edge(DATA_EXTERNAL_FRESHDATA)) then
@@ -145,7 +145,7 @@ begin
 
 			--------------------------------------- Transmit ---------------------------------------
 			when state_Transmit =>
-				DATA_EXTERNAL_TX <= data_from_rsa(KEY_SIZE-1-8*counter downto KEY_SIZE-8*(counter+1));
+				DATA_EXTERNAL_TO_HOST <= data_from_rsa(KEY_SIZE-1-8*counter downto KEY_SIZE-8*(counter+1));
 				current_byte <= data_from_rsa(KEY_SIZE-1-8*counter downto KEY_SIZE-8*(counter+1));
 				if(DATA_EXTERNAL_WR_RDY = '0') then
 					DATA_EXTERNAL_WR_EN <= '0';
