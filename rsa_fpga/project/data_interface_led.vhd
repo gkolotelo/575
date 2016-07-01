@@ -45,6 +45,7 @@ entity data_interface_led is
 	DATA_EXTERNAL_FRESHDATA: in std_logic;
 	DATA_EXTERNAL_READ_EN: out std_logic;
 	DATA_EXTERNAL_WR_EN: out std_logic;
+	DATA_EXTERNAL_WR_RDY: in std_logic;
 	DATA_EXTERNAL_CLOCK: in std_logic;
 	-- Parsed data provider accessors:
 	in_data: in std_logic_vector(KEY_SIZE-1 downto 0);
@@ -72,7 +73,10 @@ architecture behavior of data_interface_led is
 
 
 ---------------------------    Signal declarations:   ---------------------------
-	signal data_available_internal, busy_internal, done_internal: std_logic;
+	signal data_available_internal, busy_internal, done_internal, receive_flag, transmit_flag: std_logic;
+
+	type state_type is (state_Reset, state_Idle, state_Block1, state_Block2 , state_Finished);
+    signal current_state, next_state: state_type;
 
 ---------------------------       Signal Routing:     ---------------------------
 begin
@@ -80,49 +84,72 @@ begin
 
 -- In this case: LED/SW 16bit; KEY_SIZE 32bit
 
-	data_transaction: process
+	set_next: process(reset, clock, next_state)
+    begin
+        if(reset = '1') then
+            current_state <= state_Reset;
+        elsif(rising_edge(clock)) then
+            current_state <= next_state;
+        end if;
+    end process set_next;
+
+
+	data_transaction: process (current_state, DATA_EXTERNAL_CLOCK, DATA_EXTERNAL_FRESHDATA, DATA_EXTERNAL_IN, data_transmit, clock)
 	begin
-		if(reset = '1') then
-			busy_internal <= '0';
-			done_internal <= '0';
-			data_available_internal <= '0';
-			out_data <= (others => '0');
-		elsif(rising_edge(DATA_EXTERNAL_CLOCK) and DATA_EXTERNAL_FRESHDATA = '1' and busy_internal = '0') then  -- Data to RSA
-			done_internal <= '0';
-			data_available_internal <= '0';
-			busy_internal <= '1';
-			wait until DATA_EXTERNAL_CLOCK = '1' and DATA_EXTERNAL_FRESHDATA = '1';
-			out_data(KEY_SIZE-1 downto KEY_SIZE-16) <= DATA_EXTERNAL_IN;
-			wait until DATA_EXTERNAL_CLOCK = '0';
-			wait until DATA_EXTERNAL_CLOCK = '1' and DATA_EXTERNAL_FRESHDATA = '1';
-			out_data(KEY_SIZE-1-16 downto 0) <= DATA_EXTERNAL_IN;
-			busy_internal <= '0';
-			done_internal <= '1';
-			data_available_internal <= '1';
-			wait until DATA_EXTERNAL_CLOCK = '0';
-
-		elsif(rising_edge(DATA_EXTERNAL_CLOCK) and data_transmit = '1' and busy_internal = '0') then  -- Data from RSA
-			done_internal <= '0';
-			busy_internal <= '1';
-			-- 1st block
-			DATA_EXTERNAL_OUT <= in_data(KEY_SIZE-1 downto KEY_SIZE-16);
-			DATA_EXTERNAL_WR_EN <= '1';
-			wait until DATA_EXTERNAL_CLOCK = '1';
-			DATA_EXTERNAL_WR_EN <= '0';
-			wait until DATA_EXTERNAL_CLOCK = '0';
-
-            -- 2nd block
-            DATA_EXTERNAL_OUT <= in_data(KEY_SIZE-1-16 downto 0);
-			DATA_EXTERNAL_WR_EN <= '1';
-			wait until DATA_EXTERNAL_CLOCK = '1';
-			DATA_EXTERNAL_WR_EN <= '0';
-			wait until DATA_EXTERNAL_CLOCK = '0';
-			busy_internal <= '0';
-			done_internal <= '1';
-			wait until DATA_EXTERNAL_CLOCK = '1';
-			wait until DATA_EXTERNAL_CLOCK = '0';
-		end if;
-		wait until rising_edge(clock);
+		case current_state is
+			when state_Reset =>
+				done_internal <= '0';
+				data_available_internal <= '0';
+				busy_internal <= '0';
+				next_state <= state_Idle;
+				receive_flag <= '0';
+				transmit_flag <= '0';
+			when state_Idle =>
+				done_internal <= '0';
+				data_available_internal <= '0';
+				busy_internal <= '0';
+				if(rising_edge(DATA_EXTERNAL_CLOCK) and DATA_EXTERNAL_FRESHDATA = '1') then
+					out_data(KEY_SIZE-1 downto KEY_SIZE-16) <= DATA_EXTERNAL_IN;  -- LS 16 bits
+					receive_flag <= '1';
+					next_state <= state_Block1;
+				elsif(rising_edge(clock) and data_transmit = '1') then
+					transmit_flag <= '1';
+					next_state <= state_Block1;
+				end if;
+			when state_Block1 =>
+				busy_internal <= '1';
+				if(receive_flag = '1') then
+					if(rising_edge(DATA_EXTERNAL_CLOCK) and DATA_EXTERNAL_FRESHDATA = '1') then
+						out_data(KEY_SIZE-1-16 downto 0) <= DATA_EXTERNAL_IN;  -- MS 16bits
+						next_state <= state_Block2;
+					end if;
+				elsif(transmit_flag = '1') then
+					DATA_EXTERNAL_OUT <= in_data(KEY_SIZE-1 downto KEY_SIZE-16);
+					DATA_EXTERNAL_WR_EN <= '1';
+					if(rising_edge(DATA_EXTERNAL_CLOCK)) then
+						DATA_EXTERNAL_WR_EN <= '0';
+						next_state <= state_Block2;
+					end if;
+				end if;
+			when state_Block2 =>
+				if(receive_flag = '1') then
+					next_state <= state_Finished;
+				elsif(transmit_flag = '1') then
+					DATA_EXTERNAL_OUT <= in_data(KEY_SIZE-1-16 downto 0);
+					DATA_EXTERNAL_WR_EN <= '1';
+					if(rising_edge(DATA_EXTERNAL_CLOCK)) then
+						DATA_EXTERNAL_WR_EN <= '0';
+						next_state <= state_Finished;
+					end if;
+				end if;
+			when state_Finished =>
+				busy_internal <= '0';
+				done_internal <= '1';
+				data_available_internal <= '1';
+				receive_flag <= '0';
+				transmit_flag <= '0';
+				next_state <= state_Idle;
+		end case;
 	end process;
 	
 	busy <= busy_internal;

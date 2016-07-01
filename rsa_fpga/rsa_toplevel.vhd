@@ -54,28 +54,33 @@ architecture behavior of rsa_toplevel is
 	end component;
 
 	-- Interface between RSA circuit and some external data provider
-	component data_interface_led
-	generic ( KEY_SIZE: integer := 32);
-	port(
-	    -- External raw data provider accessors and signals:
-		DATA_EXTERNAL_IN: in std_logic_vector(15 downto 0);
-		DATA_EXTERNAL_OUT: out std_logic_vector(15 downto 0);
-		DATA_EXTERNAL_FRESHDATA: in std_logic;
-		DATA_EXTERNAL_READ_EN: out std_logic;
-		DATA_EXTERNAL_WR_EN: out std_logic;
-		DATA_EXTERNAL_CLOCK: in std_logic;
-		-- Parsed data provider accessors:
-		in_data: in std_logic_vector(KEY_SIZE-1 downto 0);
-		out_data: out std_logic_vector(KEY_SIZE-1 downto 0);
-		-- General use control signals:
-		reset: in std_logic;
-		clock: in std_logic;
-		data_transmit: in std_logic;
-		data_available: out std_logic;
-		busy: out std_logic;
-		done: out std_logic
-	);
-	end component data_interface_led;
+	component data_interface_serial
+    generic ( KEY_SIZE: integer := 32);
+    port(
+        -- External raw data provider accessors and signals:
+        DATA_EXTERNAL_RX: in std_logic_vector(7 downto 0);
+        DATA_EXTERNAL_TX: out std_logic_vector(7 downto 0);
+        DATA_EXTERNAL_FRESHDATA: in std_logic;
+        DATA_EXTERNAL_READ_EN: out std_logic;
+        DATA_EXTERNAL_WR_EN: out std_logic;
+        DATA_EXTERNAL_WR_RDY: in std_logic;
+        DATA_EXTERNAL_CLOCK: in std_logic;
+        -- Parsed data provider accessors:
+        data_from_rsa: in std_logic_vector(KEY_SIZE-1 downto 0);
+        data_to_rsa: out std_logic_vector(KEY_SIZE-1 downto 0);
+        -- General use control signals:
+        reset: in std_logic;
+        clock: in std_logic;
+        data_transmit: in std_logic;
+        data_available: out std_logic;
+        busy: out std_logic;
+        done: out std_logic--;
+        -- Debug signals:
+        --counter_dbg: out integer;
+        --current_state_dbg: out integer;
+        --next_state_dbg: out integer
+    );
+    end component data_interface_serial;
 
 	-- Serial interface
 	component uart_simple
@@ -214,22 +219,26 @@ begin
 								finished => finished_decryption
 					);
 
-	data_module: data_interface_led port map(
-					DATA_EXTERNAL_IN => data_DATA_EXTERNAL_IN,
-					DATA_EXTERNAL_OUT => data_DATA_EXTERNAL_OUT,
-					DATA_EXTERNAL_FRESHDATA => data_DATA_EXTERNAL_FRESHDATA,
-					--DATA_EXTERNAL_READ_EN => ,
-					--DATA_EXTERNAL_WR_EN => ,
-					DATA_EXTERNAL_CLOCK => data_DATA_EXTERNAL_CLOCK,
-					in_data => data_out_data, -- Data from RSA
-					out_data => in_data, -- Data to RSA
-					reset => reset,
-					clock => clock,
-					data_transmit => data_data_transmit,
-					data_available => data_data_available,
-					busy => data_busy,
-					done => data_done
-					);
+	--data_module: data_interface_serial port map(
+    --                DATA_EXTERNAL_RX => DATA_EXTERNAL_RX,
+    --                DATA_EXTERNAL_TX => DATA_EXTERNAL_TX,
+    --                DATA_EXTERNAL_FRESHDATA => DATA_EXTERNAL_FRESHDATA,
+    --                DATA_EXTERNAL_READ_EN => DATA_EXTERNAL_READ_EN,
+    --                DATA_EXTERNAL_WR_EN => DATA_EXTERNAL_WR_EN,
+    --                DATA_EXTERNAL_WR_RDY => DATA_EXTERNAL_WR_RDY,
+    --                DATA_EXTERNAL_CLOCK => '0',
+    --                data_from_rsa => data_from_rsa, -- Data from RSA
+    --                data_to_rsa => data_to_rsa, -- Data to RSA
+    --                reset => reset,
+    --                clock => clock,
+    --                data_transmit => data_transmit,
+    --                data_available => data_available,
+    --                busy => busy,
+    --                done => done,      
+    --                counter_dbg => counter_dbg,
+    --                current_state_dbg => current_state_dbg,
+    --                next_state_dbg => next_state_dbg
+    --                );
 
 	--serial_interface: uart_simple port map ( 
 	--				I_clk => clock;
