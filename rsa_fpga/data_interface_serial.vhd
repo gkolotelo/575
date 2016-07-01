@@ -70,7 +70,7 @@ end data_interface_serial;
 architecture behavior of data_interface_serial is
 
 ---------------------------    Signal declarations:   ---------------------------
-	signal data_available_internal, busy_internal, done_internal, set_once, freshdata_not_deasserted: std_logic;
+	signal data_available_internal, busy_internal, done_internal, set_once, freshdata_not_deasserted, count_once: std_logic;
 
 	type state_type is (state_Reset, state_Idle, state_Receive, state_Transmit , state_Finished, state_WaitReceive, state_WaitTransmit);
     signal current_state, next_state: state_type;
@@ -100,6 +100,7 @@ begin
 				next_state <= state_Idle;
 				counter <= 0;
 				set_once <= '0';
+				count_once <= '0';
 				freshdata_not_deasserted <= '0';
 				DATA_EXTERNAL_WR_EN <= '0';
 				DATA_EXTERNAL_READ_EN <= '1';
@@ -109,16 +110,19 @@ begin
 				data_available_internal <= '0';
 				counter <= 0;
 				set_once <= '0';
-				-- what if not on idle
-				if(falling_edge(DATA_EXTERNAL_FRESHDATA)) then
-					freshdata_not_deasserted <= '0';
+				count_once <= '0';
+				if(DATA_EXTERNAL_FRESHDATA = '0') then
+						freshdata_not_deasserted <= '0';
 				end if;
-				if(rising_edge(clock) and DATA_EXTERNAL_FRESHDATA = '1' and freshdata_not_deasserted = '0') then
-					busy_internal <= '1';
-					next_state <= state_Receive;
-				elsif(rising_edge(clock) and data_transmit = '1' and DATA_EXTERNAL_WR_RDY = '1') then
-				 	busy_internal <= '1';
-					next_state <= state_Transmit;
+				-- what if not on idle
+				if(clock = '1') then
+					if(DATA_EXTERNAL_FRESHDATA = '1' and freshdata_not_deasserted = '0') then
+						busy_internal <= '1';
+						next_state <= state_Receive;
+					elsif(data_transmit = '1' and DATA_EXTERNAL_WR_RDY = '1') then
+						busy_internal <= '1';
+						next_state <= state_Transmit;
+					end if;
 				end if;
 			--------------------------------------- Receive ---------------------------------------
 			when state_Receive =>
@@ -127,16 +131,18 @@ begin
 					current_byte <= DATA_EXTERNAL_FROM_HOST;
 					next_state <= state_WaitReceive;
 				end if;
-				if(rising_edge(DATA_EXTERNAL_FRESHDATA)) then
+				if(DATA_EXTERNAL_FRESHDATA = '1' and count_once = '1') then
 					set_once <= '0';
 				end if;
-				if(falling_edge(DATA_EXTERNAL_FRESHDATA)) then
+				if(DATA_EXTERNAL_FRESHDATA = '0' and count_once = '0') then
 					counter <= counter + 1;
+					count_once <= '1';
 				end if;
 
 			when state_WaitReceive =>
 				set_once <= '1';
-				if(counter = MULTIPLIER-1) then
+				count_once <= '0';
+				if(counter >= MULTIPLIER-1) then
 					next_state <= state_Finished;
 					data_available_internal <= '1';
 				else

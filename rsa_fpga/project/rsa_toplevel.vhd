@@ -218,10 +218,12 @@ begin
         elsif(rising_edge(CLOCK_50)) then
             case current_state is
                 when (idle) =>
+					LEDR(4 downto 0) <= "00001";
                     if((data_available) = '1') then
                         next_state <= receiving;
                     end if;
                 when (receiving) =>
+					LEDR(4 downto 0) <= "00010";
                     if((done) = '1') then
                         case serial_operation is
                             when "01100101" =>  -- (e)Encrypt
@@ -234,22 +236,25 @@ begin
                         end case;
                     end if;
                 when (encrypting) =>
+					LEDR(4 downto 0) <= "00100";
                     if((finished_encryption) = '1') then
                         start_encryption <= '0';
                         next_state <= transmiting;
                         data_from_rsa <= "00000000" & encrypt_out;
                     end if;
                 when (decrypting) =>
+					LEDR(4 downto 0) <= "01000";
                     if((finished_decryption) = '1') then
                         start_decryption <= '0';
                         next_state <= transmiting;
                         data_from_rsa <= "00000000" & decrypt_out;
                     end if;
                 when (transmiting) => 
+					LEDR(4 downto 0) <= "10000";
                     if((done) = '1') then
                         next_state <= idle;
                     end if;
-                when (others) => null;
+                --when (others) => null;
             end case;
         end if;
     end process;

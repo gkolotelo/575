@@ -1,6 +1,6 @@
 import serial
 import sys
-from serial import Serial, termios, SerialException
+from serial import Serial
 
 
 serial_port = "COM1"
@@ -50,7 +50,6 @@ while True:
     print repr(final_data)
 
     rsa_serial.write(final_data)
-
     # start receiving
 
     response = rsa_serial.read(KEY_SIZE/8 + 1)

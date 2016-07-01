@@ -30,8 +30,8 @@ use ieee.std_logic_1164.all;
 -- When done is high, operation has completed 
 
 -- For serial 8bit; KEY_SIZE 32bit:
--- DATA_EXTERNAL_RX: 	O_rxData(8bit)
--- DATA_EXTERNAL_TX: 	I_txData(8bit)
+-- DATA_EXTERNAL_FROM_HOST: 	O_rxData(8bit)
+-- DATA_EXTERNAL_TO_HOST: 	I_txData(8bit)
 -- DATA_EXTERNAL_FRESHDATA: O_rxSig - does not deassert until new frame starts being received.
 -- DATA_EXTERNAL_CLOCK:	clock
 -- DATA_EXTERNAL_READ_EN: I_rxCont
@@ -42,8 +42,8 @@ entity data_interface_serial is
 	generic ( KEY_SIZE: integer := 32); -- MULTIPLIER=KEY_SIZE/8
 	port(
 	-- External raw data provider accessors and signals:
-	DATA_EXTERNAL_RX: in std_logic_vector(7 downto 0);  -- Data from external data provider
-	DATA_EXTERNAL_TX: out std_logic_vector(7 downto 0);  -- Data to external data provider
+	DATA_EXTERNAL_FROM_HOST: in std_logic_vector(7 downto 0);  -- Data from external data provider
+	DATA_EXTERNAL_TO_HOST: out std_logic_vector(7 downto 0);  -- Data to external data provider
 	DATA_EXTERNAL_FRESHDATA: in std_logic;
 	DATA_EXTERNAL_READ_EN: out std_logic;
 	DATA_EXTERNAL_WR_EN: out std_logic;
@@ -70,7 +70,7 @@ end data_interface_serial;
 architecture behavior of data_interface_serial is
 
 ---------------------------    Signal declarations:   ---------------------------
-	signal data_available_internal, busy_internal, done_internal, set_once, freshdata_not_deasserted: std_logic;
+	signal data_available_internal, busy_internal, done_internal, set_once, freshdata_not_deasserted, count_once: std_logic;
 
 	type state_type is (state_Reset, state_Idle, state_Receive, state_Transmit , state_Finished, state_WaitReceive, state_WaitTransmit);
     signal current_state, next_state: state_type;
@@ -90,7 +90,7 @@ begin
         end if;
     end process set_next;
 
-    data_transaction: process (current_state, DATA_EXTERNAL_CLOCK, DATA_EXTERNAL_FRESHDATA, DATA_EXTERNAL_RX, data_transmit, clock)
+    data_transaction: process (current_state, DATA_EXTERNAL_CLOCK, DATA_EXTERNAL_FRESHDATA, DATA_EXTERNAL_FROM_HOST, data_transmit, clock)
 	begin
 		case current_state is
 			when state_Reset =>
@@ -100,6 +100,7 @@ begin
 				next_state <= state_Idle;
 				counter <= 0;
 				set_once <= '0';
+				count_once <= '0';
 				freshdata_not_deasserted <= '0';
 				DATA_EXTERNAL_WR_EN <= '0';
 				DATA_EXTERNAL_READ_EN <= '1';
@@ -109,34 +110,39 @@ begin
 				data_available_internal <= '0';
 				counter <= 0;
 				set_once <= '0';
-				-- what if not on idle
-				if(falling_edge(DATA_EXTERNAL_FRESHDATA)) then
-					freshdata_not_deasserted <= '0';
+				count_once <= '0';
+				if(DATA_EXTERNAL_FRESHDATA = '0') then
+						freshdata_not_deasserted <= '0';
 				end if;
-				if(rising_edge(clock) and DATA_EXTERNAL_FRESHDATA = '1' and freshdata_not_deasserted = '0') then
-					busy_internal <= '1';
-					next_state <= state_Receive;
-				elsif(rising_edge(clock) and data_transmit = '1' and DATA_EXTERNAL_WR_RDY = '1') then
-				 	busy_internal <= '1';
-					next_state <= state_Transmit;
+				-- what if not on idle
+				if(clock = '1') then
+					if(DATA_EXTERNAL_FRESHDATA = '1' and freshdata_not_deasserted = '0') then
+						busy_internal <= '1';
+						next_state <= state_Receive;
+					elsif(data_transmit = '1' and DATA_EXTERNAL_WR_RDY = '1') then
+						busy_internal <= '1';
+						next_state <= state_Transmit;
+					end if;
 				end if;
 			--------------------------------------- Receive ---------------------------------------
 			when state_Receive =>
 				if(set_once = '0') then
-					data_to_rsa(KEY_SIZE-1-8*counter downto KEY_SIZE-8*(counter+1)) <= DATA_EXTERNAL_RX;
-					current_byte <= DATA_EXTERNAL_RX;
+					data_to_rsa(KEY_SIZE-1-8*counter downto KEY_SIZE-8*(counter+1)) <= DATA_EXTERNAL_FROM_HOST;
+					current_byte <= DATA_EXTERNAL_FROM_HOST;
 					next_state <= state_WaitReceive;
 				end if;
-				if(rising_edge(DATA_EXTERNAL_FRESHDATA)) then
+				if(DATA_EXTERNAL_FRESHDATA = '1' and count_once = '1') then
 					set_once <= '0';
 				end if;
-				if(falling_edge(DATA_EXTERNAL_FRESHDATA)) then
+				if(DATA_EXTERNAL_FRESHDATA = '0' and count_once = '0') then
 					counter <= counter + 1;
+					count_once <= '1';
 				end if;
 
 			when state_WaitReceive =>
 				set_once <= '1';
-				if(counter = MULTIPLIER-1) then
+				count_once <= '0';
+				if(counter >= MULTIPLIER-1) then
 					next_state <= state_Finished;
 					data_available_internal <= '1';
 				else
@@ -145,7 +151,7 @@ begin
 
 			--------------------------------------- Transmit ---------------------------------------
 			when state_Transmit =>
-				DATA_EXTERNAL_TX <= data_from_rsa(KEY_SIZE-1-8*counter downto KEY_SIZE-8*(counter+1));
+				DATA_EXTERNAL_TO_HOST <= data_from_rsa(KEY_SIZE-1-8*counter downto KEY_SIZE-8*(counter+1));
 				current_byte <= data_from_rsa(KEY_SIZE-1-8*counter downto KEY_SIZE-8*(counter+1));
 				if(DATA_EXTERNAL_WR_RDY = '0') then
 					DATA_EXTERNAL_WR_EN <= '0';
