@@ -22,7 +22,7 @@ use ieee.std_logic_unsigned.all;
 use ieee.std_logic_1164.all;
 
 entity data_interface_and_serial_testbench is
-generic ( KEY_SIZE: integer := 32; DATA_WIDTH: integer := 32);
+generic ( KEY_SIZE: integer := 32, DATA_WIDTH: integer := 32);
 end data_interface_and_serial_testbench;
 
 architecture behavior of data_interface_and_serial_testbench is

@@ -126,7 +126,6 @@ begin
 			when state_Receive =>
 				if(set_once = '0') then
 					data_to_rsa(DATA_WIDTH-1-8*counter downto DATA_WIDTH-8*(counter+1)) <= DATA_EXTERNAL_FROM_HOST;
-					current_byte <= DATA_EXTERNAL_FROM_HOST;
 					next_state <= state_WaitReceive;
 				end if;
 				if(DATA_EXTERNAL_FRESHDATA = '1' and count_once = '1') then
@@ -151,7 +150,6 @@ begin
 			-- Transmit state: Transmits data_from_rsa in MULTIPLIER blocks of data to external device
 			when state_Transmit =>
 				DATA_EXTERNAL_TO_HOST <= data_from_rsa(DATA_WIDTH-1-8*counter downto DATA_WIDTH-8*(counter+1));
-				current_byte <= data_from_rsa(DATA_WIDTH-1-8*counter downto DATA_WIDTH-8*(counter+1));
 				if(DATA_EXTERNAL_WR_RDY = '0') then
 					DATA_EXTERNAL_WR_EN <= '0';
 					set_once <= '0';
