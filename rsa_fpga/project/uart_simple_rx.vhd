@@ -67,7 +67,8 @@ ARCHITECTURE behavior OF uart_simple_rx_tb IS
       --:= "0101011101001110110101001011010110001101010000110101011011010000011101"; -- unicamp / 70-bits
       := "0101010101001110010101001001010110000101010000010101011001010000010101"; -- UNICAMP / 70-bits
       --:= "0110000011010000010100100111010000000001"; -- (7487875)decimal / 40-bits
-      
+
+
    signal s_data_pos : integer := 69;
    signal s_data_oversample: integer:= 8;
    signal s_data_begin : std_logic:= '0';
@@ -76,24 +77,24 @@ BEGIN
  
    -- Instantiate the Unit Under Test (UUT)
    uut: uart_simple PORT MAP (
-          I_clk => I_clk,
-          I_clk_baud_count => X"01b2",--X"1458", -- 115.2K or 9.6K
-          I_reset => I_reset,
-          I_txData => I_txData,
-          I_txSig => I_txSig,
-          O_txRdy => O_txRdy,
-          O_tx => O_tx,
-          I_rx => I_rx,
-          I_rxCont => I_rxCont,
-          O_rxData => O_rxData,
-          O_rxSig => O_rxSig,
-          
-          O_rxFrameError => O_rxFrameError
-           
-          --D_rxClk => D_rxClk,
-          --D_rxState => D_rxState,
-          --D_txClk => D_txClk,
-          --D_txState => D_txState
+            I_clk => I_clk,
+            I_clk_baud_count => X"01b2",--X"1458", -- 115.2K or 9.6K
+            I_reset => I_reset,
+            I_txData => I_txData,
+            I_txSig => I_txSig,
+            O_txRdy => O_txRdy,
+            O_tx => O_tx,
+            I_rx => I_rx,
+            I_rxCont => I_rxCont,
+            O_rxData => O_rxData,
+            O_rxSig => O_rxSig,
+
+            O_rxFrameError => O_rxFrameError
+
+            --D_rxClk => D_rxClk,
+            --D_rxState => D_rxState,
+            --D_txClk => D_txClk,
+            --D_txState => D_txState
         );
 
    -- Clock process definitions
