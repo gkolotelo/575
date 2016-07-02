@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 --------------------------------------------------
 --         Logic Circuits Lab - ES575A          --
 --------------------------------------------------
@@ -226,6 +227,5 @@ begin
                     next_state_dbg => next_state_dbg,
                     current_byte => current_byte
                     );
-
 
 end behavior;
