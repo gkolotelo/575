@@ -51,7 +51,12 @@ architecture behavior of data_interface_serial_testbench is
         data_transmit: in std_logic;
         data_available: out std_logic;
         busy: out std_logic;
-        done: out std_logic
+        done: out std_logic;
+        -- Debug signals
+        counter_dbg: out integer;
+        current_state_dbg: out integer;
+        next_state_dbg: out integer;
+        current_byte: out std_logic_vector(7 downto 0)
     );
     end component data_interface_serial;
 
@@ -73,6 +78,10 @@ architecture behavior of data_interface_serial_testbench is
         signal data_available:  std_logic;
         signal busy:  std_logic;
         signal done:  std_logic;
+        signal counter_dbg: integer;
+        signal current_state_dbg: integer;
+        signal next_state_dbg: integer;
+        signal current_byte: std_logic_vector(7 downto 0);
 
 
 ---------------------------       Signal Routing:     ---------------------------
@@ -86,6 +95,37 @@ begin
         wait until clock = '1';
         reset <= '0';
         wait until clock = '0';
+        -- from host
+        data_transmit <= '0';
+        DATA_EXTERNAL_FROM_HOST <= x"DE";
+        wait until clock = '1';
+        wait until clock = '0';
+        DATA_EXTERNAL_FRESHDATA <= '1';
+        wait for 400 ps;
+        DATA_EXTERNAL_FRESHDATA <= '0';
+        wait for 400 ps;
+        DATA_EXTERNAL_FROM_HOST <= x"AD";
+        wait for 400 ps;
+        DATA_EXTERNAL_FRESHDATA <= '1';
+        wait for 400 ps;
+        DATA_EXTERNAL_FRESHDATA <= '0';
+        wait for 400 ps;
+        DATA_EXTERNAL_FROM_HOST <= x"BE";
+        wait for 400 ps;
+        DATA_EXTERNAL_FRESHDATA <= '1';
+        wait for 400 ps;
+        DATA_EXTERNAL_FRESHDATA <= '0';
+        wait for 400 ps;
+        DATA_EXTERNAL_FROM_HOST <= x"EF";
+        wait for 400 ps;
+        DATA_EXTERNAL_FRESHDATA <= '1';
+        wait for 400 ps;
+        DATA_EXTERNAL_FRESHDATA <= '0';
+        wait for 400 ps;
+
+        wait for 1 ns;
+
+        -- to host
         data_from_rsa <= x"DEADBEEF";
         wait until clock = '1';
         wait until clock = '0';
@@ -179,7 +219,12 @@ begin
                     data_transmit => data_transmit,
                     data_available => data_available,
                     busy => busy,
-                    done => done
+                    done => done,
+                    -- Debug signals
+                    counter_dbg => counter_dbg,
+                    current_state_dbg => current_state_dbg,
+                    next_state_dbg => next_state_dbg,
+                    current_byte => current_byte
                     );
 
 
