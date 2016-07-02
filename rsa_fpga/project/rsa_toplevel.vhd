@@ -8,13 +8,19 @@
 --               RSA Encryption                 --
 --------------------------------------------------
 -- filename:    rsa_toplevel.vhd                --
--- description: Modular Exponentiation circuit  --
---              R = A^b mod C                   --
+-- description: Top level VHD for RSA encryption--
+--              and decryption device           --
 -- created on:  June 19, 2016                   --
--- revision:    June 19, 2016                   --
+-- revision:    July 02, 2016                   --
 --------------------------------------------------
+-- RSA encyption and decryption is implemented using
+-- the modular exponentiation method.
 
--- Binary method of modular exponentiation is used.
+-- Component dependency:
+--      modexp_interface:       Interface for RSA calculation circuit
+--      data_serial_interface:  Interface between serial data and RSA circuit
+--      uart_simple:            Raw serial communication circuit
+--      decoder_7segment_hex:   7 segment HEX decoder
 
 
 library ieee;
@@ -34,17 +40,7 @@ entity rsa_toplevel is
         UART_TXD: out std_logic;
         LEDR: out std_logic_vector(17 downto 0);
         LEDG: out std_logic_vector(7 downto 0);
-        HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0: out std_logic_vector(6 downto 0);
-        current_state_dbg: out integer;
-        next_state_dbg: out integer;
-        data_to_rsa_dbg: out std_logic_vector(39 downto 0);
-        data_available_dbg: out std_logic;
-        data_int_busy_dbg: out std_logic;
-        data_int_counter_dbg: out integer;
-        data_int_current_state_dbg: out integer;
-        data_int_next_state_dbg: out integer;
-        data_int_current_byte: out std_logic_vector(7 downto 0);
-        DATA_EXTERNAL_FROM_HOST_dbg: out std_logic_vector(7 downto 0)
+        HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0: out std_logic_vector(6 downto 0)
         );
 end rsa_toplevel;
 
@@ -66,9 +62,9 @@ architecture behavior of rsa_toplevel is
         );
     end component;
 
-    -- Interface between RSA circuit and some external data provider
+    -- Interface between RSA circuit and some serial bytewise data provider
     component data_interface_serial
-    generic ( KEY_SIZE: integer := 32);
+    generic ( DATA_WIDTH: integer := 32);
     port(
         -- External raw data provider accessors and signals:
         DATA_EXTERNAL_FROM_HOST: in std_logic_vector(7 downto 0);
@@ -79,25 +75,19 @@ architecture behavior of rsa_toplevel is
         DATA_EXTERNAL_WR_RDY: in std_logic;
         DATA_EXTERNAL_CLOCK: in std_logic;
         -- Parsed data provider accessors:
-        data_from_rsa: in std_logic_vector(KEY_SIZE-1 downto 0);
-        data_to_rsa: out std_logic_vector(KEY_SIZE-1 downto 0);
+        data_from_rsa: in std_logic_vector(DATA_WIDTH-1 downto 0);
+        data_to_rsa: out std_logic_vector(DATA_WIDTH-1 downto 0);
         -- General use control signals:
         reset: in std_logic;
         clock: in std_logic;
         data_transmit: in std_logic;
         data_available: out std_logic;
         busy: out std_logic;
-        done: out std_logic;--;
-        -- Debug signals:
-        counter_dbg: out integer;
-        current_state_dbg: out integer;
-        next_state_dbg: out integer;
-        current_byte: out std_logic_vector(7 downto 0)
-    
+        done: out std_logic    
     );
     end component data_interface_serial;
 
-    -- Serial interface
+    -- Raw serial communication interface
     component uart_simple
     Port ( 
         I_clk : in  STD_LOGIC;
@@ -182,6 +172,7 @@ architecture behavior of rsa_toplevel is
 ---------------------------       Signal Routing:     ---------------------------
 begin
     -- Fixed keys
+    ----------- these \/ are not being used, they are hardcoded on modexp_interface. Fix ---------
     public_exp <= x"00903ad9";
     private_exp <= x"02d80e39";
     modulus <= x"03b2c159";
@@ -234,17 +225,22 @@ begin
     begin
         if(rising_edge(clock)) then
             case current_state is
+                -- Reset state: Set signals to their reset values
                 when state_reset =>
                     next_state <= idle;
-                    --LEDR <= (others => '0');
-                    --LEDG <= (others => '0');
+                    LEDR <= (others => '0');
+                    LEDG <= (others => '0');
+
+                -- Idle state: Wait for data new data to be received and made available for processing
                 when (idle) =>
-                    --LEDR(4 downto 0) <= "00001";
+                    LEDR(4 downto 0) <= "00001";
                     if((data_available) = '1') then
                         next_state <= receiving;
                     end if;
+
+                -- Receiving state: Data has been received. Setup signals for operation and start
                 when (receiving) =>
-                    --LEDR(4 downto 0) <= "00010";
+                    LEDR(4 downto 0) <= "00010";
                     case serial_operation is
                         when "01100101" =>  -- (e)Encrypt
                             next_state <= encrypting;
@@ -254,66 +250,36 @@ begin
                             start_decryption <= '1';
                                  when others => null;
                     end case;
+
+                -- Encrypting state: Wait for encryption and transmit result after.
                 when (encrypting) =>
-                    --LEDR(4 downto 0) <= "00100";
+                    LEDR(4 downto 0) <= "00100";
                     if((finished_encryption) = '1') then
                         start_encryption <= '0';
                         next_state <= transmiting;
                         data_transmit <= '1';
                         data_from_rsa <= "00000000" & encrypt_out;
                     end if;
+                -- Decrypting state: Wait for decryption and transmit result after.
                 when (decrypting) =>
-                    --LEDR(4 downto 0) <= "01000";
+                    LEDR(4 downto 0) <= "01000";
                     if((finished_decryption) = '1') then
                         start_decryption <= '0';
                         next_state <= transmiting;
                         data_transmit <= '1';
                         data_from_rsa <= "00000000" & decrypt_out;
                     end if;
+                -- Transmitting state: Wait for data transmission to complete. Go back to idle.
                 when (transmiting) => 
-                    --LEDR(4 downto 0) <= "10000";
+                    LEDR(4 downto 0) <= "10000";
                     data_transmit <= '0';
                     if((done) = '1') then
                         next_state <= idle;
                     end if;
-                --when (others) => null;
             end case;
         end if;
     end process;
 
-    process(current_state, next_state)
-    begin
-        case current_state is
-            when idle =>
-                current_state_dbg <= 0;
-            when receiving =>
-                current_state_dbg <= 1;
-            when encrypting =>
-                current_state_dbg <= 2;
-            when decrypting  =>
-                current_state_dbg <= 3;
-            when transmiting =>
-                current_state_dbg <= 4;
-            when state_reset =>
-                current_state_dbg <= 5;
-        end case;
-        case next_state is
-            when idle =>
-                next_state_dbg <= 0;
-            when receiving =>
-                next_state_dbg <= 1;
-            when encrypting =>
-                next_state_dbg <= 2;
-            when decrypting  =>
-                next_state_dbg <= 3;
-            when transmiting =>
-                next_state_dbg <= 4;
-            when state_reset =>
-                next_state_dbg <= 5;
-        end case;
-    end process;
-
-    -- ???????
     process(reset, clock)
     begin
         if(reset = '1') then
@@ -322,11 +288,6 @@ begin
             current_state <= next_state;
         end if;
     end process;
-
-    data_available_dbg <= data_available;
-    data_to_rsa_dbg <= data_to_rsa;
-    data_int_busy_dbg <= busy;
-    DATA_EXTERNAL_FROM_HOST_dbg <= DATA_EXTERNAL_FROM_HOST;
 
 ------------------------    Component instances:   ---------------------------
     encrypt_module: modexp_interface generic map (KEY_SIZE => KEY_SIZE)
@@ -351,8 +312,8 @@ begin
                                 finished => finished_decryption
                     );
 
-    data_module: data_interface_serial generic map (KEY_SIZE => KEY_SIZE+8)
-                        port map(
+    data_module: data_interface_serial generic map (DATA_WIDTH => KEY_SIZE+8)
+                    port map(
                     DATA_EXTERNAL_FROM_HOST => DATA_EXTERNAL_FROM_HOST,
                     DATA_EXTERNAL_TO_HOST => DATA_EXTERNAL_TO_HOST,
                     DATA_EXTERNAL_FRESHDATA => DATA_EXTERNAL_FRESHDATA,
@@ -366,14 +327,10 @@ begin
                     
                     reset => reset,
                     clock => clock,
-                    data_transmit => data_transmit, --***
+                    data_transmit => data_transmit,
                     data_available => data_available,
-                    busy => busy, --***
-                    done => done, --***~
-                    counter_dbg => data_int_counter_dbg,
-                    current_state_dbg => data_int_current_state_dbg,
-                    next_state_dbg => data_int_next_state_dbg,
-                    current_byte => data_int_current_byte
+                    busy => busy,
+                    done => done
                     );
 
     uut: uart_simple port map (

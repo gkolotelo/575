@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 --------------------------------------------------
 --         Logic Circuits Lab - ES575A          --
 --------------------------------------------------
@@ -8,22 +7,18 @@
 --------------------------------------------------
 --               RSA Encryption                 --
 --------------------------------------------------
--- filename:    modexp_interface.vhd            --
--- description: Interface circuit between       --
---              top-level and modexp            --
+-- filename:                                    --
+-- data_interface_serial_testbench.vhd          --
+-- description: testbench for data_interface    --
+--              testing                         --
 -- created on:  June 19, 2016                   --
--- revision:    June 19, 2016                   --
+-- revision:    July 01, 2016                   --
 --------------------------------------------------
-
--- Binary method of modular exponentiation is used.
-
 
 library ieee;
 use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all;
 use ieee.std_logic_1164.all;
-
--- Port signal definition:
 
 entity data_interface_serial_testbench is
 generic ( KEY_SIZE: integer := 32);
@@ -33,7 +28,7 @@ architecture behavior of data_interface_serial_testbench is
 ---------------------------  Component declarations:  ---------------------------
 
     component data_interface_serial
-    generic ( KEY_SIZE: integer := 32);
+    generic ( DATA_WIDTH: integer := 32);
     port(
         -- External raw data provider accessors and signals:
         DATA_EXTERNAL_FROM_HOST: in std_logic_vector(7 downto 0);
@@ -44,20 +39,15 @@ architecture behavior of data_interface_serial_testbench is
         DATA_EXTERNAL_WR_RDY: in std_logic;
         DATA_EXTERNAL_CLOCK: in std_logic;
         -- Parsed data provider accessors:
-        data_from_rsa: in std_logic_vector(KEY_SIZE-1 downto 0);
-        data_to_rsa: out std_logic_vector(KEY_SIZE-1 downto 0);
+        data_from_rsa: in std_logic_vector(DATA_WIDTH-1 downto 0);
+        data_to_rsa: out std_logic_vector(DATA_WIDTH-1 downto 0);
         -- General use control signals:
         reset: in std_logic;
         clock: in std_logic;
         data_transmit: in std_logic;
         data_available: out std_logic;
         busy: out std_logic;
-        done: out std_logic;
-        -- Debug signals
-        counter_dbg: out integer;
-        current_state_dbg: out integer;
-        next_state_dbg: out integer;
-        current_byte: out std_logic_vector(7 downto 0)
+        done: out std_logic
     );
     end component data_interface_serial;
 
@@ -79,10 +69,6 @@ architecture behavior of data_interface_serial_testbench is
         signal data_available:  std_logic;
         signal busy:  std_logic;
         signal done:  std_logic;
-        signal counter_dbg: integer;
-        signal current_state_dbg: integer;
-        signal next_state_dbg: integer;
-        signal current_byte: std_logic_vector(7 downto 0);
 
 
 ---------------------------       Signal Routing:     ---------------------------
@@ -213,19 +199,14 @@ begin
                     --DATA_EXTERNAL_WR_EN => ,
                     DATA_EXTERNAL_WR_RDY => DATA_EXTERNAL_WR_RDY,
                     DATA_EXTERNAL_CLOCK => '0',
-                    data_from_rsa => data_from_rsa, -- Data from RSA
-                    data_to_rsa => data_to_rsa, -- Data to RSA
+                    data_from_rsa => data_from_rsa,
+                    data_to_rsa => data_to_rsa,
                     reset => reset,
                     clock => clock,
                     data_transmit => data_transmit,
                     data_available => data_available,
                     busy => busy,
-                    done => done,
-                    -- Debug signals
-                    counter_dbg => counter_dbg,
-                    current_state_dbg => current_state_dbg,
-                    next_state_dbg => next_state_dbg,
-                    current_byte => current_byte
+                    done => done
                     );
 
 end behavior;

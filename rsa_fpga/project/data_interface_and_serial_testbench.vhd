@@ -7,22 +7,19 @@
 --------------------------------------------------
 --               RSA Encryption                 --
 --------------------------------------------------
--- filename:    modexp_interface.vhd            --
--- description: Interface circuit between       --
---              top-level and modexp            --
+-- filename:                                    --
+--    data_interface_and_serial_testbench.vhd   --
+-- description: Testbench for data_interface    --
+--              serial                          --
 -- created on:  June 19, 2016                   --
--- revision:    June 19, 2016                   --
+-- revision:    June 01, 2016                   --
 --------------------------------------------------
-
--- Binary method of modular exponentiation is used.
 
 
 library ieee;
 use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all;
 use ieee.std_logic_1164.all;
-
--- Port signal definition:
 
 entity data_interface_and_serial_testbench is
 generic ( KEY_SIZE: integer := 32);
@@ -32,7 +29,7 @@ architecture behavior of data_interface_and_serial_testbench is
 ---------------------------  Component declarations:  ---------------------------
 
     component data_interface_serial
-    generic ( KEY_SIZE: integer := 32);
+    generic ( DATA_WIDTH: integer := 32);
     port(
         -- External raw data provider accessors and signals:
         DATA_EXTERNAL_FROM_HOST: in std_logic_vector(7 downto 0);
@@ -43,8 +40,8 @@ architecture behavior of data_interface_and_serial_testbench is
         DATA_EXTERNAL_WR_RDY: in std_logic;
         DATA_EXTERNAL_CLOCK: in std_logic;
         -- Parsed data provider accessors:
-        data_from_rsa: in std_logic_vector(KEY_SIZE-1 downto 0);
-        data_to_rsa: out std_logic_vector(KEY_SIZE-1 downto 0);
+        data_from_rsa: in std_logic_vector(DATA_WIDTH-1 downto 0);
+        data_to_rsa: out std_logic_vector(DATA_WIDTH-1 downto 0);
         -- General use control signals:
         reset: in std_logic;
         clock: in std_logic;
@@ -95,8 +92,8 @@ architecture behavior of data_interface_and_serial_testbench is
         signal DATA_EXTERNAL_WR_EN:  std_logic;
         signal DATA_EXTERNAL_WR_RDY: std_logic;
         signal DATA_EXTERNAL_CLOCK: std_logic;
-        signal data_from_rsa: std_logic_vector(KEY_SIZE-1 downto 0);
-        signal data_to_rsa:  std_logic_vector(KEY_SIZE-1 downto 0);
+        signal data_from_rsa: std_logic_vector(DATA_WIDTH-1 downto 0);
+        signal data_to_rsa:  std_logic_vector(DATA_WIDTH-1 downto 0);
         signal reset: std_logic;
         signal clock: std_logic;
         signal data_transmit: std_logic;
@@ -108,29 +105,19 @@ architecture behavior of data_interface_and_serial_testbench is
         signal next_state_dbg: integer;
 
         --Inputs
-        --signal I_clk : std_logic := '0';
-        --signal I_reset : std_logic := '0';
-        --signal I_txData : std_logic_vector(7 downto 0) := (others => '0');
-        --signal I_txSig : std_logic := '0';
         signal I_rx : std_logic := '1';
-        --signal I_rxCont : std_logic := '0';
 
         --Outputs
-        --signal O_txRdy : std_logic;
         signal O_tx : std_logic;
-        --signal O_rxData : std_logic_vector(7 downto 0) := X"00";
-        --signal O_rxSig : std_logic;
         signal O_rxFrameError : std_logic;
 
         -- Clock period definitions
         constant I_clk_period : time := 20 ns;
-        constant I_baud_clk_pediod : time := 8680 ns ;--104167 ns; -- 115.2K or 9.6K
+        constant I_baud_clk_pediod : time := 104167 ns ; -- 9.6K
         signal I_baud_clk : std_logic := '0';
 
         signal s_data : std_logic_vector(39 downto 0) 
-          --:= "0101011101001110110101001011010110001101010000110101011011010000011101"; -- unicamp / 70-bits
-          := "0101010101001110010101001001010110000101";--010000010101011001010000010101"; -- UNICAMP / 70-bits
-          --:= "0110000011010000010100100111010000000001"; -- (7487875)decimal / 40-bits
+        := "0101010101001110010101001001010110000101"; -- UNIC (4*(1 + 8 + 1) bits = 40 bits)
           
         signal s_data_pos : integer := 39;
         signal s_data_oversample: integer:= 8;
@@ -150,7 +137,7 @@ begin
         wait for I_clk_period*10;
         s_data_begin <= '1';
 
-        -- Transmit
+        -- Transmit 0xDEADBEEF
         wait for I_baud_clk_pediod*60;
         data_from_rsa <= X"DEADBEEF";
         wait until clock = '0';
@@ -161,6 +148,7 @@ begin
         wait;
     end process;
 
+    -- Main clock. 50MHz
     I_clk_process: process
     begin
         clock <= '0';
@@ -169,6 +157,7 @@ begin
         wait for I_clk_period/2;
     end process;
 
+    -- Clock for baud. Used on Receive
     I_baud_clk_process: process
     begin
         I_baud_clk <= '0';
@@ -177,6 +166,7 @@ begin
         wait for I_baud_clk_pediod/2;
     end process;
 
+    -- Iterating bits on serial RX
     data_sender: process (I_baud_clk)
     begin
         if rising_edge(I_baud_clk ) and s_data_begin = '1' and s_data_pos >= 0 then
@@ -185,7 +175,7 @@ begin
         end if;
     end process;
 
-
+    -- Instantiate the serial interface
     data_module: data_interface_serial port map(
                     DATA_EXTERNAL_FROM_HOST => DATA_EXTERNAL_FROM_HOST,
                     DATA_EXTERNAL_TO_HOST => DATA_EXTERNAL_TO_HOST,
@@ -201,16 +191,13 @@ begin
                     data_transmit => data_transmit,
                     data_available => data_available,
                     busy => busy,
-                    done => done,      
-                    counter_dbg => counter_dbg,
-                    current_state_dbg => current_state_dbg,
-                    next_state_dbg => next_state_dbg
+                    done => done
                     );
 
-    -- Instantiate the Unit Under Test (UUT)
-    uut: uart_simple PORT MAP (
+    -- Instantiate the serial communication device
+    serial_comm: uart_simple PORT MAP (
                     I_clk => clock,
-                    I_clk_baud_count => X"01b2",--X"1458", -- 115.2K or 9.6K
+                    I_clk_baud_count => X"1458", -- 9.6K
                     I_reset => reset,
                     I_txData => DATA_EXTERNAL_TO_HOST,
                     I_txSig => DATA_EXTERNAL_WR_EN,

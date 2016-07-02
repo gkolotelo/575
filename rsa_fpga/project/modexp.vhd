@@ -14,7 +14,6 @@
 -- revision: 	June 18, 2016					--
 --------------------------------------------------
 
---
 --Binary method of modular exponentiation is used.
 
 

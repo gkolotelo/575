@@ -11,11 +11,8 @@
 -- description: Interface circuit between       --
 --              top-level and modexp            --
 -- created on:  June 19, 2016                   --
--- revision:    June 19, 2016                   --
+-- revision:    July 01, 2016                   --
 --------------------------------------------------
-
--- Binary method of modular exponentiation is used.
-
 
 library ieee;
 use ieee.numeric_std.all;

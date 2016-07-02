@@ -4,7 +4,9 @@
 -- 135964 Guilherme Kairalla Kolotelo           --
 -- 137943 Alexandre Seidy Ioshisaqui            --
 --------------------------------------------------
---          Laboratorio 4: Contadores           --
+-- filename:    decoder_7segment_hex.vhd        --
+-- description: HEX to 7 segment display        --
+--              decoder circuit                 --
 --------------------------------------------------
 
 library ieee;
