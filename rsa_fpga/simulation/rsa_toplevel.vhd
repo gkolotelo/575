@@ -127,8 +127,9 @@ architecture behavior of rsa_toplevel is
 ---------------------
     signal reset: std_logic;
     signal clock: std_logic;
-    --constant KEY_SIZE : integer := 32;
-    constant KEY_SIZE : integer := 1024;
+    constant KEY_SIZE : integer := 32;
+    --constant KEY_SIZE : integer := 1024;
+	signal display_data: std_logic_vector(KEY_SIZE-1 downto 0);
 
 ----------------------------------------
 -- Encryption module signals (modexp) --
@@ -150,8 +151,8 @@ architecture behavior of rsa_toplevel is
 ----------------------------------
 -- Serial communication signals --
 ----------------------------------
-    --signal I_clk_baud_count: std_logic_vector(15 downto 0) := X"1458"; -- 50MHz/9600bps = (0x1458)
-    signal I_clk_baud_count: std_logic_vector(15 downto 0) := X"01b2"; -- 50MHz/115200bps = (0x01b2)
+    signal I_clk_baud_count: std_logic_vector(15 downto 0) := X"1458"; -- 50MHz/9600bps = (0x1458)
+    --signal I_clk_baud_count: std_logic_vector(15 downto 0) := X"01b2"; -- 50MHz/115200bps = (0x01b2)
     
     -- External signals
     signal DATA_EXTERNAL_FROM_HOST: std_logic_vector(7 downto 0);
@@ -180,14 +181,14 @@ architecture behavior of rsa_toplevel is
 ---------------------------       Signal Routing:     ---------------------------
 begin
     -- Fixed keys 32bit
-    --public_exp <= x"00010001";
-    --private_exp <= x"93592F41";
-    --modulus <= x"D8FAA935";
+    public_exp <= x"00010001";
+    private_exp <= x"93592F41";
+    modulus <= x"D8FAA935";
 
     -- Fixed keys 1024bit
-    public_exp <= x"0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010001";
-    private_exp <= x"3701487F9419255C535836E35F14A16EDA01C61915C8682BD96F1A98DE706E404D83D8334E7B66F1B9C65996657EDDCA418C59B9EA6F6E9A958C6DB78FF8ED7FE678BD171942388CCE05B13DC9001AFFCB4B7DACAE3FF098A5DF06DB70C56137F9CA26B04C668C1C1889281AE494C713C06BF3486FE82F9F2DDCEDFF14F16521";
-    modulus <= x"702CDC827D7D0C57E35BA909CC50D00A290BEB0E4E6613EADACE42782340A8A217DE24414FD7A391E1BAB080FB01DFD36262FF595154421A6ABD0BF2FB18C540F1F46FE5DB1A93C63B5131AFA3F63FC27D1BF0B80B723A3572EF33FD0796B39FF6BB234EF24C91B9EC55802EF9748472BF738B67875F9816456BF1FCB4A708B9";
+--    public_exp <= x"0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010001";
+--    private_exp <= x"3701487F9419255C535836E35F14A16EDA01C61915C8682BD96F1A98DE706E404D83D8334E7B66F1B9C65996657EDDCA418C59B9EA6F6E9A958C6DB78FF8ED7FE678BD171942388CCE05B13DC9001AFFCB4B7DACAE3FF098A5DF06DB70C56137F9CA26B04C668C1C1889281AE494C713C06BF3486FE82F9F2DDCEDFF14F16521";
+--    modulus <= x"702CDC827D7D0C57E35BA909CC50D00A290BEB0E4E6613EADACE42782340A8A217DE24414FD7A391E1BAB080FB01DFD36262FF595154421A6ABD0BF2FB18C540F1F46FE5DB1A93C63B5131AFA3F63FC27D1BF0B80B723A3572EF33FD0796B39FF6BB234EF24C91B9EC55802EF9748472BF738B67875F9816456BF1FCB4A708B9";
 
     --serial_received <= data_available;
     serial_operation <= data_to_rsa(KEY_SIZE+8-1 downto KEY_SIZE);
@@ -204,7 +205,7 @@ begin
                 when state_reset =>
                     next_state <= idle;
                     LEDR <= (others => '0');
-                    LEDG <= (others => '0');
+                    --LEDG <= (6 downto 0 => '0');
                     start_encryption <= '0';
                     start_decryption <= '0';
                     data_transmit <= '0';
@@ -218,6 +219,7 @@ begin
 
                 -- Receiving state: Data has been received. Setup signals for operation and start
                 when (receiving) =>
+					--LEDG(0) <= '1';
                     LEDR(4 downto 0) <= "00010";
                     case serial_operation is
                         when "01100101" =>  -- (e)Encrypt
@@ -267,6 +269,24 @@ begin
             current_state <= next_state;
         end if;
     end process;
+	
+--	display: process(reset, data_from_rsa, data_transmit)
+--	begin
+--		if (reset='1') then
+--			display_data <= (others => '0');
+--		elsif (rising_edge(data_transmit)) then
+----			LEDG(7) <= '1';
+--			display_data <= data_from_rsa(KEY_SIZE-1 downto 0);
+--		end if;
+--	end process;
+	
+	LEDG(7) <= DATA_EXTERNAL_FRESHDATA;
+	LEDG(6) <= data_available;
+	LEDG(5) <= busy;
+	LEDG(4) <= done;
+	LEDG(3) <= DATA_EXTERNAL_READ_EN;
+	LEDG(2) <= data_transmit;
+	LEDG(1) <= DATA_EXTERNAL_WR_EN;
 
 ------------------------    Component instances:   ---------------------------
     encrypt_module: modexp_interface generic map (KEY_SIZE => KEY_SIZE)
@@ -298,7 +318,7 @@ begin
                     DATA_EXTERNAL_FRESHDATA => DATA_EXTERNAL_FRESHDATA,
                     DATA_EXTERNAL_READ_EN => DATA_EXTERNAL_READ_EN,
                     DATA_EXTERNAL_WR_EN => DATA_EXTERNAL_WR_EN,
-                    DATA_EXTERNAL_WR_RDY => DATA_EXTERNAL_WR_RDY,
+                    DATA_EXTERNAL_WR_RDY => '0',
                     DATA_EXTERNAL_CLOCK => '0',
                     
                     data_from_rsa => data_from_rsa,
@@ -317,7 +337,7 @@ begin
                     I_clk_baud_count => I_clk_baud_count,
                     I_reset => reset,
                     I_txData => X"55",--DATA_EXTERNAL_TO_HOST,
-                    I_txSig => DATA_EXTERNAL_WR_EN,
+                    I_txSig => '0',
                     O_txRdy => DATA_EXTERNAL_WR_RDY,
                     
                     O_tx => UART_TXD,
@@ -332,49 +352,49 @@ begin
     
     h7: decoder_7segment_hex
     port map(
-        dec_in => data_to_rsa(31 downto 28),
+        dec_in => display_data(31 downto 28),
         dec_out => HEX7
     );
 
     h6: decoder_7segment_hex
     port map(
-        dec_in => data_to_rsa(27 downto 24),
+        dec_in => display_data(27 downto 24),
         dec_out => HEX6
     );
 
     h5: decoder_7segment_hex
     port map(
-        dec_in => data_to_rsa(23 downto 20),
+        dec_in => display_data(23 downto 20),
         dec_out => HEX5
     );
     
     h4: decoder_7segment_hex
     port map(
-        dec_in => data_to_rsa(19 downto 16),
+        dec_in => display_data(19 downto 16),
         dec_out => HEX4
     );
     
     h3: decoder_7segment_hex
     port map(
-        dec_in => data_to_rsa(15 downto 12),
+        dec_in => display_data(15 downto 12),
         dec_out => HEX3
     );
     
     h2: decoder_7segment_hex
     port map(
-        dec_in => data_to_rsa(11 downto 8),
+        dec_in => display_data(11 downto 8),
         dec_out => HEX2
     );
     
     h1: decoder_7segment_hex
     port map(
-        dec_in => data_to_rsa(7 downto 4),
+        dec_in => display_data(7 downto 4),
         dec_out => HEX1
     );
     
     h0: decoder_7segment_hex
     port map(
-        dec_in => data_to_rsa(3 downto 0),
+        dec_in => display_data(3 downto 0),
         dec_out => HEX0
     );
     

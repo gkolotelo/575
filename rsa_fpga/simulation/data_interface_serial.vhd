@@ -108,6 +108,7 @@ begin
 				counter <= 0;
 				set_once <= '0';
 				count_once <= '0';
+				DATA_EXTERNAL_WR_EN <= '0';
 				if(DATA_EXTERNAL_FRESHDATA = '0') then
 						freshdata_not_deasserted <= '0';
 				end if;
